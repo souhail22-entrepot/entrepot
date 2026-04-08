@@ -307,8 +307,9 @@ function setUnite(mode) {
 }
 
 function getUniteSaisie() {
-  if (!currentProd || !currentProd.uniteUtil) return 'Unité stock';
-  return currentUniteMode === 'stock' ? 'Unité stock' : currentProd.uniteUtil;
+  if (!currentProd) return 'Unité stock';
+  if (!currentProd.uniteUtil) return currentProd.unite;
+  return currentUniteMode === 'stock' ? currentProd.unite : currentProd.uniteUtil;
 }
 
 function changeQty(d) {
