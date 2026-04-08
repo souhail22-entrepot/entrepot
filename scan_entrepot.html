@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Scan Entrepôt</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-height:100vh}
+.header{background:#1a5276;color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.header h1{font-size:17px;font-weight:600}
+.badge-offline{background:#e74c3c;color:#fff;font-size:11px;padding:3px 8px;border-radius:10px}
+.badge-online{background:#27ae60;color:#fff;font-size:11px;padding:3px 8px;border-radius:10px}
+.container{padding:14px;max-width:500px;margin:0 auto}
+.card{background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.card-title{font-size:13px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:13px;color:#444;margin-bottom:5px;font-weight:500}
+.field select,.field input{width:100%;padding:11px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:15px;background:#fff;-webkit-appearance:none;appearance:none}
+.field select:focus,.field input:focus{outline:none;border-color:#1a5276}
+.scan-zone{display:flex;gap:8px;align-items:center}
+.scan-zone input{flex:1}
+.btn-scan{background:#1a5276;color:#fff;border:none;border-radius:8px;padding:11px 14px;font-size:20px;cursor:pointer;white-space:nowrap}
+.btn-scan:active{opacity:.8}
+#ref-result{margin-top:6px;font-size:13px;color:#27ae60;font-weight:500;min-height:18px}
+#ref-result.error{color:#e74c3c}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.type-btn{padding:10px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:14px;cursor:pointer;text-align:center;transition:all .15s}
+.type-btn.active-sortie{border-color:#e74c3c;background:#fef0f0;color:#c0392b;font-weight:600}
+.type-btn.active-entree{border-color:#27ae60;background:#eafaf1;color:#1e8449;font-weight:600}
+.type-btn.active-retour{border-color:#2980b9;background:#eaf4fb;color:#1a5276;font-weight:600}
+.type-btn.active-ajust{border-color:#f39c12;background:#fef9e7;color:#b7770d;font-weight:600}
+.qty-row{display:flex;align-items:center;gap:10px}
+.qty-row button{width:44px;height:44px;border-radius:8px;border:1.5px solid #ddd;background:#f5f5f5;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.qty-row button:active{background:#ddd}
+.qty-row input{flex:1;text-align:center;font-size:22px;font-weight:600}
+.btn-submit{width:100%;background:#375623;color:#fff;border:none;border-radius:10px;padding:15px;font-size:17px;font-weight:600;cursor:pointer;margin-top:4px}
+.btn-submit:active{opacity:.85}
+.btn-submit:disabled{opacity:.4;cursor:not-allowed}
+.queue-bar{background:#fff;border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.queue-count{font-size:13px;color:#555}
+.queue-count strong{color:#1a5276;font-size:16px}
+.btn-sync{background:#1a5276;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:14px;font-weight:500;cursor:pointer}
+.btn-sync:disabled{opacity:.4}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2c3e50;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;max-width:300px;text-align:center;z-index:999}
+.toast.show{opacity:1}
+#video-container{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:100;flex-direction:column;align-items:center;justify-content:center}
+#video-container.active{display:flex}
+#scanner-video{width:100%;max-width:400px}
+.scan-overlay{position:absolute;border:3px solid #fff;width:260px;height:120px;border-radius:8px;pointer-events:none}
+.btn-close-scan{position:absolute;top:20px;right:20px;background:rgba(255,255,255,.2);color:#fff;border:2px solid #fff;border-radius:50%;width:44px;height:44px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.scan-hint{color:#fff;font-size:14px;margin-top:140px;text-align:center;padding:0 20px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📦 Scan Entrepôt</h1>
+  <span id="status-badge" class="badge-offline">Hors ligne</span>
+</div>
+
+<div id="video-container">
+  <video id="scanner-video" autoplay playsinline></video>
+  <div class="scan-overlay"></div>
+  <button class="btn-close-scan" onclick="stopScanner()">✕</button>
+  <p class="scan-hint">Pointez la caméra vers le code-barre de l'étiquette produit</p>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <div class="card-title">Produit</div>
+    <div class="field">
+      <label>Scanner ou saisir la référence</label>
+      <div class="scan-zone">
+        <input type="text" id="ref-input" placeholder="MAT-001" oninput="rechercherRef(this.value)">
+        <button class="btn-scan" onclick="startScanner()" title="Scanner">📷</button>
+      </div>
+      <div id="ref-result"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Type de mouvement</div>
+    <div class="type-grid">
+      <button class="type-btn active-sortie" onclick="setType('Sortie',this)">Sortie</button>
+      <button class="type-btn" onclick="setType('Entrée Magasin',this)">Entrée</button>
+      <button class="type-btn" onclick="setType('Retour',this)">Retour</button>
+      <button class="type-btn" onclick="setType('Ajustement',this)">Ajustement</button>
+    </div>
+  </div>
+
+  <div class="card" id="card-projet">
+    <div class="card-title">Projet</div>
+    <div class="field">
+      <select id="sel-projet">
+        <option value="">— Sélectionner un projet —</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Quantité</div>
+    <div class="qty-row">
+      <button onclick="changeQty(-1)">−</button>
+      <input type="number" id="qty-input" value="1" min="0.1" step="0.5">
+      <button onclick="changeQty(1)">+</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Opérateur</div>
+    <div class="field">
+      <select id="sel-operateur">
+        <option value="">— Sélectionner —</option>
+      </select>
+    </div>
+    <div class="field" style="margin-top:8px">
+      <label>Observations (optionnel)</label>
+      <input type="text" id="obs-input" placeholder="Note...">
+    </div>
+  </div>
+
+  <button class="btn-submit" id="btn-envoyer" onclick="enregistrer()">Enregistrer le mouvement</button>
+
+  <div style="height:14px"></div>
+
+  <div class="queue-bar">
+    <div class="queue-count">En attente d'envoi : <strong id="queue-count">0</strong></div>
+    <button class="btn-sync" id="btn-sync" onclick="synchroniser()">Synchroniser</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.6/umd/index.min.js"></script>
+<script>
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzeJiqAI1xnTV08UltXe6s2HsmRjhLXMYcMkud55Nztkq9Abp3FXwiWE1GbWbVc4Dbo_A/exec";
+
+const PRODUITS = [{"ref":"MAT-001","nom":"Portes d'accès ovale 8×5"},{"ref":"MAT-002","nom":"Portes d'accès ovale 12×6"},{"ref":"MAT-003","nom":"Portes d'accès ovale 18×10"},{"ref":"MAT-004","nom":"Portes d'accès ovale 21×14"},{"ref":"MAT-005","nom":"Portes d'accès ovale 25×17"},{"ref":"MAT-006","nom":"Porte D'accès Ronde 8x4 (5-6)"},{"ref":"MAT-007","nom":"Porte D'accès Ronde 8x4 (7-9)"},{"ref":"MAT-008","nom":"Porte D'accès Ronde 8x4 (10-11)"},{"ref":"MAT-009","nom":"Porte D'accès Ronde 12x8 (10-11)"},{"ref":"MAT-010","nom":"Porte D'accès Ronde 12x8 (12-14)"},{"ref":"MAT-011","nom":"Porte D'accès Ronde 12x8 (15-16)"},{"ref":"MAT-012","nom":"Porte D'accès Ronde 12x8 (17-18)"},{"ref":"MAT-013","nom":"Porte d'acces ronde 16x12 (17-18)"},{"ref":"MAT-014","nom":"Porte d'acces ronde 16x12 (19-20)"},{"ref":"MAT-015","nom":"Porte d'acces ronde 16x12 (21-22)"},{"ref":"MAT-016","nom":"Porte d'acces ronde 16x12 (23-24)"},{"ref":"MAT-017","nom":"Porte d'acces ronde 16x12 (25-28)"},{"ref":"MAT-018","nom":"Porte d'acces ronde 16x12 (29-32)"},{"ref":"MAT-019","nom":"Porte d'acces ronde 16x12 (33-36)"},{"ref":"MAT-020","nom":"Porte d'acces ronde 21x22"},{"ref":"MAT-021","nom":"Portes d'accès Carré  12 x 12 (architeturales)    CTR"},{"ref":"MAT-022","nom":"Portes d'accès Carré  16 X 16 (architeturales)    CTR"},{"ref":"MAT-023","nom":"Portes d'accès Carré  24 X 24 (architeturales)    CTR"},{"ref":"MAT-024","nom":"Portes Architecturales coupe feu 16 X 16"},{"ref":"MAT-025","nom":"Portes Architecturales coupe feu 24 X 24"},{"ref":"MAT-026","nom":"Feuille de Tôle  Galv. 48X96 26G"},{"ref":"MAT-027","nom":"Feuille de Tôle 48X96 28G"},{"ref":"MAT-028","nom":"RLX Toile Orange 12'X100'"},{"ref":"MAT-029","nom":"RLX Polyéthylène 240' x 2000pc      Léger"},{"ref":"MAT-030","nom":"RLX Polyéthylène 120\" x 1500pc     Moyen"},{"ref":"MAT-031","nom":"RLX Polyéthylène 120\" x 1500pc      Fort"},{"ref":"MAT-032","nom":"RLX Polyéthylène 120\"x150'- 1500pc Léger"},{"ref":"MAT-033","nom":"Film Protection Conduits Auto Collant 24 pouce"},{"ref":"MAT-034","nom":"Adhésif aérosol 357   482 g./14Oz"},{"ref":"MAT-035","nom":"Pellicule d'emballage XH32512 (1,5PIED)"},{"ref":"MAT-036","nom":"Fermeture à Glissière Collante + Couteau Zipper HD"},{"ref":"MAT-037","nom":"Tape vert  double face 2 Pouce (rouleau)"},{"ref":"MAT-038","nom":"Tape bleu ou vert  (peintre) 2 Pouce (caisse de 24 rlx)"},{"ref":"MAT-039","nom":"Tape Gris 2'' Nashua (caisse de 24 rlx)"},{"ref":"MAT-040","nom":"Tape  Rouge  (caisse de 20 rlx)"},{"ref":"MAT-041","nom":"Tape Blanc/transparent double face"},{"ref":"MAT-042","nom":"Protection Tapis/Plancher Un Coté Collant 24'' x 36'"},{"ref":"MAT-043","nom":"Tape Aluminium 1.6 mil 72mmx55m (16/ca"},{"ref":"MAT-044","nom":"Tape Aluminium 1.6 mil 48mmx45,72m (24rlx/caisse"},{"ref":"MAT-045","nom":"Tape Aluminium 3M Filamenté pour scellent"},{"ref":"MAT-046","nom":"Butyl/Rouleau 1/8x3/8x25"},{"ref":"MAT-047","nom":"Butyl pour portes d'access en rouleau (20 RLX)"},{"ref":"MAT-048","nom":"Tube Plastique 12'' Dia. (Rlx19'' Plat) x 500' x 6 Mil"},{"ref":"MAT-049","nom":"Sac 42X48 Noir extra fort 100"},{"ref":"MAT-050","nom":"Sac 35X50 Noir extra fort 100"},{"ref":"MAT-051","nom":"Sac 26X36 Noir extra fort  200"},{"ref":"MAT-052","nom":"Sac 22X24 Noir 500"},{"ref":"MAT-053","nom":"Sac 42x48 transparent extra fort"},{"ref":"MAT-054","nom":"Sac 35x50 transparent extra fort"},{"ref":"MAT-055","nom":"Sac papier cire 500"},{"ref":"MAT-056","nom":"Sac 33x48   Trasparent 3 MIL 100 SAC"},{"ref":"MAT-057","nom":"Sac 33x50 en rouleau 3 mil Jaune (Amiante)"},{"ref":"MAT-058","nom":"Papier Toilette (jumbo) GO GREEN    G9942100"},{"ref":"MAT-059","nom":"Papier Toilette  SCOTT   4804002  (petits rouleaux)"},{"ref":"MAT-060","nom":"Papier toilette 2 épaisseurs 1000'  G9360004-12/CAISSE"},{"ref":"MAT-061","nom":"Papier à Main GO GREEN     G9942302"},{"ref":"MAT-062","nom":"Papier à main 8\" X 8 ROULEAUX G9360015"},{"ref":"MAT-063","nom":"Masque Papier 3M - N95 (20 unité par boite)"},{"ref":"MAT-064","nom":"Demi Masque Respiratoire Silicone Series 7700 Honywell"},{"ref":"MAT-065","nom":"Cartouche Gaz organique et acide Filtre P100"},{"ref":"MAT-066","nom":"Cartouche Vapeur/Organique Filtre P100"},{"ref":"MAT-067","nom":"Cartouche pour Demi Masque Hepa P100"},{"ref":"MAT-068","nom":"Serviettes rafraichissantes alcool pour masque (100)"},{"ref":"MAT-069","nom":"Serviettes de chlorure de benzalkonium pour masque (100)"},{"ref":"MAT-070","nom":"Masque full face avec aide respiratoire"},{"ref":"MAT-071","nom":"Gant Nitril disposable NOIR XL 8 mil"},{"ref":"MAT-072","nom":"Gant PRO XL  INDUSTRIELS EN CAOUTCHOUC 15 mil"},{"ref":"MAT-073","nom":"Gant Nitrile Bleu 4 mil X 10 boites"},{"ref":"MAT-074","nom":"Gant coton polyester antidérapant"},{"ref":"MAT-075","nom":"Gant Nitril disposable NOIR XL 5 mil"},{"ref":"MAT-076","nom":"Bouchon d'oreille en mousse"},{"ref":"MAT-077","nom":"Casque de protection auditive"},{"ref":"MAT-078","nom":"Protecteur faciel (visiere claire)"},{"ref":"MAT-079","nom":"Trousse de premiers soins"},{"ref":"MAT-080","nom":"Rinçage oculaire"},{"ref":"MAT-081","nom":"Support pour visière North"},{"ref":"MAT-082","nom":"Solution Isotonique sterile 1L"},{"ref":"MAT-083","nom":"Lunette sécuritaires claires Z-TECK"},{"ref":"MAT-084","nom":"Tyvek/X-Guard Vêtement Polypro Bleu XL (20 unité)"},{"ref":"MAT-085","nom":"Tyvek/X-Guard Vêtement Polypro Blanc XL (25 unité)"},{"ref":"MAT-086","nom":"Tyvek/X-Guard Vêtement Polypro Blanc 2XL (25 unité)"},{"ref":"MAT-087","nom":"Tyvek/X-Guard Vêtement Polypro Blanc 3XL (25 unité)"},{"ref":"MAT-088","nom":"Couvre Chaussure Non Conducteur XL (200 par Boîte)"}];
+
+const PROJETS = [{"code":"SDC-754","nom":"Nettoyage OMHM - Hab. Madelaine"},{"code":"SDC-740","nom":"Nettoyage OMHM - Hab. Beaubien"},{"code":"SDC-750","nom":"Nettoyage OMHM - Hab. Ste-Véronique"},{"code":"SDC-731","nom":"Nettoyage CC Laval M. Real"},{"code":"SDC-732","nom":"Immeuble Anfa"},{"code":"SDC-733","nom":"Nettoyage"},{"code":"SDC-734","nom":"netoya"}];
+
+const CHEFS = ["Gonzalo H.","José H.","Cézar T.","Alain B.","Mario"];
+
+let typeMouvement = "Sortie";
+let scanner = null;
+let queue = JSON.parse(localStorage.getItem('mvQueue') || '[]');
+
+function init() {
+  // Projets
+  const sp = document.getElementById('sel-projet');
+  PROJETS.forEach(p => {
+    const o = document.createElement('option');
+    o.value = p.code;
+    o.textContent = p.code + ' — ' + p.nom;
+    sp.appendChild(o);
+  });
+  // Opérateurs
+  const so = document.getElementById('sel-operateur');
+  CHEFS.forEach(c => {
+    const o = document.createElement('option');
+    o.value = c; o.textContent = c;
+    so.appendChild(o);
+  });
+  updateQueueCount();
+  checkOnline();
+  setInterval(checkOnline, 10000);
+}
+
+function checkOnline() {
+  const b = document.getElementById('status-badge');
+  if (navigator.onLine && SCRIPT_URL !== "COLLER_URL_GOOGLE_APPS_SCRIPT_ICI") {
+    b.className = 'badge-online'; b.textContent = 'En ligne';
+    document.getElementById('btn-sync').disabled = false;
+  } else {
+    b.className = 'badge-offline'; b.textContent = 'Hors ligne';
+  }
+}
+
+function setType(t, el) {
+  typeMouvement = t;
+  document.querySelectorAll('.type-btn').forEach(b => b.className = 'type-btn');
+  const cls = t === 'Sortie' ? 'active-sortie' : t === 'Entrée Magasin' ? 'active-entree' : t === 'Retour' ? 'active-retour' : 'active-ajust';
+  el.classList.add(cls);
+  document.getElementById('card-projet').style.opacity = (t === 'Entrée Magasin' || t === 'Ajustement') ? '0.4' : '1';
+}
+
+function rechercherRef(val) {
+  const r = document.getElementById('ref-result');
+  val = val.trim().toUpperCase();
+  if (!val) { r.textContent = ''; return; }
+  const p = PRODUITS.find(x => x.ref.toUpperCase() === val);
+  if (p) { r.className = ''; r.textContent = '✓ ' + p.nom; }
+  else { r.className = 'error'; r.textContent = 'Référence introuvable dans le catalogue'; }
+}
+
+function changeQty(d) {
+  const i = document.getElementById('qty-input');
+  const v = parseFloat(i.value) || 0;
+  i.value = Math.max(0.5, v + d);
+}
+
+function startScanner() {
+  const vc = document.getElementById('video-container');
+  vc.classList.add('active');
+  const hints = new Map();
+  const codeReader = new ZXing.BrowserMultiFormatReader(hints);
+  scanner = codeReader;
+  codeReader.decodeFromConstraints(
+    { video: { facingMode: 'environment' } },
+    'scanner-video',
+    (result, err) => {
+      if (result) {
+        const code = result.getText();
+        stopScanner();
+        document.getElementById('ref-input').value = code;
+        rechercherRef(code);
+        showToast('Code scanné : ' + code);
+      }
+    }
+  );
+}
+
+function stopScanner() {
+  if (scanner) { try { scanner.reset(); } catch(e){} scanner = null; }
+  document.getElementById('video-container').classList.remove('active');
+}
+
+function enregistrer() {
+  const ref = document.getElementById('ref-input').value.trim();
+  const qty = parseFloat(document.getElementById('qty-input').value);
+  const oper = document.getElementById('sel-operateur').value;
+  if (!ref) { showToast('Scannez ou saisissez une référence'); return; }
+  if (!qty || qty <= 0) { showToast('Quantité invalide'); return; }
+  if (!oper) { showToast('Sélectionnez un opérateur'); return; }
+  const prod = PRODUITS.find(x => x.ref.toUpperCase() === ref.toUpperCase());
+  const codeProjet = (typeMouvement === 'Sortie' || typeMouvement === 'Retour')
+    ? document.getElementById('sel-projet').value : '';
+
+  const mv = {
+    id: Date.now(),
+    date: new Date().toISOString(),
+    ref: prod ? prod.ref : ref,
+    nom: prod ? prod.nom : ref,
+    type: typeMouvement,
+    projet: codeProjet,
+    qte: qty,
+    operateur: oper,
+    obs: document.getElementById('obs-input').value,
+    synced: false
+  };
+
+  queue.push(mv);
+  localStorage.setItem('mvQueue', JSON.stringify(queue));
+  updateQueueCount();
+
+  // Reset
+  document.getElementById('ref-input').value = '';
+  document.getElementById('ref-result').textContent = '';
+  document.getElementById('qty-input').value = '1';
+  document.getElementById('obs-input').value = '';
+  showToast('✓ Mouvement enregistré localement');
+
+  // Auto-sync si en ligne
+  if (navigator.onLine && SCRIPT_URL !== "COLLER_URL_GOOGLE_APPS_SCRIPT_ICI") {
+    synchroniser();
+  }
+}
+
+function updateQueueCount() {
+  const unsync = queue.filter(x => !x.synced).length;
+  document.getElementById('queue-count').textContent = unsync;
+}
+
+async function synchroniser() {
+  const unsync = queue.filter(x => !x.synced);
+  if (!unsync.length) { showToast('Aucun mouvement à synchroniser'); return; }
+  const btn = document.getElementById('btn-sync');
+  btn.textContent = '...'; btn.disabled = true;
+  try {
+    const resp = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ mouvements: unsync }),
+      headers: { 'Content-Type': 'text/plain' }
+    });
+    const data = await resp.json();
+    if (data.status === 'ok') {
+      queue = queue.map(x => ({ ...x, synced: true }));
+      localStorage.setItem('mvQueue', JSON.stringify(queue));
+      updateQueueCount();
+      showToast('✓ ' + unsync.length + ' mouvement(s) synchronisé(s)');
+    } else {
+      showToast('Erreur serveur : ' + (data.message || '?'));
+    }
+  } catch(e) {
+    showToast('Hors ligne — données conservées localement');
+  }
+  btn.textContent = 'Synchroniser'; btn.disabled = false;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+window.addEventListener('load', init);
+</script>
+</body>
+</html>
