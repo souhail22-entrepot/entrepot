@@ -438,7 +438,7 @@ function fermerModal() {
 function confirmerPanier() {
   fermerModal();
   const oper = document.getElementById('sel-operateur').value;
-  const now = new Date().toISOString();
+  const now = new Date().toLocaleString('fr-CA', {timeZone:'America/Toronto', hour12:false}).replace(',','');
   const isT = typeMouvement === 'Transfert';
   const codeP = document.getElementById('sel-projet').value;
   const srcCode = document.getElementById('sel-projet-source').value;
