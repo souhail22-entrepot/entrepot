@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Scan EntrepÃ´t</title>
+<title>Scan EntrepÃƒÂ´t</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-height:100vh}
@@ -101,69 +101,69 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 <body>
 
 <div class="header">
-  <h1>ðŸ“¦ Scan EntrepÃ´t</h1>
+  <h1>Ã°Å¸â€œÂ¦ Scan EntrepÃƒÂ´t</h1>
   <span id="status-badge" class="badge-offline">Hors ligne</span>
 </div>
 
 <div id="video-container">
   <video id="scanner-video" autoplay playsinline></video>
   <div class="scan-overlay"></div>
-  <button class="btn-close-scan" onclick="stopScanner()">âœ•</button>
-  <p class="scan-hint">Pointez la camÃ©ra vers le code-barre</p>
+  <button class="btn-close-scan" onclick="stopScanner()">Ã¢Å“â€¢</button>
+  <p class="scan-hint">Pointez la camÃƒÂ©ra vers le code-barre</p>
 </div>
 
-<!-- MODAL APERÃ‡U -->
+<!-- MODAL APERÃƒâ€¡U -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <div class="modal-title">AperÃ§u du panier</div>
+    <div class="modal-title">AperÃƒÂ§u du panier</div>
     <div class="modal-subtitle" id="modal-subtitle"></div>
     <div class="modal-session" id="modal-session"></div>
-    <div id="modal-transfert-badge" style="display:none" class="transfert-badge">âš¡ Chaque article gÃ©nÃ¨re 2 mouvements : Retour + Sortie</div>
+    <div id="modal-transfert-badge" style="display:none" class="transfert-badge">Ã¢Å¡Â¡ Chaque article gÃƒÂ©nÃƒÂ¨re 2 mouvements : Retour + Sortie</div>
     <div class="modal-items" id="modal-items"></div>
     <div class="modal-total">
       <span class="modal-total-label">Total articles</span>
       <span class="modal-total-val" id="modal-total-val"></span>
     </div>
     <div class="modal-btns">
-      <button class="btn-edit" onclick="fermerModal()">âœï¸ Modifier</button>
-      <button class="btn-confirm" onclick="confirmerPanier()">âœ“ Tout confirmer</button>
+      <button class="btn-edit" onclick="fermerModal()">Ã¢Å“ÂÃ¯Â¸Â Modifier</button>
+      <button class="btn-confirm" onclick="confirmerPanier()">Ã¢Å“â€œ Tout confirmer</button>
     </div>
   </div>
 </div>
 
 <div class="container">
 
-  <!-- SESSION (type + projet + opÃ©rateur) -->
+  <!-- SESSION (type + projet + opÃƒÂ©rateur) -->
   <div class="card">
-    <div class="card-title">RÃ©glages de session</div>
+    <div class="card-title">RÃƒÂ©glages de session</div>
     <div class="type-grid">
       <button class="type-btn active-sortie" onclick="setType('Sortie',this)">Sortie</button>
-      <button class="type-btn" onclick="setType('EntrÃ©e Magasin',this)">EntrÃ©e</button>
+      <button class="type-btn" onclick="setType('EntrÃƒÂ©e Magasin',this)">EntrÃƒÂ©e</button>
       <button class="type-btn" onclick="setType('Retour',this)">Retour</button>
       <button class="type-btn" onclick="setType('Ajustement',this)">Ajustement</button>
-      <button class="type-btn" onclick="setType('Transfert',this)" style="grid-column:span 2">Transfert projet â†’ projet</button>
+      <button class="type-btn" onclick="setType('Transfert',this)" style="grid-column:span 2">Transfert projet Ã¢â€ â€™ projet</button>
     </div>
     <div style="margin-top:12px" id="field-projet-normal">
       <div class="field" style="margin-bottom:8px">
         <label>Projet</label>
-        <select id="sel-projet"><option value="">â€” SÃ©lectionner â€”</option></select>
+        <select id="sel-projet"><option value="">Ã¢â‚¬â€ SÃƒÂ©lectionner Ã¢â‚¬â€</option></select>
       </div>
     </div>
     <div class="transfert-fields" id="transfert-fields">
       <div class="field" style="margin-bottom:4px">
         <label>Projet source</label>
-        <select id="sel-projet-source"><option value="">â€” Source â€”</option></select>
+        <select id="sel-projet-source"><option value="">Ã¢â‚¬â€ Source Ã¢â‚¬â€</option></select>
       </div>
-      <div class="transfert-arrow">â†“</div>
+      <div class="transfert-arrow">Ã¢â€ â€œ</div>
       <div class="field">
         <label>Projet destination</label>
-        <select id="sel-projet-dest"><option value="">â€” Destination â€”</option></select>
+        <select id="sel-projet-dest"><option value="">Ã¢â‚¬â€ Destination Ã¢â‚¬â€</option></select>
       </div>
     </div>
     <div class="field" style="margin-top:8px;margin-bottom:0">
-      <label>OpÃ©rateur</label>
-      <select id="sel-operateur"><option value="">â€” SÃ©lectionner â€”</option></select>
+      <label>OpÃƒÂ©rateur</label>
+      <select id="sel-operateur"><option value="">Ã¢â‚¬â€ SÃƒÂ©lectionner Ã¢â‚¬â€</option></select>
     </div>
   </div>
 
@@ -173,12 +173,12 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
     <div class="field">
       <div class="scan-zone">
         <input type="text" id="ref-input" placeholder="MAT-001 ou scanner" oninput="rechercherRef(this.value)">
-        <button class="btn-scan" onclick="startScanner()">ðŸ“·</button>
+        <button class="btn-scan" onclick="startScanner()">Ã°Å¸â€œÂ·</button>
       </div>
       <div id="ref-result"></div>
     </div>
     <div class="qty-row" style="margin-bottom:12px">
-      <button onclick="changeQty(-1)">âˆ’</button>
+      <button onclick="changeQty(-1)">Ã¢Ë†â€™</button>
       <input type="number" id="qty-input" value="1" min="0.1" step="0.5">
       <button onclick="changeQty(1)">+</button>
     </div>
@@ -195,7 +195,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
       <span class="panier-badge" id="panier-badge">0 article</span>
     </div>
     <div id="panier-liste">
-      <div class="panier-empty">Aucun article â€” scannez pour commencer</div>
+      <div class="panier-empty">Aucun article Ã¢â‚¬â€ scannez pour commencer</div>
     </div>
     <div id="panier-total-bar" style="display:none" class="panier-total">
       <span class="panier-total-label">Total articles</span>
@@ -204,7 +204,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
   </div>
 
   <button class="btn-preview" id="btn-preview" onclick="ouvrirApercu()" disabled>
-    Voir l'aperÃ§u et confirmer â†’
+    Voir l'aperÃƒÂ§u et confirmer Ã¢â€ â€™
   </button>
 
   <div style="height:14px"></div>
@@ -222,12 +222,12 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwCz-608yGxK3g5LxPTXo6cAkOeocDim_qxQmw_3qnRby-NaqCT68IM_BdCGV5lIQSUzw/exec";
 
-const PRODUITS = [{"ref":"MAT-001","nom":"Portes d�acc�s ovale 8�5","cat":"Portes d'acc�s","unite":"Caisse"},{"ref":"MAT-002","nom":"Portes d�acc�s ovale 12�6","cat":"Portes d'acc�s","unite":"Caisse"},{"ref":"MAT-003","nom":"Portes d�acc�s ovale 18�10","cat":"Portes d'acc�s","unite":"Caisse"},{"ref":"MAT-004","nom":"Portes d�acc�s ovale 21�14","cat":"Portes d'acc�s","unite":"Caisse"},{"ref":"MAT-005","nom":"Portes d�acc�s ovale 25�17","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-006","nom":"Porte D'acc�s Ronde 8x4 (5-6)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-007","nom":"Porte D'acc�s Ronde 8x4 (7-9)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-008","nom":"Porte D'acc�s Ronde 8x4 (10-11)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-009","nom":"Porte D'acc�s Ronde 12x8 (10-11)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-010","nom":"Porte D'acc�s Ronde 12x8 (12-14)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-011","nom":"Porte D'acc�s Ronde 12x8 (15-16)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-012","nom":"Porte D'acc�s Ronde 12x8 (17-18)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-013","nom":"Porte d'acces ronde 16x12 (17-18)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-014","nom":"Porte d'acces ronde 16x12 (19-20)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-015","nom":"Porte d'acces ronde 16x12 (21-22)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-016","nom":"Porte d'acces ronde 16x12 (23-24)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-017","nom":"Porte d'acces ronde 16x12 (25-28)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-018","nom":"Porte d'acces ronde 16x12 (29-32)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-019","nom":"Porte d'acces ronde 16x12 (33-36)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-020","nom":"Porte d'acces ronde 21x22","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-021","nom":"Portes d�acc�s Carr�  12 x 12 (architeturales)    CTR","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-022","nom":"Portes d�acc�s Carr�  16 X 16 (architeturales)    CTR","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-023","nom":"Portes d�acc�s Carr�  24 X 24 (architeturales)    CTR","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-024","nom":"Portes Architecturales coupe feu 16 X 16","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-025","nom":"Portes Architecturales coupe feu 24 X 24","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-026","nom":"Feuille de T�le  Galv. 48X96 26G","cat":"Feuille de T�le","unite":"Unit�"},{"ref":"MAT-027","nom":"Feuille de T�le 48X96 28G","cat":"Feuille de T�le","unite":"Unit�"},{"ref":"MAT-028","nom":"RLX Toile Orange 12'X100'","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-029","nom":"RLX Poly�thyl�ne 240' x 2000pc      L�ger","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-030","nom":"RLX Poly�thyl�ne 120\" x 1500pc     Moyen","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-031","nom":"RLX Poly�thyl�ne 120\" x 1500pc      Fort","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-032","nom":"RLX Poly�thyl�ne 120\"x150'- 1500pc L�ger","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-033","nom":"Film Protection Conduits Auto Collant 24 pouce ( Plastic bleu)","cat":"Plastique","unite":"Unit�"},{"ref":"MAT-034","nom":"Adh�sif a�rosol 357   482 g./14Oz","cat":"Plastique","unite":"Caisse"},{"ref":"MAT-035","nom":"Pellicule d'emballage XH32512 (1,5PIED)","cat":"Plastique","unite":"Unit�"},{"ref":"MAT-036","nom":"Fermeture � Glissi�re Collante + Couteau Zipper/Zip Wall HD Adh�sive(12 unit�)","cat":"Plastique","unite":"Unit�"},{"ref":"MAT-037","nom":"Tape vert  double face 2 Pouce (rouleau)","cat":"Tape","unite":"Unit�"},{"ref":"MAT-038","nom":"Tape bleu ou vert  (peintre) 2 Pouce (caisse de 24 rlx)","cat":"Tape","unite":"Unit�"},{"ref":"MAT-039","nom":"Tape Gris 2�� Nashua (caisse de 24 rlx)","cat":"Tape","unite":"Caisse"},{"ref":"MAT-040","nom":"Tape  Rouge  (caisse de 20 rlx)","cat":"Tape","unite":"Caisse"},{"ref":"MAT-041","nom":"Tape Blanc/transparent double face","cat":"Tape","unite":"Unit�"},{"ref":"MAT-042","nom":"Protection Tapis/Plancher Un Cot� Collant 24'' x 36'","cat":"Tape","unite":"Caisse"},{"ref":"MAT-043","nom":"Tape Aluminium 1.6 mil 72mmx55m (16/ca","cat":"Tape","unite":"Caisse"},{"ref":"MAT-044","nom":"Tape Aluminium 1.6 mil 48mmx45,72m (24rlx/caisse","cat":"Tape","unite":"Caisse"},{"ref":"MAT-045","nom":"Tape Aluminium 3M Filament� pour scellent","cat":"Tape","unite":"Unit�"},{"ref":"MAT-046","nom":"Butyl/Rouleau 1/8x3/8x25","cat":"Tape","unite":"Caisse"},{"ref":"MAT-047","nom":"Butyl pour portes d'access en rouleau (20 RLX)","cat":"Tape","unite":"Rlx"},{"ref":"MAT-048","nom":"Tube Plastique 12'' Dia. (Rlx19'' Plat) x 500' x 6 Mil","cat":"Tape","unite":"Unit�"},{"ref":"MAT-049","nom":"Sac 42X48 Noir extra fort 100","cat":"Sac","unite":"Bo�te"},{"ref":"MAT-050","nom":"Sac 35X50 Noir extra fort 100","cat":"Sac","unite":"Bo�te"},{"ref":"MAT-051","nom":"Sac 26X36 Noir extra fort  200","cat":"Sac","unite":"Bo�te"},{"ref":"MAT-052","nom":"Sac 22X24 Noir 500","cat":"Sac","unite":"Bo�te"},{"ref":"MAT-053","nom":"Sac 42x48 transparent extra fort","cat":"Sac","unite":"Bo�te"},{"ref":"MAT-054","nom":"Sac 35x50 transparent extra fort","cat":"Sac","unite":"Bo�te"},{"ref":"MAT-055","nom":"Sac papier cire 500","cat":"Sac","unite":"Bo�te"},{"ref":"MAT-056","nom":"Sac 33x48   Trasparent 3 MIL 100 SAC","cat":"Sac","unite":"Rouleau"},{"ref":"MAT-057","nom":"Sac 33x50 en rouleau 3 mil (100 sacs) Jaune (Amiante)","cat":"Sac","unite":"Rouleau"},{"ref":"MAT-058","nom":"Papier Toilette (jumbo) GO GREEN    G9942100","cat":"Papier","unite":"Caisse"},{"ref":"MAT-059","nom":"Papier Toilette  SCOTT   4804002  (petits rouleaux)","cat":"Papier","unite":"Caisse"},{"ref":"MAT-060","nom":"Papier toilette 2 �paisseurs 1000'  G9360004-12/CAISSE (Jumbo)","cat":"Papier","unite":"Caisse"},{"ref":"MAT-061","nom":"Papier � Main GO GREEN     G9942302","cat":"Papier","unite":"Caisse"},{"ref":"MAT-062","nom":"Papier � main 8\" X 8 ROULEAUX G9360015","cat":"Papier","unite":"Caisse"},{"ref":"MAT-063","nom":"Masque Papier 3M - N95 (20 unit� par boite) (10 boite / caisse)","cat":"Masque","unite":"Caisse"},{"ref":"MAT-064","nom":"Demi Masque Respiratoire Silicone Series 7700 Honywell","cat":"Masque","unite":"Unit�"},{"ref":"MAT-065","nom":"Cartouche Gaz organique et acide Filtre P100 (2 par paquet) Mageta/Jaune","cat":"Masque","unite":"Unit�"},{"ref":"MAT-066","nom":"Cartouche Vapeur/Organique Filtre P100 (2 par paquet) Mageta/Noir","cat":"Masque","unite":"Paquet"},{"ref":"MAT-067","nom":"Cartouche pour Demi Masque Hepa P100 (2 par paquet) Mageta","cat":"Masque","unite":"Paquet"},{"ref":"MAT-068","nom":"Serviettes rafraichissantes alcool pour masque (100 par boite)","cat":"Masque","unite":"Bo�te"},{"ref":"MAT-069","nom":"Serviettes de chlorure de benzalkonium pour masque (100)","cat":"Masque","unite":"Bo�te"},{"ref":"MAT-070","nom":"Masque full face avec aide respiratoire , batterie et chargeur","cat":"Masque","unite":"Unit�"},{"ref":"MAT-071","nom":"Gant Nitril disposable NOIR XL 8 mil (50 unite par boite) (10 boite / caisse) Jaune","cat":"Gants","unite":"Bo�te"},{"ref":"MAT-072","nom":"Gant PRO XL  INDUSTRIELS EN CAOUTCHOUC 15 mil (Prot. produits corrosifs)","cat":"Gants","unite":"Paire"},{"ref":"MAT-073","nom":"Gant Nitrile Bleu 4 mil X 10 boites","cat":"Gants","unite":"caisse"},{"ref":"MAT-074","nom":"Gant coton polyester antid�rapant","cat":"Gants","unite":"Paire"},{"ref":"MAT-075","nom":"Gant Nitril disposable NOIR XL 5 mil (100 unite par boite) (10 boite / caisse) Rouge","cat":"Gants","unite":"Bo�te"},{"ref":"MAT-076","nom":"Bouchon d`oreille en mousse","cat":"EPI","unite":"Paquet"},{"ref":"MAT-077","nom":"Casque de protection auditive","cat":"EPI","unite":"Unit�"},{"ref":"MAT-078","nom":"Protecteur faciel (visiere claire)","cat":"EPI","unite":"Unit�"},{"ref":"MAT-079","nom":"Trousse de premiers soins","cat":"EPI","unite":"Unit�"},{"ref":"MAT-080","nom":"Rin�age oculaire","cat":"EPI","unite":"Unit�"},{"ref":"MAT-081","nom":"Support pour visi�re North","cat":"EPI","unite":"Unit�"},{"ref":"MAT-082","nom":"Solution Isotonique sterile 1L","cat":"EPI","unite":"Unit�"},{"ref":"MAT-083","nom":"Lunette s�curitaires claires Z-TECK","cat":"EPI","unite":"Unit�"},{"ref":"MAT-084","nom":"Tyvek/X-Guard V�tement Polypro Bleu XL (20 unit�)","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-085","nom":"Tyvek/X-Guard V�tement Polypro Blanc XL (25 unit�)","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-086","nom":"Tyvek/X-Guard V�tement Polypro Blanc 2XL (25 unit�)","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-087","nom":"Tyvek/X-Guard V�tement Polypro Blanc 3XL (25 unit�)","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-088","nom":"Couvre Chaussure Non Conducteur XL (200 par Bo�te)","cat":"Tyvec","unite":"Caisse"}];
+const PRODUITS = [{"ref":"MAT-001","nom":"Portes d�acc�s ovale 8�5","cat":"Portes d'acc�s","unite":"Caisse"},{"ref":"MAT-002","nom":"Portes d�acc�s ovale 12�6","cat":"Portes d'acc�s","unite":"Caisse"},{"ref":"MAT-003","nom":"Portes d�acc�s ovale 18�10","cat":"Portes d'acc�s","unite":"Caisse"},{"ref":"MAT-004","nom":"Portes d�acc�s ovale 21�14","cat":"Portes d'acc�s","unite":"Caisse"},{"ref":"MAT-005","nom":"Portes d�acc�s ovale 25�17","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-006","nom":"Porte D'acc�s Ronde 8x4 (5-6)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-007","nom":"Porte D'acc�s Ronde 8x4 (7-9)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-008","nom":"Porte D'acc�s Ronde 8x4 (10-11)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-009","nom":"Porte D'acc�s Ronde 12x8 (10-11)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-010","nom":"Porte D'acc�s Ronde 12x8 (12-14)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-011","nom":"Porte D'acc�s Ronde 12x8 (15-16)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-012","nom":"Porte D'acc�s Ronde 12x8 (17-18)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-013","nom":"Porte d'acces ronde 16x12 (17-18)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-014","nom":"Porte d'acces ronde 16x12 (19-20)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-015","nom":"Porte d'acces ronde 16x12 (21-22)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-016","nom":"Porte d'acces ronde 16x12 (23-24)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-017","nom":"Porte d'acces ronde 16x12 (25-28)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-018","nom":"Porte d'acces ronde 16x12 (29-32)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-019","nom":"Porte d'acces ronde 16x12 (33-36)","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-020","nom":"Porte d'acces ronde 21x22","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-021","nom":"Portes d�acc�s Carr�  12 x 12 (architeturales)    CTR","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-022","nom":"Portes d�acc�s Carr�  16 X 16 (architeturales)    CTR","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-023","nom":"Portes d�acc�s Carr�  24 X 24 (architeturales)    CTR","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-024","nom":"Portes Architecturales coupe feu 16 X 16","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-025","nom":"Portes Architecturales coupe feu 24 X 24","cat":"Portes d'acc�s","unite":"Unit�"},{"ref":"MAT-026","nom":"Feuille de T�le  Galv. 48X96 26G","cat":"Feuille de T�le","unite":"Unit�"},{"ref":"MAT-027","nom":"Feuille de T�le 48X96 28G","cat":"Feuille de T�le","unite":"Unit�"},{"ref":"MAT-028","nom":"RLX Toile Orange 12'X100'","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-029","nom":"RLX Poly�thyl�ne 240' x 2000pc      L�ger","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-030","nom":"RLX Poly�thyl�ne 120\" x 1500pc     Moyen","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-031","nom":"RLX Poly�thyl�ne 120\" x 1500pc      Fort","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-032","nom":"RLX Poly�thyl�ne 120\"x150'- 1500pc L�ger","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-033","nom":"Film Protection Conduits Auto Collant 24 pouce ( Plastic bleu)","cat":"Plastique","unite":"Unit�"},{"ref":"MAT-034","nom":"Adh�sif a�rosol 357   482 g./14Oz","cat":"Plastique","unite":"Caisse"},{"ref":"MAT-035","nom":"Pellicule d'emballage XH32512 (1,5PIED)","cat":"Plastique","unite":"Unit�"},{"ref":"MAT-036","nom":"Fermeture � Glissi�re Collante + Couteau Zipper/Zip Wall HD Adh�sive(12 unit�)","cat":"Plastique","unite":"Unit�"},{"ref":"MAT-037","nom":"Tape vert  double face 2 Pouce (rouleau)","cat":"Tape","unite":"Unit�"},{"ref":"MAT-038","nom":"Tape bleu ou vert  (peintre) 2 Pouce (caisse de 24 rlx)","cat":"Tape","unite":"Unit�"},{"ref":"MAT-039","nom":"Tape Gris 2�� Nashua (caisse de 24 rlx)","cat":"Tape","unite":"Caisse"},{"ref":"MAT-040","nom":"Tape  Rouge  (caisse de 20 rlx)","cat":"Tape","unite":"Caisse"},{"ref":"MAT-041","nom":"Tape Blanc/transparent double face","cat":"Tape","unite":"Unit�"},{"ref":"MAT-042","nom":"Protection Tapis/Plancher Un Cot� Collant 24'' x 36'","cat":"Tape","unite":"Caisse"},{"ref":"MAT-043","nom":"Tape Aluminium 1.6 mil 72mmx55m (16/ca","cat":"Tape","unite":"Caisse"},{"ref":"MAT-044","nom":"Tape Aluminium 1.6 mil 48mmx45,72m (24rlx/caisse","cat":"Tape","unite":"Caisse"},{"ref":"MAT-045","nom":"Tape Aluminium 3M Filament� pour scellent","cat":"Tape","unite":"Unit�"},{"ref":"MAT-046","nom":"Butyl/Rouleau 1/8x3/8x25","cat":"Tape","unite":"Caisse"},{"ref":"MAT-047","nom":"Butyl pour portes d'access en rouleau (20 RLX)","cat":"Tape","unite":"Rlx"},{"ref":"MAT-048","nom":"Tube Plastique 12'' Dia. (Rlx19'' Plat) x 500' x 6 Mil","cat":"Tape","unite":"Unit�"},{"ref":"MAT-049","nom":"Sac 42X48 Noir extra fort 100","cat":"Sac","unite":"Bo�te"},{"ref":"MAT-050","nom":"Sac 35X50 Noir extra fort 100","cat":"Sac","unite":"Bo�te"},{"ref":"MAT-051","nom":"Sac 26X36 Noir extra fort  200","cat":"Sac","unite":"Bo�te"},{"ref":"MAT-052","nom":"Sac 22X24 Noir 500","cat":"Sac","unite":"Bo�te"},{"ref":"MAT-053","nom":"Sac 42x48 transparent extra fort","cat":"Sac","unite":"Bo�te"},{"ref":"MAT-054","nom":"Sac 35x50 transparent extra fort","cat":"Sac","unite":"Bo�te"},{"ref":"MAT-055","nom":"Sac papier cire 500","cat":"Sac","unite":"Bo�te"},{"ref":"MAT-056","nom":"Sac 33x48   Trasparent 3 MIL 100 SAC","cat":"Sac","unite":"Rouleau"},{"ref":"MAT-057","nom":"Sac 33x50 en rouleau 3 mil (100 sacs) Jaune (Amiante)","cat":"Sac","unite":"Rouleau"},{"ref":"MAT-058","nom":"Papier Toilette (jumbo) GO GREEN    G9942100","cat":"Papier","unite":"Caisse"},{"ref":"MAT-059","nom":"Papier Toilette  SCOTT   4804002  (petits rouleaux)","cat":"Papier","unite":"Caisse"},{"ref":"MAT-060","nom":"Papier toilette 2 �paisseurs 1000'  G9360004-12/CAISSE (Jumbo)","cat":"Papier","unite":"Caisse"},{"ref":"MAT-061","nom":"Papier � Main GO GREEN     G9942302","cat":"Papier","unite":"Caisse"},{"ref":"MAT-062","nom":"Papier � main 8\" X 8 ROULEAUX G9360015","cat":"Papier","unite":"Caisse"},{"ref":"MAT-063","nom":"Masque Papier 3M - N95 (20 unit� par boite) (10 boite / caisse)","cat":"Masque","unite":"Caisse"},{"ref":"MAT-064","nom":"Demi Masque Respiratoire Silicone Series 7700 Honywell","cat":"Masque","unite":"Unit�"},{"ref":"MAT-065","nom":"Cartouche Gaz organique et acide Filtre P100 (2 par paquet) Mageta/Jaune","cat":"Masque","unite":"Unit�"},{"ref":"MAT-066","nom":"Cartouche Vapeur/Organique Filtre P100 (2 par paquet) Mageta/Noir","cat":"Masque","unite":"Paquet"},{"ref":"MAT-067","nom":"Cartouche pour Demi Masque Hepa P100 (2 par paquet) Mageta","cat":"Masque","unite":"Paquet"},{"ref":"MAT-068","nom":"Serviettes rafraichissantes alcool pour masque (100 par boite)","cat":"Masque","unite":"Bo�te"},{"ref":"MAT-069","nom":"Serviettes de chlorure de benzalkonium pour masque (100)","cat":"Masque","unite":"Bo�te"},{"ref":"MAT-070","nom":"Masque full face avec aide respiratoire , batterie et chargeur","cat":"Masque","unite":"Unit�"},{"ref":"MAT-071","nom":"Gant Nitril disposable NOIR XL 8 mil (50 unite par boite) (10 boite / caisse) Jaune","cat":"Gants","unite":"Bo�te"},{"ref":"MAT-072","nom":"Gant PRO XL  INDUSTRIELS EN CAOUTCHOUC 15 mil (Prot. produits corrosifs)","cat":"Gants","unite":"Paire"},{"ref":"MAT-073","nom":"Gant Nitrile Bleu 4 mil X 10 boites","cat":"Gants","unite":"caisse"},{"ref":"MAT-074","nom":"Gant coton polyester antid�rapant","cat":"Gants","unite":"Paire"},{"ref":"MAT-075","nom":"Gant Nitril disposable NOIR XL 5 mil (100 unite par boite) (10 boite / caisse) Rouge","cat":"Gants","unite":"Bo�te"},{"ref":"MAT-076","nom":"Bouchon d`oreille en mousse","cat":"EPI","unite":"Paquet"},{"ref":"MAT-077","nom":"Casque de protection auditive","cat":"EPI","unite":"Unit�"},{"ref":"MAT-078","nom":"Protecteur faciel (visiere claire)","cat":"EPI","unite":"Unit�"},{"ref":"MAT-079","nom":"Trousse de premiers soins","cat":"EPI","unite":"Unit�"},{"ref":"MAT-080","nom":"Rin�age oculaire","cat":"EPI","unite":"Unit�"},{"ref":"MAT-081","nom":"Support pour visi�re North","cat":"EPI","unite":"Unit�"},{"ref":"MAT-082","nom":"Solution Isotonique sterile 1L","cat":"EPI","unite":"Unit�"},{"ref":"MAT-083","nom":"Lunette s�curitaires claires Z-TECK","cat":"EPI","unite":"Unit�"},{"ref":"MAT-084","nom":"Tyvek/X-Guard V�tement Polypro Bleu XL (20 unit�)","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-085","nom":"Tyvek/X-Guard V�tement Polypro Blanc XL (25 unit�)","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-086","nom":"Tyvek/X-Guard V�tement Polypro Blanc 2XL (25 unit�)","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-087","nom":"Tyvek/X-Guard V�tement Polypro Blanc 3XL (25 unit�)","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-088","nom":"Couvre Chaussure Non Conducteur XL (200 par Bo�te)","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-089","nom":"Confort 1","cat":"Maison","unite":"Caisse"},{"ref":"MAT-090","nom":"Confort 2","cat":"Maison","unite":"Caisse"},{"ref":"MAT-091","nom":"Confort 3","cat":"Maison","unite":"Caisse"},{"ref":"MAT-092","nom":"Confort 4","cat":"Maison","unite":"Caisse"},{"ref":"MAT-093","nom":"Confort 5","cat":"Maison","unite":"Caisse"}];
 
 const PROJETS = [{"code":"SDC-754","nom":"Nettoyage OMHM - Hab. Madelaine"},{"code":"SDC-740","nom":"Nettoyage OMHM - Hab. Beaubien"},{"code":"SDC-750","nom":"Nettoyage OMHM -Hab. Ste-V�ronique"},{"code":"SDC-731","nom":"Nettoyage CC Laval M. Real"},{"code":"SDC-732","nom":"Immeuble Anfa"},{"code":"SDC-733","nom":"Nettoyage"},{"code":"SDC-734","nom":"netoya"},{"code":"SDC-502","nom":"CVCA 1"},{"code":"SDC-503","nom":"CVCA 2"},{"code":"SDC-504","nom":"CVCA 3"},{"code":"SDC-505","nom":"CVCA 4"},{"code":"SDC-506","nom":"CVCA 5"}];
 const CHEFS = ["Abatement","Gyvesco","Morency","Saftyexpress","Tiger Vac","Dafco","Rona"];
-const CAT_COLORS = {"Portes d'accÃ¨s":"#1a5276","Feuille de TÃ´le":"#784212","Tape":"#1e8449","Plastique":"#6c3483","Sac":"#b7770d","Papier":"#117a65","Masque":"#922b21","Gants":"#154360","EPI":"#2e4057","Tyvec":"#0e6655"};
-const CAT_ICONS = {"Portes d'accÃ¨s":"ðŸšª","Feuille de TÃ´le":"ðŸ”©","Tape":"ðŸ“¦","Plastique":"ðŸ›ï¸","Sac":"ðŸ—‘ï¸","Papier":"ðŸ§»","Masque":"ðŸ˜·","Gants":"ðŸ§¤","EPI":"â›‘ï¸","Tyvec":"ðŸ¥¼"};
+const CAT_COLORS = {"Portes d'accÃƒÂ¨s":"#1a5276","Feuille de TÃƒÂ´le":"#784212","Tape":"#1e8449","Plastique":"#6c3483","Sac":"#b7770d","Papier":"#117a65","Masque":"#922b21","Gants":"#154360","EPI":"#2e4057","Tyvec":"#0e6655"};
+const CAT_ICONS = {"Portes d'accÃƒÂ¨s":"Ã°Å¸Å¡Âª","Feuille de TÃƒÂ´le":"Ã°Å¸â€Â©","Tape":"Ã°Å¸â€œÂ¦","Plastique":"Ã°Å¸â€ºÂÃ¯Â¸Â","Sac":"Ã°Å¸â€”â€˜Ã¯Â¸Â","Papier":"Ã°Å¸Â§Â»","Masque":"Ã°Å¸ËœÂ·","Gants":"Ã°Å¸Â§Â¤","EPI":"Ã¢â€ºâ€˜Ã¯Â¸Â","Tyvec":"Ã°Å¸Â¥Â¼"};
 
 let typeMouvement = "Sortie";
 let scanner = null;
@@ -239,7 +239,7 @@ function init() {
     const s = document.getElementById(id);
     PROJETS.forEach(p => {
       const o = document.createElement('option');
-      o.value = p.code; o.textContent = p.code + ' â€” ' + p.nom;
+      o.value = p.code; o.textContent = p.code + ' Ã¢â‚¬â€ ' + p.nom;
       s.appendChild(o);
     });
   });
@@ -266,10 +266,10 @@ function checkOnline() {
 function setType(t, el) {
   typeMouvement = t;
   document.querySelectorAll('.type-btn').forEach(b => b.className = 'type-btn');
-  const cls = {'Sortie':'active-sortie','EntrÃ©e Magasin':'active-entree','Retour':'active-retour','Ajustement':'active-ajust','Transfert':'active-transfert'};
+  const cls = {'Sortie':'active-sortie','EntrÃƒÂ©e Magasin':'active-entree','Retour':'active-retour','Ajustement':'active-ajust','Transfert':'active-transfert'};
   el.classList.add(cls[t]||'');
   const isT = t === 'Transfert';
-  const needP = t !== 'EntrÃ©e Magasin' && t !== 'Ajustement';
+  const needP = t !== 'EntrÃƒÂ©e Magasin' && t !== 'Ajustement';
   document.getElementById('field-projet-normal').style.display = isT ? 'none' : (needP ? 'block' : 'none');
   document.getElementById('transfert-fields').style.display = isT ? 'block' : 'none';
 }
@@ -279,8 +279,8 @@ function rechercherRef(val) {
   val = val.trim().toUpperCase();
   if (!val) { r.textContent = ''; return; }
   const p = PRODUITS.find(x => x.ref.toUpperCase() === val);
-  if (p) { r.className = ''; r.textContent = 'âœ“ ' + p.nom + ' Â· ' + p.cat; }
-  else { r.className = 'error'; r.textContent = 'RÃ©fÃ©rence introuvable'; }
+  if (p) { r.className = ''; r.textContent = 'Ã¢Å“â€œ ' + p.nom + ' Ã‚Â· ' + p.cat; }
+  else { r.className = 'error'; r.textContent = 'RÃƒÂ©fÃƒÂ©rence introuvable'; }
 }
 
 function changeQty(d) {
@@ -298,7 +298,7 @@ function startScanner() {
       stopScanner();
       document.getElementById('ref-input').value = code;
       rechercherRef(code);
-      showToast('Code scannÃ© : ' + code);
+      showToast('Code scannÃƒÂ© : ' + code);
     }
   });
 }
@@ -312,8 +312,8 @@ function ajouterAuPanier() {
   const ref = document.getElementById('ref-input').value.trim();
   const qty = parseFloat(document.getElementById('qty-input').value);
   const obs = document.getElementById('obs-input').value;
-  if (!ref) { showToast('Scannez ou saisissez une rÃ©fÃ©rence'); return; }
-  if (!qty || qty <= 0) { showToast('QuantitÃ© invalide'); return; }
+  if (!ref) { showToast('Scannez ou saisissez une rÃƒÂ©fÃƒÂ©rence'); return; }
+  if (!qty || qty <= 0) { showToast('QuantitÃƒÂ© invalide'); return; }
 
   const prod = PRODUITS.find(x => x.ref.toUpperCase() === ref.toUpperCase());
   panier.push({
@@ -333,7 +333,7 @@ function ajouterAuPanier() {
   document.getElementById('obs-input').value = '';
 
   afficherPanier();
-  showToast('âœ“ AjoutÃ© au panier');
+  showToast('Ã¢Å“â€œ AjoutÃƒÂ© au panier');
 }
 
 function supprimerDuPanier(id) {
@@ -350,7 +350,7 @@ function afficherPanier() {
   badge.textContent = panier.length + ' article' + (panier.length>1?'s':'');
 
   if (panier.length === 0) {
-    liste.innerHTML = '<div class="panier-empty">Aucun article â€” scannez pour commencer</div>';
+    liste.innerHTML = '<div class="panier-empty">Aucun article Ã¢â‚¬â€ scannez pour commencer</div>';
     totalBar.style.display = 'none';
     btn.disabled = true;
     return;
@@ -358,21 +358,21 @@ function afficherPanier() {
 
   liste.innerHTML = panier.map(item => {
     const color = CAT_COLORS[item.cat] || '#2c3e50';
-    const icon = CAT_ICONS[item.cat] || 'ðŸ“¦';
-    const nom = item.nom.length > 38 ? item.nom.substring(0,38)+'â€¦' : item.nom;
+    const icon = CAT_ICONS[item.cat] || 'Ã°Å¸â€œÂ¦';
+    const nom = item.nom.length > 38 ? item.nom.substring(0,38)+'Ã¢â‚¬Â¦' : item.nom;
     return `<div class="panier-item">
       <div class="panier-icon" style="background:${color}20">${icon}</div>
       <div class="panier-info">
         <div class="panier-nom">${nom}</div>
-        <div class="panier-meta">${item.ref}${item.obs?' Â· '+item.obs:''}</div>
+        <div class="panier-meta">${item.ref}${item.obs?' Ã‚Â· '+item.obs:''}</div>
       </div>
       <div class="panier-qty">${item.qte} <span style="font-size:11px;color:#aaa">${item.unite}</span></div>
-      <button class="btn-del" onclick="supprimerDuPanier(${item.id})">Ã—</button>
+      <button class="btn-del" onclick="supprimerDuPanier(${item.id})">Ãƒâ€”</button>
     </div>`;
   }).join('');
 
   const total = panier.reduce((s,x)=>s+x.qte,0);
-  document.getElementById('panier-total-val').textContent = total + ' unitÃ©(s) au total';
+  document.getElementById('panier-total-val').textContent = total + ' unitÃƒÂ©(s) au total';
   totalBar.style.display = 'flex';
   btn.disabled = false;
 }
@@ -380,13 +380,13 @@ function afficherPanier() {
 function ouvrirApercu() {
   if (panier.length === 0) return;
   const oper = document.getElementById('sel-operateur').value;
-  if (!oper) { showToast('SÃ©lectionnez un opÃ©rateur'); return; }
+  if (!oper) { showToast('SÃƒÂ©lectionnez un opÃƒÂ©rateur'); return; }
 
   const isT = typeMouvement === 'Transfert';
   if (isT) {
     const src = document.getElementById('sel-projet-source').value;
     const dst = document.getElementById('sel-projet-dest').value;
-    if (!src||!dst) { showToast('SÃ©lectionnez les deux projets'); return; }
+    if (!src||!dst) { showToast('SÃƒÂ©lectionnez les deux projets'); return; }
     if (src===dst) { showToast('Projets identiques'); return; }
     const srcNom = PROJETS.find(p=>p.code===src)?.nom||src;
     const dstNom = PROJETS.find(p=>p.code===dst)?.nom||dst;
@@ -394,30 +394,30 @@ function ouvrirApercu() {
       <div class="modal-session-item"><span>Type</span><br><strong>Transfert</strong></div>
       <div class="modal-session-item"><span>De</span><br><strong>${src}</strong></div>
       <div class="modal-session-item"><span>Vers</span><br><strong>${dst}</strong></div>
-      <div class="modal-session-item"><span>OpÃ©rateur</span><br><strong>${oper}</strong></div>`;
+      <div class="modal-session-item"><span>OpÃƒÂ©rateur</span><br><strong>${oper}</strong></div>`;
     document.getElementById('modal-transfert-badge').style.display = 'block';
   } else {
     const codeP = document.getElementById('sel-projet').value;
-    const nomP = codeP ? (PROJETS.find(p=>p.code===codeP)?.nom||'') : 'â€”';
+    const nomP = codeP ? (PROJETS.find(p=>p.code===codeP)?.nom||'') : 'Ã¢â‚¬â€';
     document.getElementById('modal-session').innerHTML = `
       <div class="modal-session-item"><span>Type</span><br><strong>${typeMouvement}</strong></div>
-      <div class="modal-session-item"><span>Projet</span><br><strong>${codeP||'â€”'}</strong></div>
-      <div class="modal-session-item"><span>OpÃ©rateur</span><br><strong>${oper}</strong></div>
+      <div class="modal-session-item"><span>Projet</span><br><strong>${codeP||'Ã¢â‚¬â€'}</strong></div>
+      <div class="modal-session-item"><span>OpÃƒÂ©rateur</span><br><strong>${oper}</strong></div>
       <div class="modal-session-item"><span>Date</span><br><strong>${new Date().toLocaleDateString('fr-CA')}</strong></div>`;
     document.getElementById('modal-transfert-badge').style.display = 'none';
   }
 
-  document.getElementById('modal-subtitle').textContent = panier.length + ' article(s) Ã  enregistrer';
+  document.getElementById('modal-subtitle').textContent = panier.length + ' article(s) ÃƒÂ  enregistrer';
 
   document.getElementById('modal-items').innerHTML = panier.map(item => {
     const color = CAT_COLORS[item.cat] || '#2c3e50';
-    const icon = CAT_ICONS[item.cat] || 'ðŸ“¦';
-    const nom = item.nom.length > 40 ? item.nom.substring(0,40)+'â€¦' : item.nom;
+    const icon = CAT_ICONS[item.cat] || 'Ã°Å¸â€œÂ¦';
+    const nom = item.nom.length > 40 ? item.nom.substring(0,40)+'Ã¢â‚¬Â¦' : item.nom;
     return `<div class="modal-item">
       <div class="modal-item-icon" style="background:${color}20">${icon}</div>
       <div class="modal-item-info">
         <div class="modal-item-nom">${nom}</div>
-        <div class="modal-item-ref">${item.ref}${item.obs?' Â· '+item.obs:''}</div>
+        <div class="modal-item-ref">${item.ref}${item.obs?' Ã‚Â· '+item.obs:''}</div>
       </div>
       <div style="text-align:right">
         <div class="modal-item-qty">${item.qte}</div>
@@ -427,7 +427,7 @@ function ouvrirApercu() {
   }).join('');
 
   const total = panier.reduce((s,x)=>s+x.qte,0);
-  document.getElementById('modal-total-val').textContent = total + ' unitÃ©(s) Â· ' + panier.length + ' article(s)';
+  document.getElementById('modal-total-val').textContent = total + ' unitÃƒÂ©(s) Ã‚Â· ' + panier.length + ' article(s)';
   document.getElementById('modal-overlay').classList.add('active');
 }
 
@@ -448,7 +448,7 @@ function confirmerPanier() {
     if (isT) {
       queue.push({id:Date.now(), date:now, ref:item.ref, nom:item.nom,
         type:'Retour', projet:srcCode, qte:item.qte, operateur:oper,
-        obs:'[Transfertâ†’'+dstCode+'] '+(item.obs||''), synced:false});
+        obs:'[TransfertÃ¢â€ â€™'+dstCode+'] '+(item.obs||''), synced:false});
       queue.push({id:Date.now()+1, date:now, ref:item.ref, nom:item.nom,
         type:'Sortie', projet:dstCode, qte:item.qte, operateur:oper,
         obs:'[Transfert de '+srcCode+'] '+(item.obs||''), synced:false});
@@ -464,7 +464,7 @@ function confirmerPanier() {
   panier = [];
   afficherPanier();
   updateQueueCount();
-  showToast('âœ“ ' + nbMv + ' mouvement(s) enregistrÃ©(s)');
+  showToast('Ã¢Å“â€œ ' + nbMv + ' mouvement(s) enregistrÃƒÂ©(s)');
   if (navigator.onLine && SCRIPT_URL !== "") synchroniser();
 }
 
@@ -474,7 +474,7 @@ function updateQueueCount() {
 
 async function synchroniser() {
   const unsync = queue.filter(x=>!x.synced);
-  if (!unsync.length) { showToast('Aucun mouvement Ã  synchroniser'); return; }
+  if (!unsync.length) { showToast('Aucun mouvement ÃƒÂ  synchroniser'); return; }
   const btn = document.getElementById('btn-sync');
   btn.textContent = '...'; btn.disabled = true;
   try {
@@ -486,9 +486,9 @@ async function synchroniser() {
       queue = queue.map(x=>({...x,synced:true}));
       localStorage.setItem('mvQueue', JSON.stringify(queue));
       updateQueueCount();
-      showToast('âœ“ '+unsync.length+' mouvement(s) synchronisÃ©(s)');
+      showToast('Ã¢Å“â€œ '+unsync.length+' mouvement(s) synchronisÃƒÂ©(s)');
     } else { showToast('Erreur : '+(data.message||'?')); }
-  } catch(e) { showToast('Hors ligne â€” donnÃ©es conservÃ©es'); }
+  } catch(e) { showToast('Hors ligne Ã¢â‚¬â€ donnÃƒÂ©es conservÃƒÂ©es'); }
   btn.textContent = 'Synchroniser'; btn.disabled = false;
 }
 
