@@ -67,7 +67,6 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 </div>
 
 <div class="container">
-
   <div class="card">
     <div class="card-title">Produit</div>
     <div class="field">
@@ -122,14 +121,11 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
   </div>
 
   <button class="btn-submit" id="btn-envoyer" onclick="enregistrer()">Enregistrer le mouvement</button>
-
   <div style="height:14px"></div>
-
   <div class="queue-bar">
     <div class="queue-count">En attente d'envoi : <strong id="queue-count">0</strong></div>
     <button class="btn-sync" id="btn-sync" onclick="synchroniser()">Synchroniser</button>
   </div>
-
 </div>
 
 <div class="toast" id="toast"></div>
@@ -150,7 +146,6 @@ let scanner = null;
 let queue = JSON.parse(localStorage.getItem('mvQueue') || '[]');
 
 function init() {
-  // Projets
   const sp = document.getElementById('sel-projet');
   PROJETS.forEach(p => {
     const o = document.createElement('option');
@@ -158,7 +153,6 @@ function init() {
     o.textContent = p.code + ' — ' + p.nom;
     sp.appendChild(o);
   });
-  // Opérateurs
   const so = document.getElementById('sel-operateur');
   CHEFS.forEach(c => {
     const o = document.createElement('option');
@@ -172,7 +166,7 @@ function init() {
 
 function checkOnline() {
   const b = document.getElementById('status-badge');
-  if (navigator.onLine && SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbzeJiqAI1xnTV08UltXe6s2HsmRjhLXMYcMkud55Nztkq9Abp3FXwiWE1GbWbVc4Dbo_A/exec") {
+  if (navigator.onLine && SCRIPT_URL !== "") {
     b.className = 'badge-online'; b.textContent = 'En ligne';
     document.getElementById('btn-sync').disabled = false;
   } else {
@@ -206,8 +200,7 @@ function changeQty(d) {
 function startScanner() {
   const vc = document.getElementById('video-container');
   vc.classList.add('active');
-  const hints = new Map();
-  const codeReader = new ZXing.BrowserMultiFormatReader(hints);
+  const codeReader = new ZXing.BrowserMultiFormatReader();
   scanner = codeReader;
   codeReader.decodeFromConstraints(
     { video: { facingMode: 'environment' } },
@@ -257,15 +250,13 @@ function enregistrer() {
   localStorage.setItem('mvQueue', JSON.stringify(queue));
   updateQueueCount();
 
-  // Reset
   document.getElementById('ref-input').value = '';
   document.getElementById('ref-result').textContent = '';
   document.getElementById('qty-input').value = '1';
   document.getElementById('obs-input').value = '';
   showToast('✓ Mouvement enregistré localement');
 
-  // Auto-sync si en ligne
-  if (navigator.onLine && SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbzeJiqAI1xnTV08UltXe6s2HsmRjhLXMYcMkud55Nztkq9Abp3FXwiWE1GbWbVc4Dbo_A/exec") {
+  if (navigator.onLine && SCRIPT_URL !== "") {
     synchroniser();
   }
 }
