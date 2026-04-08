@@ -172,7 +172,7 @@ function init() {
 
 function checkOnline() {
   const b = document.getElementById('status-badge');
-  if (navigator.onLine && SCRIPT_URL !== "COLLER_URL_GOOGLE_APPS_SCRIPT_ICI") {
+  if (navigator.onLine && SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbzeJiqAI1xnTV08UltXe6s2HsmRjhLXMYcMkud55Nztkq9Abp3FXwiWE1GbWbVc4Dbo_A/exec") {
     b.className = 'badge-online'; b.textContent = 'En ligne';
     document.getElementById('btn-sync').disabled = false;
   } else {
@@ -265,7 +265,7 @@ function enregistrer() {
   showToast('✓ Mouvement enregistré localement');
 
   // Auto-sync si en ligne
-  if (navigator.onLine && SCRIPT_URL !== "COLLER_URL_GOOGLE_APPS_SCRIPT_ICI") {
+  if (navigator.onLine && SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbzeJiqAI1xnTV08UltXe6s2HsmRjhLXMYcMkud55Nztkq9Abp3FXwiWE1GbWbVc4Dbo_A/exec") {
     synchroniser();
   }
 }
