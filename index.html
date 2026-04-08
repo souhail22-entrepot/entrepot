@@ -20,28 +20,27 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 .field select:focus,.field input:focus{outline:none;border-color:#1a5276}
 .scan-zone{display:flex;gap:8px;align-items:center}
 .scan-zone input{flex:1}
-.btn-scan{background:#1a5276;color:#fff;border:none;border-radius:8px;padding:11px 14px;font-size:20px;cursor:pointer;white-space:nowrap}
+.btn-scan{background:#1a5276;color:#fff;border:none;border-radius:8px;padding:11px 14px;font-size:20px;cursor:pointer}
 .btn-scan:active{opacity:.8}
 #ref-result{margin-top:6px;font-size:13px;color:#27ae60;font-weight:500;min-height:18px}
 #ref-result.error{color:#e74c3c}
 .type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.type-btn{padding:10px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:14px;cursor:pointer;text-align:center;transition:all .15s}
+.type-btn{padding:10px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:13px;cursor:pointer;text-align:center;transition:all .15s}
 .type-btn.active-sortie{border-color:#e74c3c;background:#fef0f0;color:#c0392b;font-weight:600}
 .type-btn.active-entree{border-color:#27ae60;background:#eafaf1;color:#1e8449;font-weight:600}
 .type-btn.active-retour{border-color:#2980b9;background:#eaf4fb;color:#1a5276;font-weight:600}
 .type-btn.active-ajust{border-color:#f39c12;background:#fef9e7;color:#b7770d;font-weight:600}
+.type-btn.active-transfert{border-color:#8e44ad;background:#f5eef8;color:#6c3483;font-weight:600}
 .qty-row{display:flex;align-items:center;gap:10px}
 .qty-row button{width:44px;height:44px;border-radius:8px;border:1.5px solid #ddd;background:#f5f5f5;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .qty-row button:active{background:#ddd}
 .qty-row input{flex:1;text-align:center;font-size:22px;font-weight:600}
-.btn-submit{width:100%;background:#375623;color:#fff;border:none;border-radius:10px;padding:15px;font-size:17px;font-weight:600;cursor:pointer;margin-top:4px}
-.btn-submit:active{opacity:.85}
-.btn-submit:disabled{opacity:.4;cursor:not-allowed}
+.btn-preview{width:100%;background:#2980b9;color:#fff;border:none;border-radius:10px;padding:15px;font-size:17px;font-weight:600;cursor:pointer;margin-top:4px}
+.btn-preview:active{opacity:.85}
 .queue-bar{background:#fff;border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,.08)}
 .queue-count{font-size:13px;color:#555}
 .queue-count strong{color:#1a5276;font-size:16px}
 .btn-sync{background:#1a5276;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:14px;font-weight:500;cursor:pointer}
-.btn-sync:disabled{opacity:.4}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2c3e50;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;max-width:300px;text-align:center;z-index:999}
 .toast.show{opacity:1}
 #video-container{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:100;flex-direction:column;align-items:center;justify-content:center}
@@ -50,6 +49,36 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 .scan-overlay{position:absolute;border:3px solid #fff;width:260px;height:120px;border-radius:8px;pointer-events:none}
 .btn-close-scan{position:absolute;top:20px;right:20px;background:rgba(255,255,255,.2);color:#fff;border:2px solid #fff;border-radius:50%;width:44px;height:44px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .scan-hint{color:#fff;font-size:14px;margin-top:140px;text-align:center;padding:0 20px}
+.transfert-fields{display:none}
+.transfert-arrow{text-align:center;font-size:22px;color:#8e44ad;margin:4px 0}
+
+/* MODAL CONFIRMATION */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.55);z-index:200;align-items:flex-end;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal-sheet{background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto}
+.modal-handle{width:40px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 16px}
+.modal-title{font-size:16px;font-weight:700;color:#1a1a1a;margin-bottom:14px;text-align:center}
+.preview-card{border-radius:12px;overflow:hidden;border:1.5px solid #eee;margin-bottom:14px}
+.preview-header{padding:12px 14px;display:flex;align-items:center;gap:10px}
+.preview-header .type-badge{font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px}
+.preview-photo{width:100%;height:140px;object-fit:cover;background:#f0f0f0;display:flex;align-items:center;justify-content:center}
+.preview-photo img{width:100%;height:140px;object-fit:cover}
+.preview-photo-placeholder{width:100%;height:140px;background:linear-gradient(135deg,#eef2f7,#dde4ed);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.preview-photo-placeholder span{font-size:36px}
+.preview-photo-placeholder p{font-size:12px;color:#888}
+.preview-body{padding:14px}
+.preview-row{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid #f5f5f5}
+.preview-row:last-child{border-bottom:none}
+.preview-label{font-size:12px;color:#888;font-weight:500}
+.preview-value{font-size:14px;color:#1a1a1a;font-weight:600;text-align:right;max-width:60%}
+.preview-qty{font-size:28px;font-weight:800;color:#1a5276;text-align:center;padding:10px 0}
+.preview-transfert{background:#f5eef8;border-radius:8px;padding:10px 12px;margin:8px 0;text-align:center}
+.preview-transfert .arrow{font-size:18px;color:#8e44ad;margin:4px 0}
+.preview-transfert .proj{font-size:13px;font-weight:600;color:#6c3483}
+.modal-btns{display:flex;gap:10px;margin-top:6px}
+.btn-confirm{flex:1;background:#375623;color:#fff;border:none;border-radius:10px;padding:14px;font-size:16px;font-weight:600;cursor:pointer}
+.btn-confirm:active{opacity:.85}
+.btn-edit{flex:0 0 auto;background:#fff;color:#555;border:1.5px solid #ddd;border-radius:10px;padding:14px 18px;font-size:14px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -63,17 +92,35 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
   <video id="scanner-video" autoplay playsinline></video>
   <div class="scan-overlay"></div>
   <button class="btn-close-scan" onclick="stopScanner()">✕</button>
-  <p class="scan-hint">Pointez la caméra vers le code-barre de l'étiquette produit</p>
+  <p class="scan-hint">Pointez la caméra vers le code-barre</p>
+</div>
+
+<!-- MODAL CONFIRMATION -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Confirmer le mouvement</div>
+    <div class="preview-card">
+      <div class="preview-header" id="prev-header"></div>
+      <div id="prev-photo"></div>
+      <div class="preview-body" id="prev-body"></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-edit" onclick="fermerModal()">✏️ Modifier</button>
+      <button class="btn-confirm" onclick="confirmerEnregistrement()">✓ Confirmer</button>
+    </div>
+  </div>
 </div>
 
 <div class="container">
+
   <div class="card">
     <div class="card-title">Produit</div>
     <div class="field">
       <label>Scanner ou saisir la référence</label>
       <div class="scan-zone">
         <input type="text" id="ref-input" placeholder="MAT-001" oninput="rechercherRef(this.value)">
-        <button class="btn-scan" onclick="startScanner()" title="Scanner">📷</button>
+        <button class="btn-scan" onclick="startScanner()">📷</button>
       </div>
       <div id="ref-result"></div>
     </div>
@@ -86,15 +133,31 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
       <button class="type-btn" onclick="setType('Entrée Magasin',this)">Entrée</button>
       <button class="type-btn" onclick="setType('Retour',this)">Retour</button>
       <button class="type-btn" onclick="setType('Ajustement',this)">Ajustement</button>
+      <button class="type-btn" onclick="setType('Transfert',this)" style="grid-column:span 2">Transfert projet → projet</button>
     </div>
   </div>
 
   <div class="card" id="card-projet">
-    <div class="card-title">Projet</div>
-    <div class="field">
+    <div class="card-title" id="projet-titre">Projet</div>
+    <div class="field" id="field-projet-normal">
       <select id="sel-projet">
         <option value="">— Sélectionner un projet —</option>
       </select>
+    </div>
+    <div class="transfert-fields" id="transfert-fields">
+      <div class="field">
+        <label>Projet source (d'où vient le matériel)</label>
+        <select id="sel-projet-source">
+          <option value="">— Projet source —</option>
+        </select>
+      </div>
+      <div class="transfert-arrow">↓</div>
+      <div class="field">
+        <label>Projet destination (vers où va le matériel)</label>
+        <select id="sel-projet-dest">
+          <option value="">— Projet destination —</option>
+        </select>
+      </div>
     </div>
   </div>
 
@@ -120,44 +183,52 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
     </div>
   </div>
 
-  <button class="btn-submit" id="btn-envoyer" onclick="enregistrer()">Enregistrer le mouvement</button>
+  <button class="btn-preview" onclick="ouvrirPreview()">Aperçu avant enregistrement →</button>
+
   <div style="height:14px"></div>
+
   <div class="queue-bar">
-    <div class="queue-count">En attente d'envoi : <strong id="queue-count">0</strong></div>
+    <div class="queue-count">En attente : <strong id="queue-count">0</strong></div>
     <button class="btn-sync" id="btn-sync" onclick="synchroniser()">Synchroniser</button>
   </div>
+
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.6/umd/index.min.js"></script>
 <script>
-
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwCz-608yGxK3g5LxPTXo6cAkOeocDim_qxQmw_3qnRby-NaqCT68IM_BdCGV5lIQSUzw/exec";
 
-const PRODUITS = [{"ref":"MAT-001","nom":"Portes d'accès ovale 8×5"},{"ref":"MAT-002","nom":"Portes d'accès ovale 12×6"},{"ref":"MAT-003","nom":"Portes d'accès ovale 18×10"},{"ref":"MAT-004","nom":"Portes d'accès ovale 21×14"},{"ref":"MAT-005","nom":"Portes d'accès ovale 25×17"},{"ref":"MAT-006","nom":"Porte D'accès Ronde 8x4 (5-6)"},{"ref":"MAT-007","nom":"Porte D'accès Ronde 8x4 (7-9)"},{"ref":"MAT-008","nom":"Porte D'accès Ronde 8x4 (10-11)"},{"ref":"MAT-009","nom":"Porte D'accès Ronde 12x8 (10-11)"},{"ref":"MAT-010","nom":"Porte D'accès Ronde 12x8 (12-14)"},{"ref":"MAT-011","nom":"Porte D'accès Ronde 12x8 (15-16)"},{"ref":"MAT-012","nom":"Porte D'accès Ronde 12x8 (17-18)"},{"ref":"MAT-013","nom":"Porte d'acces ronde 16x12 (17-18)"},{"ref":"MAT-014","nom":"Porte d'acces ronde 16x12 (19-20)"},{"ref":"MAT-015","nom":"Porte d'acces ronde 16x12 (21-22)"},{"ref":"MAT-016","nom":"Porte d'acces ronde 16x12 (23-24)"},{"ref":"MAT-017","nom":"Porte d'acces ronde 16x12 (25-28)"},{"ref":"MAT-018","nom":"Porte d'acces ronde 16x12 (29-32)"},{"ref":"MAT-019","nom":"Porte d'acces ronde 16x12 (33-36)"},{"ref":"MAT-020","nom":"Porte d'acces ronde 21x22"},{"ref":"MAT-021","nom":"Portes d'accès Carré  12 x 12 (architeturales)    CTR"},{"ref":"MAT-022","nom":"Portes d'accès Carré  16 X 16 (architeturales)    CTR"},{"ref":"MAT-023","nom":"Portes d'accès Carré  24 X 24 (architeturales)    CTR"},{"ref":"MAT-024","nom":"Portes Architecturales coupe feu 16 X 16"},{"ref":"MAT-025","nom":"Portes Architecturales coupe feu 24 X 24"},{"ref":"MAT-026","nom":"Feuille de Tôle  Galv. 48X96 26G"},{"ref":"MAT-027","nom":"Feuille de Tôle 48X96 28G"},{"ref":"MAT-028","nom":"RLX Toile Orange 12'X100'"},{"ref":"MAT-029","nom":"RLX Polyéthylène 240' x 2000pc      Léger"},{"ref":"MAT-030","nom":"RLX Polyéthylène 120\" x 1500pc     Moyen"},{"ref":"MAT-031","nom":"RLX Polyéthylène 120\" x 1500pc      Fort"},{"ref":"MAT-032","nom":"RLX Polyéthylène 120\"x150'- 1500pc Léger"},{"ref":"MAT-033","nom":"Film Protection Conduits Auto Collant 24 pouce"},{"ref":"MAT-034","nom":"Adhésif aérosol 357   482 g./14Oz"},{"ref":"MAT-035","nom":"Pellicule d'emballage XH32512 (1,5PIED)"},{"ref":"MAT-036","nom":"Fermeture à Glissière Collante + Couteau Zipper HD"},{"ref":"MAT-037","nom":"Tape vert  double face 2 Pouce (rouleau)"},{"ref":"MAT-038","nom":"Tape bleu ou vert  (peintre) 2 Pouce (caisse de 24 rlx)"},{"ref":"MAT-039","nom":"Tape Gris 2'' Nashua (caisse de 24 rlx)"},{"ref":"MAT-040","nom":"Tape  Rouge  (caisse de 20 rlx)"},{"ref":"MAT-041","nom":"Tape Blanc/transparent double face"},{"ref":"MAT-042","nom":"Protection Tapis/Plancher Un Coté Collant 24'' x 36'"},{"ref":"MAT-043","nom":"Tape Aluminium 1.6 mil 72mmx55m (16/ca"},{"ref":"MAT-044","nom":"Tape Aluminium 1.6 mil 48mmx45,72m (24rlx/caisse"},{"ref":"MAT-045","nom":"Tape Aluminium 3M Filamenté pour scellent"},{"ref":"MAT-046","nom":"Butyl/Rouleau 1/8x3/8x25"},{"ref":"MAT-047","nom":"Butyl pour portes d'access en rouleau (20 RLX)"},{"ref":"MAT-048","nom":"Tube Plastique 12'' Dia. (Rlx19'' Plat) x 500' x 6 Mil"},{"ref":"MAT-049","nom":"Sac 42X48 Noir extra fort 100"},{"ref":"MAT-050","nom":"Sac 35X50 Noir extra fort 100"},{"ref":"MAT-051","nom":"Sac 26X36 Noir extra fort  200"},{"ref":"MAT-052","nom":"Sac 22X24 Noir 500"},{"ref":"MAT-053","nom":"Sac 42x48 transparent extra fort"},{"ref":"MAT-054","nom":"Sac 35x50 transparent extra fort"},{"ref":"MAT-055","nom":"Sac papier cire 500"},{"ref":"MAT-056","nom":"Sac 33x48   Trasparent 3 MIL 100 SAC"},{"ref":"MAT-057","nom":"Sac 33x50 en rouleau 3 mil Jaune (Amiante)"},{"ref":"MAT-058","nom":"Papier Toilette (jumbo) GO GREEN    G9942100"},{"ref":"MAT-059","nom":"Papier Toilette  SCOTT   4804002  (petits rouleaux)"},{"ref":"MAT-060","nom":"Papier toilette 2 épaisseurs 1000'  G9360004-12/CAISSE"},{"ref":"MAT-061","nom":"Papier à Main GO GREEN     G9942302"},{"ref":"MAT-062","nom":"Papier à main 8\" X 8 ROULEAUX G9360015"},{"ref":"MAT-063","nom":"Masque Papier 3M - N95 (20 unité par boite)"},{"ref":"MAT-064","nom":"Demi Masque Respiratoire Silicone Series 7700 Honywell"},{"ref":"MAT-065","nom":"Cartouche Gaz organique et acide Filtre P100"},{"ref":"MAT-066","nom":"Cartouche Vapeur/Organique Filtre P100"},{"ref":"MAT-067","nom":"Cartouche pour Demi Masque Hepa P100"},{"ref":"MAT-068","nom":"Serviettes rafraichissantes alcool pour masque (100)"},{"ref":"MAT-069","nom":"Serviettes de chlorure de benzalkonium pour masque (100)"},{"ref":"MAT-070","nom":"Masque full face avec aide respiratoire"},{"ref":"MAT-071","nom":"Gant Nitril disposable NOIR XL 8 mil"},{"ref":"MAT-072","nom":"Gant PRO XL  INDUSTRIELS EN CAOUTCHOUC 15 mil"},{"ref":"MAT-073","nom":"Gant Nitrile Bleu 4 mil X 10 boites"},{"ref":"MAT-074","nom":"Gant coton polyester antidérapant"},{"ref":"MAT-075","nom":"Gant Nitril disposable NOIR XL 5 mil"},{"ref":"MAT-076","nom":"Bouchon d'oreille en mousse"},{"ref":"MAT-077","nom":"Casque de protection auditive"},{"ref":"MAT-078","nom":"Protecteur faciel (visiere claire)"},{"ref":"MAT-079","nom":"Trousse de premiers soins"},{"ref":"MAT-080","nom":"Rinçage oculaire"},{"ref":"MAT-081","nom":"Support pour visière North"},{"ref":"MAT-082","nom":"Solution Isotonique sterile 1L"},{"ref":"MAT-083","nom":"Lunette sécuritaires claires Z-TECK"},{"ref":"MAT-084","nom":"Tyvek/X-Guard Vêtement Polypro Bleu XL (20 unité)"},{"ref":"MAT-085","nom":"Tyvek/X-Guard Vêtement Polypro Blanc XL (25 unité)"},{"ref":"MAT-086","nom":"Tyvek/X-Guard Vêtement Polypro Blanc 2XL (25 unité)"},{"ref":"MAT-087","nom":"Tyvek/X-Guard Vêtement Polypro Blanc 3XL (25 unité)"},{"ref":"MAT-088","nom":"Couvre Chaussure Non Conducteur XL (200 par Boîte)"}];
+const PRODUITS = [{"ref":"MAT-001","nom":"Portes d'accès ovale 8×5","cat":"Portes d'accès","unite":"Caisse"},{"ref":"MAT-002","nom":"Portes d'accès ovale 12×6","cat":"Portes d'accès","unite":"Caisse"},{"ref":"MAT-003","nom":"Portes d'accès ovale 18×10","cat":"Portes d'accès","unite":"Caisse"},{"ref":"MAT-004","nom":"Portes d'accès ovale 21×14","cat":"Portes d'accès","unite":"Caisse"},{"ref":"MAT-005","nom":"Portes d'accès ovale 25×17","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-006","nom":"Porte D'accès Ronde 8x4 (5-6)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-007","nom":"Porte D'accès Ronde 8x4 (7-9)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-008","nom":"Porte D'accès Ronde 8x4 (10-11)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-009","nom":"Porte D'accès Ronde 12x8 (10-11)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-010","nom":"Porte D'accès Ronde 12x8 (12-14)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-011","nom":"Porte D'accès Ronde 12x8 (15-16)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-012","nom":"Porte D'accès Ronde 12x8 (17-18)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-013","nom":"Porte d'acces ronde 16x12 (17-18)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-014","nom":"Porte d'acces ronde 16x12 (19-20)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-015","nom":"Porte d'acces ronde 16x12 (21-22)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-016","nom":"Porte d'acces ronde 16x12 (23-24)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-017","nom":"Porte d'acces ronde 16x12 (25-28)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-018","nom":"Porte d'acces ronde 16x12 (29-32)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-019","nom":"Porte d'acces ronde 16x12 (33-36)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-020","nom":"Porte d'acces ronde 21x22","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-021","nom":"Portes d'accès Carré 12x12 CTR","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-022","nom":"Portes d'accès Carré 16X16 CTR","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-023","nom":"Portes d'accès Carré 24X24 CTR","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-024","nom":"Portes Architecturales coupe feu 16X16","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-025","nom":"Portes Architecturales coupe feu 24X24","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-026","nom":"Feuille de Tôle Galv. 48X96 26G","cat":"Feuille de Tôle","unite":"Unité"},{"ref":"MAT-027","nom":"Feuille de Tôle 48X96 28G","cat":"Feuille de Tôle","unite":"Unité"},{"ref":"MAT-028","nom":"RLX Toile Orange 12'X100'","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-029","nom":"RLX Polyéthylène 240' x 2000pc Léger","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-030","nom":"RLX Polyéthylène 120\" x 1500pc Moyen","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-031","nom":"RLX Polyéthylène 120\" x 1500pc Fort","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-032","nom":"RLX Polyéthylène 120\"x150' 1500pc Léger","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-033","nom":"Film Protection Conduits 24 po.","cat":"Plastique","unite":"Unité"},{"ref":"MAT-034","nom":"Adhésif aérosol 357 482g/14Oz","cat":"Plastique","unite":"Caisse"},{"ref":"MAT-035","nom":"Pellicule d'emballage XH32512","cat":"Plastique","unite":"Unité"},{"ref":"MAT-036","nom":"Fermeture Glissière Zipper HD","cat":"Plastique","unite":"Unité"},{"ref":"MAT-037","nom":"Tape vert double face 2 po.","cat":"Tape","unite":"Unité"},{"ref":"MAT-038","nom":"Tape bleu/vert peintre 2 po. (24/ca)","cat":"Tape","unite":"Unité"},{"ref":"MAT-039","nom":"Tape Gris 2'' Nashua (24/ca)","cat":"Tape","unite":"Caisse"},{"ref":"MAT-040","nom":"Tape Rouge (20/ca)","cat":"Tape","unite":"Caisse"},{"ref":"MAT-041","nom":"Tape Blanc/transparent double face","cat":"Tape","unite":"Unité"},{"ref":"MAT-042","nom":"Protection Tapis/Plancher 24''x36'","cat":"Tape","unite":"Caisse"},{"ref":"MAT-043","nom":"Tape Aluminium 1.6 mil 72mmx55m","cat":"Tape","unite":"Caisse"},{"ref":"MAT-044","nom":"Tape Aluminium 1.6 mil 48mmx45,72m","cat":"Tape","unite":"Caisse"},{"ref":"MAT-045","nom":"Tape Aluminium 3M Filamenté","cat":"Tape","unite":"Unité"},{"ref":"MAT-046","nom":"Butyl/Rouleau 1/8x3/8x25","cat":"Tape","unite":"Caisse"},{"ref":"MAT-047","nom":"Butyl portes d'access (20 RLX)","cat":"Tape","unite":"Rlx"},{"ref":"MAT-048","nom":"Tube Plastique 12'' x 500' x 6 Mil","cat":"Tape","unite":"Unité"},{"ref":"MAT-049","nom":"Sac 42X48 Noir extra fort 100","cat":"Sac","unite":"Boîte"},{"ref":"MAT-050","nom":"Sac 35X50 Noir extra fort 100","cat":"Sac","unite":"Boîte"},{"ref":"MAT-051","nom":"Sac 26X36 Noir extra fort 200","cat":"Sac","unite":"Boîte"},{"ref":"MAT-052","nom":"Sac 22X24 Noir 500","cat":"Sac","unite":"Boîte"},{"ref":"MAT-053","nom":"Sac 42x48 transparent extra fort","cat":"Sac","unite":"Boîte"},{"ref":"MAT-054","nom":"Sac 35x50 transparent extra fort","cat":"Sac","unite":"Boîte"},{"ref":"MAT-055","nom":"Sac papier cire 500","cat":"Sac","unite":"Boîte"},{"ref":"MAT-056","nom":"Sac 33x48 Transparent 3 MIL 100","cat":"Sac","unite":"Rouleau"},{"ref":"MAT-057","nom":"Sac 33x50 3 mil Jaune (Amiante)","cat":"Sac","unite":"Rouleau"},{"ref":"MAT-058","nom":"Papier Toilette jumbo GO GREEN","cat":"Papier","unite":"Caisse"},{"ref":"MAT-059","nom":"Papier Toilette SCOTT petits rouleaux","cat":"Papier","unite":"Caisse"},{"ref":"MAT-060","nom":"Papier toilette 2 épaisseurs Jumbo","cat":"Papier","unite":"Caisse"},{"ref":"MAT-061","nom":"Papier à Main GO GREEN","cat":"Papier","unite":"Caisse"},{"ref":"MAT-062","nom":"Papier à main 8\" X 8 ROULEAUX","cat":"Papier","unite":"Caisse"},{"ref":"MAT-063","nom":"Masque Papier 3M N95 (20/boite)","cat":"Masque","unite":"Caisse"},{"ref":"MAT-064","nom":"Demi Masque Respiratoire 7700 Honeywell","cat":"Masque","unite":"Unité"},{"ref":"MAT-065","nom":"Cartouche Gaz organique acide P100","cat":"Masque","unite":"Unité"},{"ref":"MAT-066","nom":"Cartouche Vapeur/Organique P100","cat":"Masque","unite":"Paquet"},{"ref":"MAT-067","nom":"Cartouche Demi Masque Hepa P100","cat":"Masque","unite":"Paquet"},{"ref":"MAT-068","nom":"Serviettes alcool pour masque","cat":"Masque","unite":"Boîte"},{"ref":"MAT-069","nom":"Serviettes chlorure benzalkonium","cat":"Masque","unite":"Boîte"},{"ref":"MAT-070","nom":"Masque full face aide respiratoire","cat":"Masque","unite":"Unité"},{"ref":"MAT-071","nom":"Gant Nitril NOIR XL 8 mil","cat":"Gants","unite":"Boîte"},{"ref":"MAT-072","nom":"Gant PRO XL Caoutchouc 15 mil","cat":"Gants","unite":"Paire"},{"ref":"MAT-073","nom":"Gant Nitrile Bleu 4 mil X 10 boites","cat":"Gants","unite":"caisse"},{"ref":"MAT-074","nom":"Gant coton polyester antidérapant","cat":"Gants","unite":"Paire"},{"ref":"MAT-075","nom":"Gant Nitril NOIR XL 5 mil","cat":"Gants","unite":"Boîte"},{"ref":"MAT-076","nom":"Bouchon d'oreille en mousse","cat":"EPI","unite":"Paquet"},{"ref":"MAT-077","nom":"Casque de protection auditive","cat":"EPI","unite":"Unité"},{"ref":"MAT-078","nom":"Protecteur facial visière claire","cat":"EPI","unite":"Unité"},{"ref":"MAT-079","nom":"Trousse de premiers soins","cat":"EPI","unite":"Unité"},{"ref":"MAT-080","nom":"Rinçage oculaire","cat":"EPI","unite":"Unité"},{"ref":"MAT-081","nom":"Support pour visière North","cat":"EPI","unite":"Unité"},{"ref":"MAT-082","nom":"Solution Isotonique sterile 1L","cat":"EPI","unite":"Unité"},{"ref":"MAT-083","nom":"Lunettes sécuritaires Z-TECK","cat":"EPI","unite":"Unité"},{"ref":"MAT-084","nom":"Tyvek/X-Guard Polypro Bleu XL","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-085","nom":"Tyvek/X-Guard Polypro Blanc XL","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-086","nom":"Tyvek/X-Guard Polypro Blanc 2XL","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-087","nom":"Tyvek/X-Guard Polypro Blanc 3XL","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-088","nom":"Couvre Chaussure Non Conducteur XL","cat":"Tyvec","unite":"Caisse"}];
 
 const PROJETS = [{"code":"SDC-754","nom":"Nettoyage OMHM - Hab. Madelaine"},{"code":"SDC-740","nom":"Nettoyage OMHM - Hab. Beaubien"},{"code":"SDC-750","nom":"Nettoyage OMHM - Hab. Ste-Véronique"},{"code":"SDC-731","nom":"Nettoyage CC Laval M. Real"},{"code":"SDC-732","nom":"Immeuble Anfa"},{"code":"SDC-733","nom":"Nettoyage"},{"code":"SDC-734","nom":"netoya"}];
 
 const CHEFS = ["Gonzalo H.","José H.","Cézar T.","Alain B.","Mario"];
+
+const CAT_COLORS = {"Portes d'accès":"#1a5276","Feuille de Tôle":"#784212","Tape":"#1e8449","Plastique":"#6c3483","Sac":"#b7770d","Papier":"#117a65","Masque":"#922b21","Gants":"#154360","EPI":"#2e4057","Tyvec":"#0e6655"};
+const CAT_ICONS = {"Portes d'accès":"🚪","Feuille de Tôle":"🔩","Tape":"📦","Plastique":"🛍️","Sac":"🗑️","Papier":"🧻","Masque":"😷","Gants":"🧤","EPI":"⛑️","Tyvec":"🥼"};
+const TYPE_COLORS = {"Sortie":"#e74c3c","Entrée Magasin":"#27ae60","Retour":"#2980b9","Ajustement":"#f39c12","Transfert":"#8e44ad"};
 
 let typeMouvement = "Sortie";
 let scanner = null;
 let queue = JSON.parse(localStorage.getItem('mvQueue') || '[]');
 
 function init() {
-  const sp = document.getElementById('sel-projet');
-  PROJETS.forEach(p => {
-    const o = document.createElement('option');
-    o.value = p.code;
-    o.textContent = p.code + ' — ' + p.nom;
-    sp.appendChild(o);
+  const selects = ['sel-projet','sel-projet-source','sel-projet-dest'];
+  selects.forEach(id => {
+    const s = document.getElementById(id);
+    PROJETS.forEach(p => {
+      const o = document.createElement('option');
+      o.value = p.code;
+      o.textContent = p.code + ' — ' + p.nom;
+      s.appendChild(o);
+    });
   });
   const so = document.getElementById('sel-operateur');
   CHEFS.forEach(c => {
     const o = document.createElement('option');
-    o.value = c; o.textContent = c;
-    so.appendChild(o);
+    o.value = c; o.textContent = c; so.appendChild(o);
   });
   updateQueueCount();
   checkOnline();
@@ -177,9 +248,16 @@ function checkOnline() {
 function setType(t, el) {
   typeMouvement = t;
   document.querySelectorAll('.type-btn').forEach(b => b.className = 'type-btn');
-  const cls = t === 'Sortie' ? 'active-sortie' : t === 'Entrée Magasin' ? 'active-entree' : t === 'Retour' ? 'active-retour' : 'active-ajust';
-  el.classList.add(cls);
-  document.getElementById('card-projet').style.opacity = (t === 'Entrée Magasin' || t === 'Ajustement') ? '0.4' : '1';
+  const cls = {'Sortie':'active-sortie','Entrée Magasin':'active-entree','Retour':'active-retour','Ajustement':'active-ajust','Transfert':'active-transfert'};
+  el.classList.add(cls[t] || '');
+
+  const isTransfert = t === 'Transfert';
+  const needsProjet = t !== 'Entrée Magasin' && t !== 'Ajustement';
+
+  document.getElementById('card-projet').style.opacity = needsProjet ? '1' : '0.4';
+  document.getElementById('field-projet-normal').style.display = isTransfert ? 'none' : 'block';
+  document.getElementById('transfert-fields').style.display = isTransfert ? 'block' : 'none';
+  document.getElementById('projet-titre').textContent = isTransfert ? 'Projets (transfert)' : 'Projet';
 }
 
 function rechercherRef(val) {
@@ -187,34 +265,28 @@ function rechercherRef(val) {
   val = val.trim().toUpperCase();
   if (!val) { r.textContent = ''; return; }
   const p = PRODUITS.find(x => x.ref.toUpperCase() === val);
-  if (p) { r.className = ''; r.textContent = '✓ ' + p.nom; }
-  else { r.className = 'error'; r.textContent = 'Référence introuvable dans le catalogue'; }
+  if (p) { r.className = ''; r.textContent = '✓ ' + p.nom + ' · ' + p.cat; }
+  else { r.className = 'error'; r.textContent = 'Référence introuvable'; }
 }
 
 function changeQty(d) {
   const i = document.getElementById('qty-input');
-  const v = parseFloat(i.value) || 0;
-  i.value = Math.max(0.5, v + d);
+  i.value = Math.max(0.5, (parseFloat(i.value) || 0) + d);
 }
 
 function startScanner() {
-  const vc = document.getElementById('video-container');
-  vc.classList.add('active');
+  document.getElementById('video-container').classList.add('active');
   const codeReader = new ZXing.BrowserMultiFormatReader();
   scanner = codeReader;
-  codeReader.decodeFromConstraints(
-    { video: { facingMode: 'environment' } },
-    'scanner-video',
-    (result, err) => {
-      if (result) {
-        const code = result.getText();
-        stopScanner();
-        document.getElementById('ref-input').value = code;
-        rechercherRef(code);
-        showToast('Code scanné : ' + code);
-      }
+  codeReader.decodeFromConstraints({video:{facingMode:'environment'}},'scanner-video',(result,err)=>{
+    if (result) {
+      const code = result.getText();
+      stopScanner();
+      document.getElementById('ref-input').value = code;
+      rechercherRef(code);
+      showToast('Code scanné : ' + code);
     }
-  );
+  });
 }
 
 function stopScanner() {
@@ -222,80 +294,159 @@ function stopScanner() {
   document.getElementById('video-container').classList.remove('active');
 }
 
-function enregistrer() {
+// ========================
+// APERÇU AVANT CONFIRMATION
+// ========================
+function ouvrirPreview() {
   const ref = document.getElementById('ref-input').value.trim();
   const qty = parseFloat(document.getElementById('qty-input').value);
   const oper = document.getElementById('sel-operateur').value;
+
   if (!ref) { showToast('Scannez ou saisissez une référence'); return; }
   if (!qty || qty <= 0) { showToast('Quantité invalide'); return; }
   if (!oper) { showToast('Sélectionnez un opérateur'); return; }
+
+  if (typeMouvement === 'Transfert') {
+    const src = document.getElementById('sel-projet-source').value;
+    const dst = document.getElementById('sel-projet-dest').value;
+    if (!src || !dst) { showToast('Sélectionnez les deux projets'); return; }
+    if (src === dst) { showToast('Projets source et destination identiques'); return; }
+  }
+
   const prod = PRODUITS.find(x => x.ref.toUpperCase() === ref.toUpperCase());
-  const codeProjet = (typeMouvement === 'Sortie' || typeMouvement === 'Retour')
-    ? document.getElementById('sel-projet').value : '';
+  const color = prod ? (CAT_COLORS[prod.cat] || '#2c3e50') : '#2c3e50';
+  const icon = prod ? (CAT_ICONS[prod.cat] || '📦') : '📦';
+  const typeColor = TYPE_COLORS[typeMouvement] || '#555';
 
-  const mv = {
-    id: Date.now(),
-    date: new Date().toISOString(),
-    ref: prod ? prod.ref : ref,
-    nom: prod ? prod.nom : ref,
-    type: typeMouvement,
-    projet: codeProjet,
-    qte: qty,
-    operateur: oper,
-    obs: document.getElementById('obs-input').value,
-    synced: false
-  };
+  // Header
+  document.getElementById('prev-header').innerHTML = `
+    <div style="width:40px;height:40px;background:${color};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${icon}</div>
+    <div style="flex:1">
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a">${prod ? prod.nom.substring(0,40) + (prod.nom.length>40?'…':'') : ref}</div>
+      <div style="font-size:12px;color:#888;margin-top:2px">${prod ? prod.cat : ''} · ${ref}</div>
+    </div>
+    <span class="type-badge" style="background:${typeColor}20;color:${typeColor};border:1px solid ${typeColor}40">${typeMouvement}</span>`;
 
-  queue.push(mv);
+  // Photo placeholder (avec icône catégorie)
+  document.getElementById('prev-photo').innerHTML = `
+    <div class="preview-photo-placeholder">
+      <span style="font-size:48px">${icon}</span>
+      <p>Aucune photo disponible</p>
+    </div>`;
+
+  // Corps du résumé
+  let projetHTML = '';
+  if (typeMouvement === 'Transfert') {
+    const srcCode = document.getElementById('sel-projet-source').value;
+    const dstCode = document.getElementById('sel-projet-dest').value;
+    const srcNom = PROJETS.find(p=>p.code===srcCode)?.nom || srcCode;
+    const dstNom = PROJETS.find(p=>p.code===dstCode)?.nom || dstCode;
+    projetHTML = `<div class="preview-transfert">
+      <div class="proj">📤 ${srcCode} — ${srcNom}</div>
+      <div class="arrow">↓ transfert</div>
+      <div class="proj">📥 ${dstCode} — ${dstNom}</div>
+    </div>`;
+  } else {
+    const codeProjet = document.getElementById('sel-projet').value;
+    const nomProjet = codeProjet ? (PROJETS.find(p=>p.code===codeProjet)?.nom || '') : '—';
+    projetHTML = `<div class="preview-row">
+      <span class="preview-label">Projet</span>
+      <span class="preview-value">${codeProjet ? codeProjet+' — '+nomProjet : '—'}</span>
+    </div>`;
+  }
+
+  const unite = prod ? prod.unite : '';
+  const obs = document.getElementById('obs-input').value;
+
+  document.getElementById('prev-body').innerHTML = `
+    <div class="preview-qty">${qty} <span style="font-size:16px;color:#888">${unite}</span></div>
+    ${projetHTML}
+    <div class="preview-row">
+      <span class="preview-label">Opérateur</span>
+      <span class="preview-value">${oper}</span>
+    </div>
+    <div class="preview-row">
+      <span class="preview-label">Date / heure</span>
+      <span class="preview-value">${new Date().toLocaleString('fr-CA',{hour12:false})}</span>
+    </div>
+    ${obs ? `<div class="preview-row"><span class="preview-label">Observations</span><span class="preview-value">${obs}</span></div>` : ''}
+    ${typeMouvement==='Transfert' ? '<div style="font-size:11px;color:#8e44ad;text-align:center;margin-top:8px">⚡ Génère 2 mouvements : Retour + Sortie</div>' : ''}`;
+
+  document.getElementById('modal-overlay').classList.add('active');
+}
+
+function fermerModal() {
+  document.getElementById('modal-overlay').classList.remove('active');
+}
+
+function confirmerEnregistrement() {
+  fermerModal();
+  const ref = document.getElementById('ref-input').value.trim();
+  const qty = parseFloat(document.getElementById('qty-input').value);
+  const oper = document.getElementById('sel-operateur').value;
+  const obs = document.getElementById('obs-input').value;
+  const prod = PRODUITS.find(x => x.ref.toUpperCase() === ref.toUpperCase());
+  const now = new Date().toISOString();
+
+  if (typeMouvement === 'Transfert') {
+    const srcCode = document.getElementById('sel-projet-source').value;
+    const dstCode = document.getElementById('sel-projet-dest').value;
+    // Mouvement 1 : Retour depuis projet source
+    queue.push({id:Date.now(), date:now, ref:prod?prod.ref:ref, nom:prod?prod.nom:ref,
+      type:'Retour', projet:srcCode, qte:qty, operateur:oper,
+      obs:'[Transfert→'+dstCode+'] '+obs, synced:false});
+    // Mouvement 2 : Sortie vers projet destination
+    queue.push({id:Date.now()+1, date:now, ref:prod?prod.ref:ref, nom:prod?prod.nom:ref,
+      type:'Sortie', projet:dstCode, qte:qty, operateur:oper,
+      obs:'[Transfert de '+srcCode+'] '+obs, synced:false});
+  } else {
+    const codeProjet = (typeMouvement==='Sortie'||typeMouvement==='Retour')
+      ? document.getElementById('sel-projet').value : '';
+    queue.push({id:Date.now(), date:now, ref:prod?prod.ref:ref, nom:prod?prod.nom:ref,
+      type:typeMouvement, projet:codeProjet, qte:qty, operateur:oper, obs:obs, synced:false});
+  }
+
   localStorage.setItem('mvQueue', JSON.stringify(queue));
   updateQueueCount();
 
+  // Reset
   document.getElementById('ref-input').value = '';
   document.getElementById('ref-result').textContent = '';
   document.getElementById('qty-input').value = '1';
   document.getElementById('obs-input').value = '';
-  showToast('✓ Mouvement enregistré localement');
+  showToast(typeMouvement==='Transfert' ? '✓ 2 mouvements enregistrés' : '✓ Mouvement enregistré');
 
-  if (navigator.onLine && SCRIPT_URL !== "") {
-    synchroniser();
-  }
+  if (navigator.onLine && SCRIPT_URL !== "") synchroniser();
 }
 
 function updateQueueCount() {
-  const unsync = queue.filter(x => !x.synced).length;
-  document.getElementById('queue-count').textContent = unsync;
+  document.getElementById('queue-count').textContent = queue.filter(x=>!x.synced).length;
 }
 
 async function synchroniser() {
-  const unsync = queue.filter(x => !x.synced);
+  const unsync = queue.filter(x=>!x.synced);
   if (!unsync.length) { showToast('Aucun mouvement à synchroniser'); return; }
   const btn = document.getElementById('btn-sync');
   btn.textContent = '...'; btn.disabled = true;
   try {
-    const resp = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify({ mouvements: unsync }),
-      headers: { 'Content-Type': 'text/plain' }
-    });
+    const resp = await fetch(SCRIPT_URL, {method:'POST',
+      body: JSON.stringify({mouvements:unsync}),
+      headers:{'Content-Type':'text/plain'}});
     const data = await resp.json();
     if (data.status === 'ok') {
-      queue = queue.map(x => ({ ...x, synced: true }));
+      queue = queue.map(x=>({...x,synced:true}));
       localStorage.setItem('mvQueue', JSON.stringify(queue));
       updateQueueCount();
-      showToast('✓ ' + unsync.length + ' mouvement(s) synchronisé(s)');
-    } else {
-      showToast('Erreur serveur : ' + (data.message || '?'));
-    }
-  } catch(e) {
-    showToast('Hors ligne — données conservées localement');
-  }
+      showToast('✓ '+unsync.length+' mouvement(s) synchronisé(s)');
+    } else { showToast('Erreur : '+(data.message||'?')); }
+  } catch(e) { showToast('Hors ligne — données conservées'); }
   btn.textContent = 'Synchroniser'; btn.disabled = false;
 }
 
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
+  setTimeout(()=>t.classList.remove('show'), 2800);
 }
 
 window.addEventListener('load', init);
