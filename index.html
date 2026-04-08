@@ -34,18 +34,25 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 .qty-row{display:flex;align-items:center;gap:10px}
 .qty-row button{width:44px;height:44px;border-radius:8px;border:1.5px solid #ddd;background:#f5f5f5;font-size:22px;cursor:pointer}
 .qty-row input{flex:1;text-align:center;font-size:22px;font-weight:600}
+/* SÉLECTEUR D'UNITÉ */
+.unite-toggle{display:none;margin:10px 0 12px}
+.unite-toggle-label{font-size:12px;color:#888;margin-bottom:6px}
+.unite-btns{display:flex;gap:8px}
+.unite-btn{flex:1;padding:9px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:#555}
+.unite-btn.active{border-color:#1a5276;background:#e6f1fb;color:#1a5276;font-weight:600}
+.unite-hint{font-size:11px;color:#888;text-align:center;margin-top:4px}
 .btn-add{width:100%;background:#1a5276;color:#fff;border:none;border-radius:10px;padding:13px;font-size:16px;font-weight:600;cursor:pointer;margin-top:4px}
 .btn-add:active{opacity:.85}
 .panier-badge{background:#1a5276;color:#fff;font-size:12px;padding:2px 10px;border-radius:10px;font-weight:700}
 .panier-empty{text-align:center;color:#bbb;font-size:14px;padding:12px 0}
 .panier-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0f0}
 .panier-item:last-child{border-bottom:none}
-.panier-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden}
-.panier-icon img{width:38px;height:38px;object-fit:cover;border-radius:9px}
+.panier-icon{width:38px;height:38px;border-radius:9px;overflow:hidden;flex-shrink:0}
 .panier-info{flex:1;min-width:0}
 .panier-nom{font-size:13px;font-weight:600;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .panier-meta{font-size:12px;color:#888;margin-top:2px}
-.panier-qty{font-size:16px;font-weight:800;color:#1a5276;white-space:nowrap}
+.panier-qty{font-size:15px;font-weight:800;color:#1a5276;white-space:nowrap;text-align:right}
+.panier-qty-unite{font-size:11px;color:#888;font-weight:400}
 .btn-del{background:none;border:none;color:#e74c3c;font-size:20px;cursor:pointer;padding:4px;flex-shrink:0}
 .panier-total{display:flex;justify-content:space-between;align-items:center;padding-top:10px;margin-top:6px;border-top:1.5px solid #eee}
 .panier-total-label{font-size:13px;color:#555;font-weight:600}
@@ -77,8 +84,6 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 .modal-items{margin-bottom:14px}
 .modal-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0f0}
 .modal-item:last-child{border-bottom:none}
-.modal-item-photo{width:52px;height:52px;border-radius:8px;object-fit:cover;flex-shrink:0}
-.modal-item-icon{width:52px;height:52px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
 .modal-item-info{flex:1;min-width:0}
 .modal-item-nom{font-size:13px;font-weight:600;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .modal-item-ref{font-size:11px;color:#aaa}
@@ -116,7 +121,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
     <div id="modal-transfert-badge" style="display:none" class="transfert-badge">⚡ Chaque article génère 2 mouvements : Retour + Sortie</div>
     <div class="modal-items" id="modal-items"></div>
     <div class="modal-total">
-      <span class="modal-total-label">Total articles</span>
+      <span class="modal-total-label">Total lignes</span>
       <span class="modal-total-val" id="modal-total-val"></span>
     </div>
     <div class="modal-btns">
@@ -169,12 +174,25 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
       </div>
       <div id="ref-result"></div>
     </div>
-    <div class="qty-row" style="margin-bottom:12px">
+    <div class="qty-row" style="margin-bottom:0">
       <button onclick="changeQty(-1)">−</button>
       <input type="number" id="qty-input" value="1" min="0.1" step="0.5">
       <button onclick="changeQty(1)">+</button>
     </div>
-    <div class="field" style="margin-bottom:8px">
+    <!-- SÉLECTEUR D'UNITÉ — visible uniquement si 2 unités disponibles -->
+    <div class="unite-toggle" id="unite-toggle">
+      <div class="unite-toggle-label">Unité de saisie</div>
+      <div class="unite-btns">
+        <button class="unite-btn active" id="btn-unite-stock" onclick="setUnite('stock')">
+          <span id="lbl-unite-stock">Caisse</span>
+        </button>
+        <button class="unite-btn" id="btn-unite-util" onclick="setUnite('util')">
+          <span id="lbl-unite-util">Unité</span>
+        </button>
+      </div>
+      <div class="unite-hint" id="unite-hint"></div>
+    </div>
+    <div class="field" style="margin-bottom:8px;margin-top:12px">
       <input type="text" id="obs-input" placeholder="Observations (optionnel)">
     </div>
     <button class="btn-add" onclick="ajouterAuPanier()">+ Ajouter au panier</button>
@@ -197,91 +215,100 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
   <button class="btn-preview" id="btn-preview" onclick="ouvrirApercu()" disabled>
     Voir l'aperçu et confirmer →
   </button>
-
   <div style="height:14px"></div>
-
   <div class="queue-bar">
     <div class="queue-count">En attente : <strong id="queue-count">0</strong></div>
     <button class="btn-sync" id="btn-sync" onclick="synchroniser()">Synchroniser</button>
   </div>
-
 </div>
 
 <div class="toast" id="toast"></div>
-
 <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.6/umd/index.min.js"></script>
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwCz-608yGxK3g5LxPTXo6cAkOeocDim_qxQmw_3qnRby-NaqCT68IM_BdCGV5lIQSUzw/exec";
+const PHOTO_BASE = "photos/";
 
-const PRODUITS = [{"ref":"MAT-001","nom":"Portes d'accès ovale 8×5","cat":"Portes d'accès","unite":"Caisse"},{"ref":"MAT-002","nom":"Portes d'accès ovale 12×6","cat":"Portes d'accès","unite":"Caisse"},{"ref":"MAT-003","nom":"Portes d'accès ovale 18×10","cat":"Portes d'accès","unite":"Caisse"},{"ref":"MAT-004","nom":"Portes d'accès ovale 21×14","cat":"Portes d'accès","unite":"Caisse"},{"ref":"MAT-005","nom":"Portes d'accès ovale 25×17","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-006","nom":"Porte D'accès Ronde 8x4 (5-6)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-007","nom":"Porte D'accès Ronde 8x4 (7-9)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-008","nom":"Porte D'accès Ronde 8x4 (10-11)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-009","nom":"Porte D'accès Ronde 12x8 (10-11)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-010","nom":"Porte D'accès Ronde 12x8 (12-14)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-011","nom":"Porte D'accès Ronde 12x8 (15-16)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-012","nom":"Porte D'accès Ronde 12x8 (17-18)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-013","nom":"Porte d'acces ronde 16x12 (17-18)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-014","nom":"Porte d'acces ronde 16x12 (19-20)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-015","nom":"Porte d'acces ronde 16x12 (21-22)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-016","nom":"Porte d'acces ronde 16x12 (23-24)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-017","nom":"Porte d'acces ronde 16x12 (25-28)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-018","nom":"Porte d'acces ronde 16x12 (29-32)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-019","nom":"Porte d'acces ronde 16x12 (33-36)","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-020","nom":"Porte d'acces ronde 21x22","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-021","nom":"Portes d'accès Carré  12 x 12 (architeturales)    CTR","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-022","nom":"Portes d'accès Carré  16 X 16 (architeturales)    CTR","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-023","nom":"Portes d'accès Carré  24 X 24 (architeturales)    CTR","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-024","nom":"Portes Architecturales coupe feu 16 X 16","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-025","nom":"Portes Architecturales coupe feu 24 X 24","cat":"Portes d'accès","unite":"Unité"},{"ref":"MAT-026","nom":"Feuille de Tôle  Galv. 48X96 26G","cat":"Feuille de Tôle","unite":"Unité"},{"ref":"MAT-027","nom":"Feuille de Tôle 48X96 28G","cat":"Feuille de Tôle","unite":"Unité"},{"ref":"MAT-028","nom":"RLX Toile Orange 12'X100'","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-029","nom":"RLX Polyéthylène 240' x 2000pc      Léger","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-030","nom":"RLX Polyéthylène 120\" x 1500pc     Moyen","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-031","nom":"RLX Polyéthylène 120\" x 1500pc      Fort","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-032","nom":"RLX Polyéthylène 120\"x150'- 1500pc Léger","cat":"Plastique","unite":"Rouleau"},{"ref":"MAT-033","nom":"Film Protection Conduits Auto Collant 24 pouce ( Plastic bleu)","cat":"Plastique","unite":"Unité"},{"ref":"MAT-034","nom":"Adhésif aérosol 357   482 g./14Oz","cat":"Plastique","unite":"Caisse"},{"ref":"MAT-035","nom":"Pellicule d'emballage XH32512 (1,5PIED)","cat":"Plastique","unite":"Unité"},{"ref":"MAT-036","nom":"Fermeture à Glissière Collante + Couteau Zipper/Zip Wall HD Adhésive(12 unité)","cat":"Plastique","unite":"Unité"},{"ref":"MAT-037","nom":"Tape vert  double face 2 Pouce (rouleau)","cat":"Tape","unite":"Unité"},{"ref":"MAT-038","nom":"Tape bleu ou vert  (peintre) 2 Pouce (caisse de 24 rlx)","cat":"Tape","unite":"Unité"},{"ref":"MAT-039","nom":"Tape Gris 2'' Nashua (caisse de 24 rlx)","cat":"Tape","unite":"Caisse"},{"ref":"MAT-040","nom":"Tape  Rouge  (caisse de 20 rlx)","cat":"Tape","unite":"Caisse"},{"ref":"MAT-041","nom":"Tape Blanc/transparent double face","cat":"Tape","unite":"Unité"},{"ref":"MAT-042","nom":"Protection Tapis/Plancher Un Coté Collant 24'' x 36'","cat":"Tape","unite":"Caisse"},{"ref":"MAT-043","nom":"Tape Aluminium 1.6 mil 72mmx55m (16/ca","cat":"Tape","unite":"Caisse"},{"ref":"MAT-044","nom":"Tape Aluminium 1.6 mil 48mmx45,72m (24rlx/caisse","cat":"Tape","unite":"Caisse"},{"ref":"MAT-045","nom":"Tape Aluminium 3M Filamenté pour scellent","cat":"Tape","unite":"Unité"},{"ref":"MAT-046","nom":"Butyl/Rouleau 1/8x3/8x25","cat":"Tape","unite":"Caisse"},{"ref":"MAT-047","nom":"Butyl pour portes d'access en rouleau (20 RLX)","cat":"Tape","unite":"Rlx"},{"ref":"MAT-048","nom":"Tube Plastique 12'' Dia. (Rlx19'' Plat) x 500' x 6 Mil","cat":"Tape","unite":"Unité"},{"ref":"MAT-049","nom":"Sac 42X48 Noir extra fort 100","cat":"Sac","unite":"Boîte"},{"ref":"MAT-050","nom":"Sac 35X50 Noir extra fort 100","cat":"Sac","unite":"Boîte"},{"ref":"MAT-051","nom":"Sac 26X36 Noir extra fort  200","cat":"Sac","unite":"Boîte"},{"ref":"MAT-052","nom":"Sac 22X24 Noir 500","cat":"Sac","unite":"Boîte"},{"ref":"MAT-053","nom":"Sac 42x48 transparent extra fort","cat":"Sac","unite":"Boîte"},{"ref":"MAT-054","nom":"Sac 35x50 transparent extra fort","cat":"Sac","unite":"Boîte"},{"ref":"MAT-055","nom":"Sac papier cire 500","cat":"Sac","unite":"Boîte"},{"ref":"MAT-056","nom":"Sac 33x48   Trasparent 3 MIL 100 SAC","cat":"Sac","unite":"Rouleau"},{"ref":"MAT-057","nom":"Sac 33x50 en rouleau 3 mil (100 sacs) Jaune (Amiante)","cat":"Sac","unite":"Rouleau"},{"ref":"MAT-058","nom":"Papier Toilette (jumbo) GO GREEN    G9942100","cat":"Papier","unite":"Caisse"},{"ref":"MAT-059","nom":"Papier Toilette  SCOTT   4804002  (petits rouleaux)","cat":"Papier","unite":"Caisse"},{"ref":"MAT-060","nom":"Papier toilette 2 épaisseurs 1000'  G9360004-12/CAISSE (Jumbo)","cat":"Papier","unite":"Caisse"},{"ref":"MAT-061","nom":"Papier à Main GO GREEN     G9942302","cat":"Papier","unite":"Caisse"},{"ref":"MAT-062","nom":"Papier à main 8\" X 8 ROULEAUX G9360015","cat":"Papier","unite":"Caisse"},{"ref":"MAT-063","nom":"Masque Papier 3M - N95 (20 unité par boite) (10 boite / caisse)","cat":"Masque","unite":"Caisse"},{"ref":"MAT-064","nom":"Demi Masque Respiratoire Silicone Series 7700 Honywell","cat":"Masque","unite":"Unité"},{"ref":"MAT-065","nom":"Cartouche Gaz organique et acide Filtre P100 (2 par paquet) Mageta/Jaune","cat":"Masque","unite":"Unité"},{"ref":"MAT-066","nom":"Cartouche Vapeur/Organique Filtre P100 (2 par paquet) Mageta/Noir","cat":"Masque","unite":"Paquet"},{"ref":"MAT-067","nom":"Cartouche pour Demi Masque Hepa P100 (2 par paquet) Mageta","cat":"Masque","unite":"Paquet"},{"ref":"MAT-068","nom":"Serviettes rafraichissantes alcool pour masque (100 par boite)","cat":"Masque","unite":"Boîte"},{"ref":"MAT-069","nom":"Serviettes de chlorure de benzalkonium pour masque (100)","cat":"Masque","unite":"Boîte"},{"ref":"MAT-070","nom":"Masque full face avec aide respiratoire , batterie et chargeur","cat":"Masque","unite":"Unité"},{"ref":"MAT-071","nom":"Gant Nitril disposable NOIR XL 8 mil (50 unite par boite) (10 boite / caisse) Jaune","cat":"Gants","unite":"Boîte"},{"ref":"MAT-072","nom":"Gant PRO XL  INDUSTRIELS EN CAOUTCHOUC 15 mil (Prot. produits corrosifs)","cat":"Gants","unite":"Paire"},{"ref":"MAT-073","nom":"Gant Nitrile Bleu 4 mil X 10 boites","cat":"Gants","unite":"caisse"},{"ref":"MAT-074","nom":"Gant coton polyester antidérapant","cat":"Gants","unite":"Paire"},{"ref":"MAT-075","nom":"Gant Nitril disposable NOIR XL 5 mil (100 unite par boite) (10 boite / caisse) Rouge","cat":"Gants","unite":"Boîte"},{"ref":"MAT-076","nom":"Bouchon d`oreille en mousse","cat":"EPI","unite":"Paquet"},{"ref":"MAT-077","nom":"Casque de protection auditive","cat":"EPI","unite":"Unité"},{"ref":"MAT-078","nom":"Protecteur faciel (visiere claire)","cat":"EPI","unite":"Unité"},{"ref":"MAT-079","nom":"Trousse de premiers soins","cat":"EPI","unite":"Unité"},{"ref":"MAT-080","nom":"Rinçage oculaire","cat":"EPI","unite":"Unité"},{"ref":"MAT-081","nom":"Support pour visière North","cat":"EPI","unite":"Unité"},{"ref":"MAT-082","nom":"Solution Isotonique sterile 1L","cat":"EPI","unite":"Unité"},{"ref":"MAT-083","nom":"Lunette sécuritaires claires Z-TECK","cat":"EPI","unite":"Unité"},{"ref":"MAT-084","nom":"Tyvek/X-Guard Vêtement Polypro Bleu XL (20 unité)","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-085","nom":"Tyvek/X-Guard Vêtement Polypro Blanc XL (25 unité)","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-086","nom":"Tyvek/X-Guard Vêtement Polypro Blanc 2XL (25 unité)","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-087","nom":"Tyvek/X-Guard Vêtement Polypro Blanc 3XL (25 unité)","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-088","nom":"Couvre Chaussure Non Conducteur XL (200 par Boîte)","cat":"Tyvec","unite":"Caisse"},{"ref":"MAT-089","nom":"Confort 1","cat":"Maison","unite":"Caisse"},{"ref":"MAT-090","nom":"Confort 2","cat":"Maison","unite":"Caisse"},{"ref":"MAT-091","nom":"Confort 3","cat":"Maison","unite":"Caisse"},{"ref":"MAT-092","nom":"Confort 4","cat":"Maison","unite":"Caisse"},{"ref":"MAT-093","nom":"Confort 5","cat":"Maison","unite":"Caisse"}];
+const PRODUITS = [{"ref":"MAT-001","nom":"Portes d'accès ovale 8×5","cat":"Portes d'accès","unite":"Caisse","uniteUtil":"Unité","facteur":20},{"ref":"MAT-002","nom":"Portes d'accès ovale 12×6","cat":"Portes d'accès","unite":"Caisse","uniteUtil":"Unité","facteur":10},{"ref":"MAT-003","nom":"Portes d'accès ovale 18×10","cat":"Portes d'accès","unite":"Caisse","uniteUtil":"Unité","facteur":10},{"ref":"MAT-004","nom":"Portes d'accès ovale 21×14","cat":"Portes d'accès","unite":"Caisse","uniteUtil":"Unité","facteur":5},{"ref":"MAT-005","nom":"Portes d'accès ovale 25×17","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-006","nom":"Porte D'accès Ronde 8x4 (5-6)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-007","nom":"Porte D'accès Ronde 8x4 (7-9)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-008","nom":"Porte D'accès Ronde 8x4 (10-11)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-009","nom":"Porte D'accès Ronde 12x8 (10-11)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-010","nom":"Porte D'accès Ronde 12x8 (12-14)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-011","nom":"Porte D'accès Ronde 12x8 (15-16)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-012","nom":"Porte D'accès Ronde 12x8 (17-18)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-013","nom":"Porte d'acces ronde 16x12 (17-18)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-014","nom":"Porte d'acces ronde 16x12 (19-20)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-015","nom":"Porte d'acces ronde 16x12 (21-22)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-016","nom":"Porte d'acces ronde 16x12 (23-24)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-017","nom":"Porte d'acces ronde 16x12 (25-28)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-018","nom":"Porte d'acces ronde 16x12 (29-32)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-019","nom":"Porte d'acces ronde 16x12 (33-36)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-020","nom":"Porte d'acces ronde 21x22","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-021","nom":"Portes d'accès Carré  12 x 12 (architeturales)    CTR","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-022","nom":"Portes d'accès Carré  16 X 16 (architeturales)    CTR","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-023","nom":"Portes d'accès Carré  24 X 24 (architeturales)    CTR","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-024","nom":"Portes Architecturales coupe feu 16 X 16","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-025","nom":"Portes Architecturales coupe feu 24 X 24","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-026","nom":"Feuille de Tôle  Galv. 48X96 26G","cat":"Feuille de Tôle","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-027","nom":"Feuille de Tôle 48X96 28G","cat":"Feuille de Tôle","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-028","nom":"RLX Toile Orange 12'X100'","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-029","nom":"RLX Polyéthylène 240' x 2000pc      Léger","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-030","nom":"RLX Polyéthylène 120\" x 1500pc     Moyen","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-031","nom":"RLX Polyéthylène 120\" x 1500pc      Fort","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-032","nom":"RLX Polyéthylène 120\"x150'- 1500pc Léger","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-033","nom":"Film Protection Conduits Auto Collant 24 pouce ( Plastic bleu)","cat":"Plastique","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-034","nom":"Adhésif aérosol 357   482 g./14Oz","cat":"Plastique","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-035","nom":"Pellicule d'emballage XH32512 (1,5PIED)","cat":"Plastique","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-036","nom":"Fermeture à Glissière Collante + Couteau Zipper/Zip Wall HD Adhésive(12 unité)","cat":"Plastique","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-037","nom":"Tape vert  double face 2 Pouce (rouleau)","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-038","nom":"Tape bleu ou vert  (peintre) 2 Pouce (caisse de 24 rlx)","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-039","nom":"Tape Gris 2'' Nashua (caisse de 24 rlx)","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":24},{"ref":"MAT-040","nom":"Tape  Rouge  (caisse de 20 rlx)","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":20},{"ref":"MAT-041","nom":"Tape Blanc/transparent double face","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-042","nom":"Protection Tapis/Plancher Un Coté Collant 24'' x 36'","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":50},{"ref":"MAT-043","nom":"Tape Aluminium 1.6 mil 72mmx55m (16/ca","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":16},{"ref":"MAT-044","nom":"Tape Aluminium 1.6 mil 48mmx45,72m (24rlx/caisse","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":24},{"ref":"MAT-045","nom":"Tape Aluminium 3M Filamenté pour scellent","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-046","nom":"Butyl/Rouleau 1/8x3/8x25","cat":"Tape","unite":"Caisse","uniteUtil":"Rlx","facteur":10},{"ref":"MAT-047","nom":"Butyl pour portes d'access en rouleau (20 RLX)","cat":"Tape","unite":"Rlx","uniteUtil":"","facteur":1},{"ref":"MAT-048","nom":"Tube Plastique 12'' Dia. (Rlx19'' Plat) x 500' x 6 Mil","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-049","nom":"Sac 42X48 Noir extra fort 100","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-050","nom":"Sac 35X50 Noir extra fort 100","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-051","nom":"Sac 26X36 Noir extra fort  200","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-052","nom":"Sac 22X24 Noir 500","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-053","nom":"Sac 42x48 transparent extra fort","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-054","nom":"Sac 35x50 transparent extra fort","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-055","nom":"Sac papier cire 500","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-056","nom":"Sac 33x48   Trasparent 3 MIL 100 SAC","cat":"Sac","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-057","nom":"Sac 33x50 en rouleau 3 mil (100 sacs) Jaune (Amiante)","cat":"Sac","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-058","nom":"Papier Toilette (jumbo) GO GREEN    G9942100","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-059","nom":"Papier Toilette  SCOTT   4804002  (petits rouleaux)","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-060","nom":"Papier toilette 2 épaisseurs 1000'  G9360004-12/CAISSE (Jumbo)","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-061","nom":"Papier à Main GO GREEN     G9942302","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-062","nom":"Papier à main 8\" X 8 ROULEAUX G9360015","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-063","nom":"Masque Papier 3M - N95 (20 unité par boite) (10 boite / caisse)","cat":"Masque","unite":"Caisse","uniteUtil":"Unité","facteur":20},{"ref":"MAT-064","nom":"Demi Masque Respiratoire Silicone Series 7700 Honywell","cat":"Masque","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-065","nom":"Cartouche Gaz organique et acide Filtre P100 (2 par paquet) Mageta/Jaune","cat":"Masque","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-066","nom":"Cartouche Vapeur/Organique Filtre P100 (2 par paquet) Mageta/Noir","cat":"Masque","unite":"Paquet","uniteUtil":"","facteur":1},{"ref":"MAT-067","nom":"Cartouche pour Demi Masque Hepa P100 (2 par paquet) Mageta","cat":"Masque","unite":"Paquet","uniteUtil":"","facteur":1},{"ref":"MAT-068","nom":"Serviettes rafraichissantes alcool pour masque (100 par boite)","cat":"Masque","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-069","nom":"Serviettes de chlorure de benzalkonium pour masque (100)","cat":"Masque","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-070","nom":"Masque full face avec aide respiratoire , batterie et chargeur","cat":"Masque","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-071","nom":"Gant Nitril disposable NOIR XL 8 mil (50 unite par boite) (10 boite / caisse) Jaune","cat":"Gants","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-072","nom":"Gant PRO XL  INDUSTRIELS EN CAOUTCHOUC 15 mil (Prot. produits corrosifs)","cat":"Gants","unite":"Paire","uniteUtil":"","facteur":1},{"ref":"MAT-073","nom":"Gant Nitrile Bleu 4 mil X 10 boites","cat":"Gants","unite":"caisse","uniteUtil":"boite","facteur":10},{"ref":"MAT-074","nom":"Gant coton polyester antidérapant","cat":"Gants","unite":"Paire","uniteUtil":"","facteur":1},{"ref":"MAT-075","nom":"Gant Nitril disposable NOIR XL 5 mil (100 unite par boite) (10 boite / caisse) Rouge","cat":"Gants","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-076","nom":"Bouchon d`oreille en mousse","cat":"EPI","unite":"Paquet","uniteUtil":"","facteur":1},{"ref":"MAT-077","nom":"Casque de protection auditive","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-078","nom":"Protecteur faciel (visiere claire)","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-079","nom":"Trousse de premiers soins","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-080","nom":"Rinçage oculaire","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-081","nom":"Support pour visière North","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-082","nom":"Solution Isotonique sterile 1L","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-083","nom":"Lunette sécuritaires claires Z-TECK","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-084","nom":"Tyvek/X-Guard Vêtement Polypro Bleu XL (20 unité)","cat":"Tyvec","unite":"Caisse","uniteUtil":"Unité","facteur":20},{"ref":"MAT-085","nom":"Tyvek/X-Guard Vêtement Polypro Blanc XL (25 unité)","cat":"Tyvec","unite":"Caisse","uniteUtil":"Unité","facteur":25},{"ref":"MAT-086","nom":"Tyvek/X-Guard Vêtement Polypro Blanc 2XL (25 unité)","cat":"Tyvec","unite":"Caisse","uniteUtil":"Unité","facteur":25},{"ref":"MAT-087","nom":"Tyvek/X-Guard Vêtement Polypro Blanc 3XL (25 unité)","cat":"Tyvec","unite":"Caisse","uniteUtil":"Unité","facteur":25},{"ref":"MAT-088","nom":"Couvre Chaussure Non Conducteur XL (200 par Boîte)","cat":"Tyvec","unite":"Caisse","uniteUtil":"","facteur":1}];
 
 const PROJETS = [{"code":"SDC-754","nom":"Nettoyage OMHM - Hab. Madelaine"},{"code":"SDC-740","nom":"Nettoyage OMHM - Hab. Beaubien"},{"code":"SDC-750","nom":"Nettoyage OMHM -Hab. Ste-Véronique"},{"code":"SDC-731","nom":"Nettoyage CC Laval M. Real"},{"code":"SDC-732","nom":"Immeuble Anfa"},{"code":"SDC-733","nom":"Nettoyage"},{"code":"SDC-734","nom":"netoya"},{"code":"SDC-502","nom":"CVCA 1"},{"code":"SDC-503","nom":"CVCA 2"},{"code":"SDC-504","nom":"CVCA 3"},{"code":"SDC-505","nom":"CVCA 4"},{"code":"SDC-506","nom":"CVCA 5"}];
 const CHEFS = ["Gonzalo H.","José H.","Cézar T.","Alain B.","Mario"];
 const CAT_COLORS = {"Portes d'accès":"#1a5276","Feuille de Tôle":"#784212","Tape":"#1e8449","Plastique":"#6c3483","Sac":"#b7770d","Papier":"#117a65","Masque":"#922b21","Gants":"#154360","EPI":"#2e4057","Tyvec":"#0e6655"};
-const CAT_ICONS = {"Portes d'accès":"🚪","Feuille de Tôle":"🔩","Tape":"📦","Plastique":"🛍️","Sac":"🗑️","Papier":"🧻","Masque":"😷","Gants":"🧤","EPI":"⛑️","Tyvec":"🥼"};
-
-const PHOTO_BASE = "photos/";
-
-function getPhotoHTML(ref, color, icon, size, rounded) {
-  const r = rounded || '9px';
-  const s = size || 38;
-  return `<img src="${PHOTO_BASE}${ref}.jpg" width="${s}" height="${s}"
-    style="object-fit:cover;border-radius:${r};flex-shrink:0"
-    onerror="this.outerHTML='<div style=width:${s}px;height:${s}px;border-radius:${r};background:${color}20;display:flex;align-items:center;justify-content:center;font-size:${Math.round(s*0.5)}px;flex-shrink:0>${icon}</div>'">`;
-}
+const CAT_ICONS  = {"Portes d'accès":"🚪","Feuille de Tôle":"🔩","Tape":"📦","Plastique":"🛍️","Sac":"🗑️","Papier":"🧻","Masque":"😷","Gants":"🧤","EPI":"⛑️","Tyvec":"🥼"};
 
 let typeMouvement = "Sortie";
 let scanner = null;
 let panier = [];
 let queue = JSON.parse(localStorage.getItem('mvQueue') || '[]');
+let currentUniteMode = 'stock'; // 'stock' ou 'util'
+let currentProd = null;
 
 function init() {
   ['sel-projet','sel-projet-source','sel-projet-dest'].forEach(id => {
     const s = document.getElementById(id);
     PROJETS.forEach(p => {
       const o = document.createElement('option');
-      o.value = p.code; o.textContent = p.code + ' — ' + p.nom;
-      s.appendChild(o);
+      o.value = p.code; o.textContent = p.code + ' — ' + p.nom; s.appendChild(o);
     });
   });
   const so = document.getElementById('sel-operateur');
-  CHEFS.forEach(c => {
-    const o = document.createElement('option');
-    o.value = c; o.textContent = c; so.appendChild(o);
-  });
-  updateQueueCount();
-  checkOnline();
-  setInterval(checkOnline, 10000);
+  CHEFS.forEach(c => { const o = document.createElement('option'); o.value=c; o.textContent=c; so.appendChild(o); });
+  updateQueueCount(); checkOnline(); setInterval(checkOnline, 10000);
 }
 
 function checkOnline() {
   const b = document.getElementById('status-badge');
   if (navigator.onLine && SCRIPT_URL !== "") {
-    b.className = 'badge-online'; b.textContent = 'En ligne';
+    b.className='badge-online'; b.textContent='En ligne';
     document.getElementById('btn-sync').disabled = false;
-  } else {
-    b.className = 'badge-offline'; b.textContent = 'Hors ligne';
-  }
+  } else { b.className='badge-offline'; b.textContent='Hors ligne'; }
 }
 
 function setType(t, el) {
   typeMouvement = t;
-  document.querySelectorAll('.type-btn').forEach(b => b.className = 'type-btn');
+  document.querySelectorAll('.type-btn').forEach(b => b.className='type-btn');
   const cls = {'Sortie':'active-sortie','Entrée Magasin':'active-entree','Retour':'active-retour','Ajustement':'active-ajust','Transfert':'active-transfert'};
   el.classList.add(cls[t]||'');
-  const isT = t === 'Transfert';
-  const needP = t !== 'Entrée Magasin' && t !== 'Ajustement';
-  document.getElementById('field-projet-normal').style.display = isT ? 'none' : (needP ? 'block' : 'none');
-  document.getElementById('transfert-fields').style.display = isT ? 'block' : 'none';
+  const isT = t==='Transfert', needP = t!=='Entrée Magasin' && t!=='Ajustement';
+  document.getElementById('field-projet-normal').style.display = isT?'none':(needP?'block':'none');
+  document.getElementById('transfert-fields').style.display = isT?'block':'none';
 }
 
 function rechercherRef(val) {
   const r = document.getElementById('ref-result');
   val = val.trim().toUpperCase();
-  if (!val) { r.textContent = ''; return; }
-  const p = PRODUITS.find(x => x.ref.toUpperCase() === val);
-  if (p) { r.className = ''; r.textContent = '✓ ' + p.nom + ' · ' + p.cat; }
-  else { r.className = 'error'; r.textContent = 'Référence introuvable'; }
+  if (!val) { r.textContent=''; cacherUniteToggle(); currentProd=null; return; }
+  const p = PRODUITS.find(x => x.ref.toUpperCase()===val);
+  if (p) {
+    r.className=''; r.textContent='✓ ' + p.nom + ' · ' + p.cat;
+    currentProd = p;
+    afficherUniteToggle(p);
+  } else { r.className='error'; r.textContent='Référence introuvable'; cacherUniteToggle(); currentProd=null; }
+}
+
+function afficherUniteToggle(p) {
+  const toggle = document.getElementById('unite-toggle');
+  if (!p.uniteUtil) { cacherUniteToggle(); return; }
+  document.getElementById('lbl-unite-stock').textContent = p.unite;
+  document.getElementById('lbl-unite-util').textContent  = p.uniteUtil;
+  document.getElementById('unite-hint').textContent = '1 ' + p.unite + ' = ' + p.facteur + ' ' + p.uniteUtil;
+  toggle.style.display = 'block';
+  setUnite('stock'); // reset au stock par défaut
+}
+
+function cacherUniteToggle() {
+  document.getElementById('unite-toggle').style.display = 'none';
+  currentUniteMode = 'stock';
+}
+
+function setUnite(mode) {
+  currentUniteMode = mode;
+  document.getElementById('btn-unite-stock').classList.toggle('active', mode==='stock');
+  document.getElementById('btn-unite-util').classList.toggle('active',  mode==='util');
+}
+
+function getUniteSaisie() {
+  if (!currentProd || !currentProd.uniteUtil) return 'Unité stock';
+  return currentUniteMode === 'stock' ? 'Unité stock' : currentProd.uniteUtil;
 }
 
 function changeQty(d) {
@@ -295,18 +322,22 @@ function startScanner() {
   scanner = codeReader;
   codeReader.decodeFromConstraints({video:{facingMode:'environment'}},'scanner-video',(result)=>{
     if (result) {
-      const code = result.getText();
-      stopScanner();
+      const code = result.getText(); stopScanner();
       document.getElementById('ref-input').value = code;
-      rechercherRef(code);
-      showToast('Code scanné : ' + code);
+      rechercherRef(code); showToast('Code scanné : ' + code);
     }
   });
 }
 
 function stopScanner() {
-  if (scanner) { try { scanner.reset(); } catch(e){} scanner = null; }
+  if (scanner) { try{scanner.reset();}catch(e){} scanner=null; }
   document.getElementById('video-container').classList.remove('active');
+}
+
+function getPhotoHTML(ref, color, icon, size, r) {
+  return `<img src="${PHOTO_BASE}${ref}.jpg" width="${size}" height="${size}"
+    style="object-fit:cover;border-radius:${r};flex-shrink:0;display:block"
+    onerror="this.outerHTML='<div style=width:${size}px;height:${size}px;border-radius:${r};background:${color}20;display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.5)}px>${icon}</div>'">`;
 }
 
 function ajouterAuPanier() {
@@ -314,21 +345,27 @@ function ajouterAuPanier() {
   const qty = parseFloat(document.getElementById('qty-input').value);
   const obs = document.getElementById('obs-input').value;
   if (!ref) { showToast('Scannez ou saisissez une référence'); return; }
-  if (!qty || qty <= 0) { showToast('Quantité invalide'); return; }
-  const prod = PRODUITS.find(x => x.ref.toUpperCase() === ref.toUpperCase());
-  panier.push({id:Date.now(), ref:prod?prod.ref:ref, nom:prod?prod.nom:ref,
-    cat:prod?prod.cat:'', unite:prod?prod.unite:'', qte:qty, obs:obs});
+  if (!qty||qty<=0) { showToast('Quantité invalide'); return; }
+  const prod = PRODUITS.find(x=>x.ref.toUpperCase()===ref.toUpperCase());
+  const uniteSaisie = getUniteSaisie();
+  const uniteAffichee = (prod && currentUniteMode==='util' && prod.uniteUtil) ? prod.uniteUtil : (prod?prod.unite:'');
+
+  panier.push({
+    id: Date.now(), ref: prod?prod.ref:ref, nom: prod?prod.nom:ref,
+    cat: prod?prod.cat:'', unite: uniteAffichee,
+    uniteSaisie: uniteSaisie, qte: qty, obs: obs
+  });
+
   document.getElementById('ref-input').value = '';
   document.getElementById('ref-result').textContent = '';
   document.getElementById('qty-input').value = '1';
   document.getElementById('obs-input').value = '';
-  afficherPanier();
-  showToast('✓ Ajouté au panier');
+  cacherUniteToggle(); currentProd = null;
+  afficherPanier(); showToast('✓ Ajouté au panier');
 }
 
 function supprimerDuPanier(id) {
-  panier = panier.filter(x => x.id !== id);
-  afficherPanier();
+  panier = panier.filter(x=>x.id!==id); afficherPanier();
 }
 
 function afficherPanier() {
@@ -337,67 +374,64 @@ function afficherPanier() {
   const totalBar = document.getElementById('panier-total-bar');
   const btn = document.getElementById('btn-preview');
   badge.textContent = panier.length + ' article' + (panier.length>1?'s':'');
-  if (panier.length === 0) {
-    liste.innerHTML = '<div class="panier-empty">Aucun article — scannez pour commencer</div>';
-    totalBar.style.display = 'none';
-    btn.disabled = true;
-    return;
+  if (panier.length===0) {
+    liste.innerHTML='<div class="panier-empty">Aucun article — scannez pour commencer</div>';
+    totalBar.style.display='none'; btn.disabled=true; return;
   }
   liste.innerHTML = panier.map(item => {
-    const color = CAT_COLORS[item.cat] || '#2c3e50';
-    const icon = CAT_ICONS[item.cat] || '📦';
-    const nom = item.nom.length > 38 ? item.nom.substring(0,38)+'…' : item.nom;
+    const color = CAT_COLORS[item.cat]||'#2c3e50', icon = CAT_ICONS[item.cat]||'📦';
+    const nom = item.nom.length>38?item.nom.substring(0,38)+'…':item.nom;
+    const isUtil = item.uniteSaisie !== 'Unité stock';
     return `<div class="panier-item">
-      <div class="panier-icon">${getPhotoHTML(item.ref, color, icon, 38, '9px')}</div>
+      <div class="panier-icon">${getPhotoHTML(item.ref,color,icon,38,'9px')}</div>
       <div class="panier-info">
         <div class="panier-nom">${nom}</div>
-        <div class="panier-meta">${item.ref}${item.obs?' · '+item.obs:''}</div>
+        <div class="panier-meta">${item.ref}${item.obs?' · '+item.obs:''}${isUtil?' · <span style="color:#8e44ad">'+item.uniteSaisie+'</span>':''}</div>
       </div>
-      <div class="panier-qty">${item.qte} <span style="font-size:11px;color:#aaa">${item.unite}</span></div>
+      <div style="text-align:right">
+        <div class="panier-qty">${item.qte} <span class="panier-qty-unite">${item.unite}</span></div>
+      </div>
       <button class="btn-del" onclick="supprimerDuPanier(${item.id})">×</button>
     </div>`;
   }).join('');
-  const total = panier.reduce((s,x)=>s+x.qte,0);
-  document.getElementById('panier-total-val').textContent = total + ' unité(s) au total';
-  totalBar.style.display = 'flex';
-  btn.disabled = false;
+  document.getElementById('panier-total-val').textContent = panier.length + ' article(s)';
+  totalBar.style.display='flex'; btn.disabled=false;
 }
 
 function ouvrirApercu() {
-  if (panier.length === 0) return;
+  if (panier.length===0) return;
   const oper = document.getElementById('sel-operateur').value;
   if (!oper) { showToast('Sélectionnez un opérateur'); return; }
-  const isT = typeMouvement === 'Transfert';
+  const isT = typeMouvement==='Transfert';
   if (isT) {
-    const src = document.getElementById('sel-projet-source').value;
-    const dst = document.getElementById('sel-projet-dest').value;
-    if (!src||!dst) { showToast('Sélectionnez les deux projets'); return; }
-    if (src===dst) { showToast('Projets identiques'); return; }
-    document.getElementById('modal-session').innerHTML = `
+    const src=document.getElementById('sel-projet-source').value, dst=document.getElementById('sel-projet-dest').value;
+    if (!src||!dst){showToast('Sélectionnez les deux projets');return;}
+    if (src===dst){showToast('Projets identiques');return;}
+    document.getElementById('modal-session').innerHTML=`
       <div class="modal-session-item"><span>Type</span><br><strong>Transfert</strong></div>
       <div class="modal-session-item"><span>De</span><br><strong>${src}</strong></div>
       <div class="modal-session-item"><span>Vers</span><br><strong>${dst}</strong></div>
       <div class="modal-session-item"><span>Opérateur</span><br><strong>${oper}</strong></div>`;
-    document.getElementById('modal-transfert-badge').style.display = 'block';
+    document.getElementById('modal-transfert-badge').style.display='block';
   } else {
-    const codeP = document.getElementById('sel-projet').value;
-    document.getElementById('modal-session').innerHTML = `
+    const codeP=document.getElementById('sel-projet').value;
+    document.getElementById('modal-session').innerHTML=`
       <div class="modal-session-item"><span>Type</span><br><strong>${typeMouvement}</strong></div>
       <div class="modal-session-item"><span>Projet</span><br><strong>${codeP||'—'}</strong></div>
       <div class="modal-session-item"><span>Opérateur</span><br><strong>${oper}</strong></div>
       <div class="modal-session-item"><span>Date</span><br><strong>${new Date().toLocaleDateString('fr-CA')}</strong></div>`;
-    document.getElementById('modal-transfert-badge').style.display = 'none';
+    document.getElementById('modal-transfert-badge').style.display='none';
   }
-  document.getElementById('modal-subtitle').textContent = panier.length + ' article(s) à enregistrer';
+  document.getElementById('modal-subtitle').textContent = panier.length+' article(s) à enregistrer';
   document.getElementById('modal-items').innerHTML = panier.map(item => {
-    const color = CAT_COLORS[item.cat] || '#2c3e50';
-    const icon = CAT_ICONS[item.cat] || '📦';
-    const nom = item.nom.length > 40 ? item.nom.substring(0,40)+'…' : item.nom;
+    const color=CAT_COLORS[item.cat]||'#2c3e50', icon=CAT_ICONS[item.cat]||'📦';
+    const nom = item.nom.length>40?item.nom.substring(0,40)+'…':item.nom;
+    const isUtil = item.uniteSaisie !== 'Unité stock';
     return `<div class="modal-item">
-      ${getPhotoHTML(item.ref, color, icon, 52, '8px')}
+      ${getPhotoHTML(item.ref,color,icon,52,'8px')}
       <div class="modal-item-info">
         <div class="modal-item-nom">${nom}</div>
-        <div class="modal-item-ref">${item.ref}${item.obs?' · '+item.obs:''}</div>
+        <div class="modal-item-ref">${item.ref}${item.obs?' · '+item.obs:''}${isUtil?' · <span style="color:#8e44ad;font-size:11px">'+item.uniteSaisie+'</span>':''}</div>
       </div>
       <div style="text-align:right">
         <div class="modal-item-qty">${item.qte}</div>
@@ -405,44 +439,35 @@ function ouvrirApercu() {
       </div>
     </div>`;
   }).join('');
-  const total = panier.reduce((s,x)=>s+x.qte,0);
-  document.getElementById('modal-total-val').textContent = total + ' unité(s) · ' + panier.length + ' article(s)';
+  document.getElementById('modal-total-val').textContent = panier.length+' article(s)';
   document.getElementById('modal-overlay').classList.add('active');
 }
 
-function fermerModal() {
-  document.getElementById('modal-overlay').classList.remove('active');
-}
+function fermerModal() { document.getElementById('modal-overlay').classList.remove('active'); }
 
 function confirmerPanier() {
   fermerModal();
   const oper = document.getElementById('sel-operateur').value;
-  const now = new Date().toLocaleString('fr-CA', {timeZone:'America/Toronto', hour12:false}).replace(',','');
-  const isT = typeMouvement === 'Transfert';
-  const codeP = document.getElementById('sel-projet').value;
-  const srcCode = document.getElementById('sel-projet-source').value;
-  const dstCode = document.getElementById('sel-projet-dest').value;
+  const now  = new Date().toLocaleString('fr-CA',{timeZone:'America/Toronto',hour12:false}).replace(',','');
+  const isT  = typeMouvement==='Transfert';
+  const codeP    = document.getElementById('sel-projet').value;
+  const srcCode  = document.getElementById('sel-projet-source').value;
+  const dstCode  = document.getElementById('sel-projet-dest').value;
+
   panier.forEach(item => {
     if (isT) {
-      queue.push({id:Date.now(), date:now, ref:item.ref, nom:item.nom,
-        type:'Retour', projet:srcCode, qte:item.qte, operateur:oper,
-        obs:'[Transfert→'+dstCode+'] '+(item.obs||''), synced:false});
-      queue.push({id:Date.now()+1, date:now, ref:item.ref, nom:item.nom,
-        type:'Sortie', projet:dstCode, qte:item.qte, operateur:oper,
-        obs:'[Transfert de '+srcCode+'] '+(item.obs||''), synced:false});
+      queue.push({id:Date.now(),   date:now, ref:item.ref, nom:item.nom, type:'Retour', projet:srcCode, qte:item.qte, uniteSaisie:item.uniteSaisie, operateur:oper, obs:'[Transfert→'+dstCode+'] '+(item.obs||''), synced:false});
+      queue.push({id:Date.now()+1, date:now, ref:item.ref, nom:item.nom, type:'Sortie', projet:dstCode, qte:item.qte, uniteSaisie:item.uniteSaisie, operateur:oper, obs:'[Transfert de '+srcCode+'] '+(item.obs||''), synced:false});
     } else {
-      queue.push({id:Date.now(), date:now, ref:item.ref, nom:item.nom,
-        type:typeMouvement, projet:codeP, qte:item.qte,
-        operateur:oper, obs:item.obs||'', synced:false});
+      queue.push({id:Date.now(), date:now, ref:item.ref, nom:item.nom, type:typeMouvement, projet:codeP, qte:item.qte, uniteSaisie:item.uniteSaisie, operateur:oper, obs:item.obs||'', synced:false});
     }
   });
-  const nbMv = isT ? panier.length*2 : panier.length;
+
+  const nbMv = isT?panier.length*2:panier.length;
   localStorage.setItem('mvQueue', JSON.stringify(queue));
-  panier = [];
-  afficherPanier();
-  updateQueueCount();
-  showToast('✓ ' + nbMv + ' mouvement(s) enregistré(s)');
-  if (navigator.onLine && SCRIPT_URL !== "") synchroniser();
+  panier=[]; afficherPanier(); updateQueueCount();
+  showToast('✓ '+nbMv+' mouvement(s) enregistré(s)');
+  if (navigator.onLine && SCRIPT_URL!=="") synchroniser();
 }
 
 function updateQueueCount() {
@@ -451,28 +476,24 @@ function updateQueueCount() {
 
 async function synchroniser() {
   const unsync = queue.filter(x=>!x.synced);
-  if (!unsync.length) { showToast('Aucun mouvement à synchroniser'); return; }
+  if (!unsync.length){showToast('Aucun mouvement à synchroniser');return;}
   const btn = document.getElementById('btn-sync');
-  btn.textContent = '...'; btn.disabled = true;
+  btn.textContent='...'; btn.disabled=true;
   try {
-    const resp = await fetch(SCRIPT_URL, {method:'POST',
-      body:JSON.stringify({mouvements:unsync}),
-      headers:{'Content-Type':'text/plain'}});
+    const resp = await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({mouvements:unsync}),headers:{'Content-Type':'text/plain'}});
     const data = await resp.json();
     if (data.status==='ok') {
-      queue = queue.map(x=>({...x,synced:true}));
-      localStorage.setItem('mvQueue', JSON.stringify(queue));
-      updateQueueCount();
-      showToast('✓ '+unsync.length+' mouvement(s) synchronisé(s)');
+      queue=queue.map(x=>({...x,synced:true}));
+      localStorage.setItem('mvQueue',JSON.stringify(queue));
+      updateQueueCount(); showToast('✓ '+unsync.length+' mouvement(s) synchronisé(s)');
     } else { showToast('Erreur : '+(data.message||'?')); }
-  } catch(e) { showToast('Hors ligne — données conservées'); }
-  btn.textContent = 'Synchroniser'; btn.disabled = false;
+  } catch(e){ showToast('Hors ligne — données conservées'); }
+  btn.textContent='Synchroniser'; btn.disabled=false;
 }
 
 function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2800);
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
 }
 
 window.addEventListener('load', init);
