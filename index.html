@@ -20,6 +20,13 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 .scan-zone{display:flex;gap:8px;align-items:center}
 .scan-zone input{flex:1}
 .btn-scan{background:#1a5276;color:#fff;border:none;border-radius:8px;padding:11px 14px;font-size:20px;cursor:pointer}
+.btn-liste{background:#375623;color:#fff;border:none;border-radius:8px;padding:11px 14px;font-size:20px;cursor:pointer;transition:opacity .15s}
+.btn-liste.active{opacity:.7}
+.liste-picker{display:none;margin-top:10px;padding:12px;background:#f0f7ff;border-radius:10px;border:1.5px solid #b5d4f4}
+.liste-picker.open{display:block}
+.liste-picker select{width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;background:#fff;margin-bottom:8px;-webkit-appearance:none;appearance:none}
+.liste-picker select:last-child{margin-bottom:0}
+.liste-picker label{font-size:12px;color:#555;font-weight:500;display:block;margin-bottom:4px}
 #ref-result{margin-top:6px;font-size:13px;color:#27ae60;font-weight:500;min-height:18px}
 #ref-result.error{color:#e74c3c}
 .type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0}
@@ -171,8 +178,19 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
       <div class="scan-zone">
         <input type="text" id="ref-input" placeholder="MAT-001 ou scanner" oninput="rechercherRef(this.value)">
         <button class="btn-scan" onclick="startScanner()">📷</button>
+        <button class="btn-liste" id="btn-liste" onclick="toggleListePicker()" title="Choisir dans la liste">📋</button>
       </div>
       <div id="ref-result"></div>
+      <div class="liste-picker" id="liste-picker">
+        <label>Catégorie</label>
+        <select id="liste-cat" onchange="listeChangeCat()">
+          <option value="">— Choisir une catégorie —</option>
+        </select>
+        <label>Produit</label>
+        <select id="liste-prod" onchange="listeChoixProduit()" disabled>
+          <option value="">— Choisir un produit —</option>
+        </select>
+      </div>
     </div>
     <div class="qty-row" style="margin-bottom:0">
       <button onclick="changeQty(-1)">−</button>
@@ -252,6 +270,10 @@ function init() {
   });
   const so = document.getElementById('sel-operateur');
   CHEFS.forEach(c => { const o = document.createElement('option'); o.value=c; o.textContent=c; so.appendChild(o); });
+  // Peupler les catégories du picker liste
+  const cats = [...new Set(PRODUITS.map(p=>p.cat).filter(Boolean))].sort();
+  const lc = document.getElementById('liste-cat');
+  cats.forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=c; lc.appendChild(o); });
   updateQueueCount(); checkOnline(); setInterval(checkOnline, 10000);
 }
 
@@ -271,6 +293,45 @@ function setType(t, el) {
   const isT = t==='Transfert', needP = t!=='Entrée Magasin' && t!=='Ajustement';
   document.getElementById('field-projet-normal').style.display = isT?'none':(needP?'block':'none');
   document.getElementById('transfert-fields').style.display = isT?'block':'none';
+}
+
+function toggleListePicker() {
+  const picker = document.getElementById('liste-picker');
+  const btn    = document.getElementById('btn-liste');
+  const isOpen = picker.classList.toggle('open');
+  btn.classList.toggle('active', isOpen);
+  if (!isOpen) {
+    document.getElementById('liste-cat').value  = '';
+    document.getElementById('liste-prod').value = '';
+    document.getElementById('liste-prod').disabled = true;
+  }
+}
+
+function listeChangeCat() {
+  const cat  = document.getElementById('liste-cat').value;
+  const prod = document.getElementById('liste-prod');
+  prod.innerHTML = '<option value="">— Choisir un produit —</option>';
+  prod.disabled = !cat;
+  if (!cat) return;
+  PRODUITS.filter(p=>p.cat===cat).forEach(p => {
+    const o = document.createElement('option');
+    o.value = p.ref;
+    o.textContent = p.nom.length>45 ? p.nom.substring(0,45)+'…' : p.nom;
+    prod.appendChild(o);
+  });
+}
+
+function listeChoixProduit() {
+  const ref = document.getElementById('liste-prod').value;
+  if (!ref) return;
+  document.getElementById('ref-input').value = ref;
+  rechercherRef(ref);
+  // Fermer le picker
+  document.getElementById('liste-picker').classList.remove('open');
+  document.getElementById('btn-liste').classList.remove('active');
+  document.getElementById('liste-cat').value = '';
+  document.getElementById('liste-prod').innerHTML = '<option value="">— Choisir un produit —</option>';
+  document.getElementById('liste-prod').disabled = true;
 }
 
 function rechercherRef(val) {
