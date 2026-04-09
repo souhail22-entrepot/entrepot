@@ -455,11 +455,11 @@ function ajouterAuPanier() {
   if (!ref) { showToast('Scannez ou saisissez une référence'); return; }
   if (!qty||qty<=0) { showToast('Quantité invalide'); return; }
   if ((typeMouvement==='Sortie'||typeMouvement==='Retour') && !document.getElementById('sel-projet').value) {
-    showToast('Sélectionnez un projet avant d'ajouter'); return;
+    showToast("Sélectionnez un projet avant d'ajouter"); return;
   }
   if (typeMouvement==='Transfert') {
     if (!document.getElementById('sel-projet-source').value || !document.getElementById('sel-projet-dest').value) {
-      showToast('Sélectionnez les deux projets avant d'ajouter'); return;
+      showToast("Sélectionnez les deux projets avant d'ajouter"); return;
     }
   }
   const prod = PRODUITS.find(x=>x.ref.toUpperCase()===ref.toUpperCase());
