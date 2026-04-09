@@ -124,6 +124,28 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 .cat-card-ref{font-size:11px;color:#aaa;margin-bottom:2px}
 .cat-card-nom{font-size:12px;font-weight:600;color:#1a1a1a;line-height:1.3}
 .page-main{padding-bottom:64px}
+
+/* HISTORIQUE */
+.hist-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.hist-title{font-size:15px;font-weight:700;color:#1a1a1a}
+.hist-oper{font-size:13px;color:#888;margin-bottom:14px}
+.hist-empty{text-align:center;color:#bbb;font-size:14px;padding:30px 0}
+.hist-loading{text-align:center;color:#888;font-size:14px;padding:30px 0}
+.hist-date-group{margin-bottom:18px}
+.hist-date-label{font-size:12px;font-weight:700;color:#1a5276;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-bottom:4px;border-bottom:1.5px solid #e6f1fb}
+.hist-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f5f5f5}
+.hist-item:last-child{border-bottom:none}
+.hist-type-badge{font-size:10px;font-weight:700;padding:3px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+.hist-info{flex:1;min-width:0}
+.hist-ref{font-size:13px;font-weight:600;color:#1a1a1a}
+.hist-meta{font-size:11px;color:#888;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-qty{font-size:13px;font-weight:700;color:#1a5276;white-space:nowrap;text-align:right}
+.hist-sync{font-size:11px}
+.btn-email{background:#e74c3c;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+.hist-filter-bar{display:flex;gap:8px;margin-bottom:14px}
+.hist-filter-btn{padding:6px 12px;border-radius:16px;border:1.5px solid #ddd;background:#fff;font-size:12px;cursor:pointer;color:#555}
+.hist-filter-btn.active{background:#1a5276;color:#fff;border-color:#1a5276;font-weight:600}
+.hist-no-oper{background:#fef9e7;border:1.5px solid #f9ca24;border-radius:10px;padding:14px;text-align:center;font-size:13px;color:#b7770d}
 </style>
 </head>
 <body>
@@ -166,6 +188,9 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
   </button>
   <button class="nav-btn" id="nav-cat" onclick="switchPage('cat')">
     <span>🖼️</span>Catalogue
+  </button>
+  <button class="nav-btn" id="nav-hist" onclick="switchPage('hist')">
+    <span>📋</span>Historique
   </button>
 </div>
 
@@ -281,6 +306,28 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
   <div class="cat-grid" id="cat-grid"></div>
 </div>
 </div><!-- end page-cat -->
+
+<!-- PAGE HISTORIQUE -->
+<div class="page page-main" id="page-hist">
+<div class="container" style="padding-top:14px">
+  <div class="hist-header">
+    <div>
+      <div class="hist-title">Mon historique</div>
+      <div class="hist-oper" id="hist-oper-label">—</div>
+    </div>
+    <button class="btn-email" onclick="envoyerEmail()">📧 Email</button>
+  </div>
+  <div class="hist-filter-bar">
+    <button class="hist-filter-btn active" data-days="1" onclick="setHistFilter(1,this)">Aujourd'hui</button>
+    <button class="hist-filter-btn" data-days="7" onclick="setHistFilter(7,this)">7 jours</button>
+    <button class="hist-filter-btn" data-days="30" onclick="setHistFilter(30,this)">30 jours</button>
+    <button class="hist-filter-btn" data-days="0" onclick="setHistFilter(0,this)">Tout</button>
+  </div>
+  <div id="hist-content">
+    <div class="hist-loading">Chargement...</div>
+  </div>
+</div>
+</div><!-- end page-hist -->
 
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.6/umd/index.min.js"></script>
@@ -608,11 +655,12 @@ async function synchroniser() {
 }
 
 function switchPage(page) {
-  document.getElementById('page-mvt').classList.toggle('active', page==='mvt');
-  document.getElementById('page-cat').classList.toggle('active', page==='cat');
-  document.getElementById('nav-mvt').classList.toggle('active', page==='mvt');
-  document.getElementById('nav-cat').classList.toggle('active', page==='cat');
+  ['mvt','cat','hist'].forEach(p => {
+    document.getElementById('page-'+p).classList.toggle('active', page===p);
+    document.getElementById('nav-'+p).classList.toggle('active', page===p);
+  });
   if (page==='cat') renderCatalogue();
+  if (page==='hist') chargerHistorique();
 }
 
 let currentCatFilter = '';
@@ -665,6 +713,152 @@ function choisirDepuisCatalogue(ref) {
   // Scroll vers le haut
   window.scrollTo({top:0, behavior:'smooth'});
   showToast('✓ ' + ref + ' sélectionné');
+}
+
+const EMAIL_DEST = "souhail@sdconline.com";
+const TYPE_COLORS_HIST = {
+  'Sortie':'#e74c3c','Entrée Magasin':'#27ae60','Retour':'#2980b9',
+  'Ajustement':'#f39c12','Transfert':'#8e44ad'
+};
+let histDaysFilter = 1;
+
+function setHistFilter(days, el) {
+  histDaysFilter = days;
+  document.querySelectorAll('.hist-filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  chargerHistorique();
+}
+
+async function chargerHistorique() {
+  const oper = document.getElementById('sel-operateur').value;
+  const content = document.getElementById('hist-content');
+  const label   = document.getElementById('hist-oper-label');
+
+  if (!oper) {
+    label.textContent = '—';
+    content.innerHTML = '<div class="hist-no-oper">Sélectionnez un opérateur dans les réglages de session pour voir votre historique.</div>';
+    return;
+  }
+
+  label.textContent = oper;
+  content.innerHTML = '<div class="hist-loading">⏳ Chargement depuis Google Sheets...</div>';
+
+  try {
+    const url = SCRIPT_URL + '?action=historique&operateur=' + encodeURIComponent(oper) + '&days=' + histDaysFilter;
+    const resp = await fetch(url);
+    const data = await resp.json();
+
+    if (data.status !== 'ok' || !data.mouvements || data.mouvements.length === 0) {
+      content.innerHTML = '<div class="hist-empty">Aucun mouvement trouvé pour cette période.</div>';
+      return;
+    }
+
+    // Grouper par date
+    const groups = {};
+    data.mouvements.forEach(m => {
+      const dateKey = m.date ? m.date.substring(0,10) : 'Inconnu';
+      if (!groups[dateKey]) groups[dateKey] = [];
+      groups[dateKey].push(m);
+    });
+
+    const dates = Object.keys(groups).sort().reverse();
+    content.innerHTML = dates.map(date => {
+      const items = groups[date];
+      const itemsHTML = items.map(m => {
+        const color = TYPE_COLORS_HIST[m.type] || '#888';
+        const bgColor = color + '20';
+        return `<div class="hist-item">
+          <span class="hist-type-badge" style="background:${bgColor};color:${color}">${m.type}</span>
+          <div class="hist-info">
+            <div class="hist-ref">${m.ref} — ${(m.nom||'').substring(0,28)}</div>
+            <div class="hist-meta">${m.projet||'—'} · ${m.heure||''}</div>
+          </div>
+          <div class="hist-qty">${m.qte} ${m.unite||''}</div>
+        </div>`;
+      }).join('');
+
+      const today = new Date().toLocaleDateString('fr-CA');
+      const dateLabel = date === today ? "Aujourd'hui" : date;
+      return `<div class="hist-date-group">
+        <div class="hist-date-label">📅 ${dateLabel} — ${items.length} mouvement(s)</div>
+        ${itemsHTML}
+      </div>`;
+    }).join('');
+
+  } catch(e) {
+    // Fallback : afficher depuis localStorage si hors ligne
+    const local = JSON.parse(localStorage.getItem('mvQueue')||'[]')
+      .filter(m => m.operateur === oper)
+      .sort((a,b) => b.id - a.id);
+
+    if (local.length === 0) {
+      content.innerHTML = '<div class="hist-empty">Hors ligne — aucun mouvement local trouvé.</div>';
+      return;
+    }
+
+    const groups = {};
+    local.forEach(m => {
+      const dateKey = m.date ? m.date.substring(0,10) : 'Inconnu';
+      if (!groups[dateKey]) groups[dateKey] = [];
+      groups[dateKey].push(m);
+    });
+
+    const dates = Object.keys(groups).sort().reverse();
+    content.innerHTML = '<div style="font-size:11px;color:#e74c3c;margin-bottom:10px">⚠️ Hors ligne — données locales uniquement</div>' +
+      dates.map(date => {
+        const items = groups[date];
+        const itemsHTML = items.map(m => {
+          const color = TYPE_COLORS_HIST[m.type]||'#888';
+          return `<div class="hist-item">
+            <span class="hist-type-badge" style="background:${color}20;color:${color}">${m.type}</span>
+            <div class="hist-info">
+              <div class="hist-ref">${m.ref} — ${(m.nom||'').substring(0,28)}</div>
+              <div class="hist-meta">${m.projet||'—'} ${m.synced?'✅':'⏳'}</div>
+            </div>
+            <div class="hist-qty">${m.qte} ${m.unite||''}</div>
+          </div>`;
+        }).join('');
+        return `<div class="hist-date-group">
+          <div class="hist-date-label">📅 ${date} — ${items.length} mouvement(s)</div>
+          ${itemsHTML}
+        </div>`;
+      }).join('');
+  }
+}
+
+function envoyerEmail() {
+  const oper = document.getElementById('sel-operateur').value || 'Opérateur inconnu';
+  const today = new Date().toLocaleDateString('fr-CA');
+  const local = JSON.parse(localStorage.getItem('mvQueue')||'[]')
+    .filter(m => m.operateur === oper && m.date && m.date.substring(0,10) === today)
+    .sort((a,b) => a.id - b.id);
+
+  if (local.length === 0) {
+    showToast('Aucun mouvement aujourd\'hui à envoyer');
+    return;
+  }
+
+  const sujet = encodeURIComponent('Mouvements du ' + today + ' — ' + oper);
+  let corps = 'Mouvements du ' + today + ' — ' + oper + '\n';
+  corps += '='.repeat(40) + '\n\n';
+
+  const groups = {};
+  local.forEach(m => {
+    const h = m.date ? m.date.substring(11,16) : '';
+    corps += m.type.padEnd(16) + ' | ' + m.ref.padEnd(8) + ' | ' +
+             String(m.qte).padEnd(5) + ' ' + (m.uniteSaisie||'').padEnd(10) +
+             ' | ' + (m.projet||'—').padEnd(10) + ' | ' + h + '\n';
+  });
+
+  corps += '\n' + '='.repeat(40) + '\n';
+  corps += 'Total : ' + local.length + ' mouvement(s)\n';
+  corps += '\nEnvoyé depuis l\'app Scan Entrepôt';
+
+  const mailto = 'mailto:' + EMAIL_DEST +
+    '?subject=' + sujet +
+    '&body=' + encodeURIComponent(corps);
+
+  window.location.href = mailto;
 }
 
 function showToast(msg) {
