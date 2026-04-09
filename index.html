@@ -313,9 +313,13 @@ function init() {
   const so = document.getElementById('sel-operateur');
   CHEFS.forEach(c => { const o = document.createElement('option'); o.value=c; o.textContent=c; so.appendChild(o); });
   // Peupler les catégories du picker liste
-  const cats = [...new Set(PRODUITS.map(p=>p.cat).filter(Boolean))].sort();
+  const CAT_ORDER = ["Portes d'accès","Feuille de Tôle","Plastique","Tape","Sac","Papier","Masque","Gants","EPI","Tyvec"];
+  const cats = CAT_ORDER.filter(c => PRODUITS.some(p=>p.cat===c));
+  const CAT_ORDER_L = ["Portes d'accès","Feuille de Tôle","Plastique","Tape","Sac","Papier","Masque","Gants","EPI","Tyvec"];
   const lc = document.getElementById('liste-cat');
-  cats.forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=c; lc.appendChild(o); });
+  CAT_ORDER_L.filter(c=>PRODUITS.some(p=>p.cat===c)).forEach(c => {
+    const o=document.createElement('option'); o.value=c; o.textContent=c; lc.appendChild(o);
+  });
   updateQueueCount(); checkOnline(); setInterval(checkOnline, 10000);
 }
 
@@ -606,16 +610,20 @@ function switchPage(page) {
 let currentCatFilter = '';
 
 function renderCatalogue() {
-  const cats = [...new Set(PRODUITS.map(p=>p.cat).filter(Boolean))].sort();
+  const CAT_ORDER = ["Portes d'accès","Feuille de Tôle","Plastique","Tape","Sac","Papier","Masque","Gants","EPI","Tyvec"];
+  const cats = CAT_ORDER.filter(c => PRODUITS.some(p=>p.cat===c));
   const tabsEl = document.getElementById('cat-tabs');
   const gridEl = document.getElementById('cat-grid');
 
   if (!currentCatFilter) currentCatFilter = cats[0] || '';
 
-  // Onglets
+  // Onglets — data-cat pour éviter le bug apostrophe
   tabsEl.innerHTML = cats.map(c =>
-    `<button class="cat-tab${c===currentCatFilter?' active':''}" onclick="setCatFilter('${c}')">${c}</button>`
+    `<button class="cat-tab${c===currentCatFilter?' active':''}" data-cat="${c}">${c}</button>`
   ).join('');
+  tabsEl.querySelectorAll('.cat-tab').forEach(btn =>
+    btn.addEventListener('click', () => setCatFilter(btn.dataset.cat))
+  );
 
   // Grille
   const filtered = PRODUITS.filter(p=>p.cat===currentCatFilter);
@@ -623,16 +631,18 @@ function renderCatalogue() {
     const color = CAT_COLORS[p.cat]||'#2c3e50';
     const icon  = CAT_ICONS[p.cat]||'📦';
     const nom   = p.nom.length>40 ? p.nom.substring(0,40)+'…' : p.nom;
-    const photoHTML = `<img src="photos/${p.ref}.jpg" class="cat-card-photo"
-      onerror="this.outerHTML='<div class=cat-card-photo-placeholder style=background:${color}20>${icon}</div>'">`;
-    return `<div class="cat-card" onclick="choisirDepuisCatalogue('${p.ref}')">
-      ${photoHTML}
+    return `<div class="cat-card" data-ref="${p.ref}">
+      <img src="photos/${p.ref}.jpg" class="cat-card-photo"
+        onerror="this.outerHTML='<div class=cat-card-photo-placeholder style=background:${color}20>${icon}</div>'">
       <div class="cat-card-body">
         <div class="cat-card-ref">${p.ref}</div>
         <div class="cat-card-nom">${nom}</div>
       </div>
     </div>`;
   }).join('');
+  gridEl.querySelectorAll('.cat-card').forEach(card =>
+    card.addEventListener('click', () => choisirDepuisCatalogue(card.dataset.ref))
+  );
 }
 
 function setCatFilter(cat) {
