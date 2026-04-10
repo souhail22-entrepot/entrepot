@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Scan EntrepÃƒÆ’Ã‚Â´t</title>
+<title>Scan Entrepôt</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-height:100vh}
@@ -41,7 +41,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 .qty-row{display:flex;align-items:center;gap:10px}
 .qty-row button{width:44px;height:44px;border-radius:8px;border:1.5px solid #ddd;background:#f5f5f5;font-size:22px;cursor:pointer}
 .qty-row input{flex:1;text-align:center;font-size:22px;font-weight:600}
-/* SÃƒÆ’Ã¢â‚¬Â°LECTEUR D'UNITÃƒÆ’Ã¢â‚¬Â° */
+/* SÉLECTEUR D'UNITÉ */
 .unite-toggle{display:none;margin:10px 0 12px}
 .unite-toggle-label{font-size:12px;color:#888;margin-bottom:6px}
 .unite-btns{display:flex;gap:8px}
@@ -147,7 +147,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 .hist-filter-btn.active{background:#1a5276;color:#fff;border-color:#1a5276;font-weight:600}
 .hist-no-oper{background:#fef9e7;border:1.5px solid #f9ca24;border-radius:10px;padding:14px;text-align:center;font-size:13px;color:#b7770d}
 
-/* ÃƒÆ’Ã¢â‚¬Â°CRAN PIN */
+/* ÉCRAN PIN */
 .pin-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#1a5276;z-index:500;flex-direction:column;align-items:center;justify-content:center;padding:24px}
 .pin-overlay.active{display:flex}
 .pin-logo{font-size:48px;margin-bottom:12px}
@@ -173,15 +173,15 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 <body>
 
 <div class="header">
-  <h1>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ Scan EntrepÃƒÆ’Ã‚Â´t</h1>
+  <h1>📦 Scan Entrepôt</h1>
   <span id="status-badge" class="badge-offline">Hors ligne</span>
 </div>
 
-<!-- ÃƒÆ’Ã¢â‚¬Â°CRAN PIN -->
+<!-- ÉCRAN PIN -->
 <div class="pin-overlay active" id="pin-overlay">
-  <div class="pin-logo">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦</div>
-  <div class="pin-title">Scan EntrepÃƒÆ’Ã‚Â´t</div>
-  <div class="pin-subtitle">SÃƒÆ’Ã‚Â©lectionnez votre nom puis entrez votre PIN</div>
+  <div class="pin-logo">📦</div>
+  <div class="pin-title">Scan Entrepôt</div>
+  <div class="pin-subtitle">Sélectionnez votre nom puis entrez votre PIN</div>
   <div class="pin-operateurs" id="pin-operateurs"></div>
   <div class="pin-selected-name" id="pin-selected-name"></div>
   <div class="pin-dots" id="pin-dots">
@@ -200,41 +200,41 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
     <button class="pin-key" onclick="pinKey('7')">7</button>
     <button class="pin-key" onclick="pinKey('8')">8</button>
     <button class="pin-key" onclick="pinKey('9')">9</button>
-    <button class="pin-key del" onclick="pinDel()">ÃƒÂ¢Ã…â€™Ã‚Â«</button>
+    <button class="pin-key del" onclick="pinDel()">⌫</button>
     <button class="pin-key" onclick="pinKey('0')">0</button>
-    <button class="pin-key del" onclick="pinClear()">ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¢</button>
+    <button class="pin-key del" onclick="pinClear()">✕</button>
   </div>
   <div class="pin-error" id="pin-error"></div>
 </div>
 
 <!-- BARRE SESSION -->
 <div class="session-bar" id="session-bar" style="display:none">
-  <span>ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ‚Â¤ <span class="session-bar-name" id="session-bar-name"></span></span>
-  <button class="session-bar-logout" onclick="deconnexion()">Changer d'opÃƒÆ’Ã‚Â©rateur</button>
+  <span>👤 <span class="session-bar-name" id="session-bar-name"></span></span>
+  <button class="session-bar-logout" onclick="deconnexion()">Changer d'opérateur</button>
 </div>
 
 <div id="video-container">
   <video id="scanner-video" autoplay playsinline></video>
   <div class="scan-overlay"></div>
-  <button class="btn-close-scan" onclick="stopScanner()">ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¢</button>
-  <p class="scan-hint">Pointez la camÃƒÆ’Ã‚Â©ra vers le code-barre</p>
+  <button class="btn-close-scan" onclick="stopScanner()">✕</button>
+  <p class="scan-hint">Pointez la caméra vers le code-barre</p>
 </div>
 
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <div class="modal-title">AperÃƒÆ’Ã‚Â§u du panier</div>
+    <div class="modal-title">Aperçu du panier</div>
     <div class="modal-subtitle" id="modal-subtitle"></div>
     <div class="modal-session" id="modal-session"></div>
-    <div id="modal-transfert-badge" style="display:none" class="transfert-badge">ÃƒÂ¢Ã…Â¡Ã‚Â¡ Chaque article gÃƒÆ’Ã‚Â©nÃƒÆ’Ã‚Â¨re 2 mouvements : Retour + Sortie</div>
+    <div id="modal-transfert-badge" style="display:none" class="transfert-badge">⚡ Chaque article génère 2 mouvements : Retour + Sortie</div>
     <div class="modal-items" id="modal-items"></div>
     <div class="modal-total">
       <span class="modal-total-label">Total lignes</span>
       <span class="modal-total-val" id="modal-total-val"></span>
     </div>
     <div class="modal-btns">
-      <button class="btn-edit" onclick="fermerModal()">ÃƒÂ¢Ã…â€œÃ‚ÂÃƒÂ¯Ã‚Â¸Ã‚Â Modifier</button>
-      <button class="btn-confirm" onclick="confirmerPanier()">ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Tout confirmer</button>
+      <button class="btn-edit" onclick="fermerModal()">✏️ Modifier</button>
+      <button class="btn-confirm" onclick="confirmerPanier()">✓ Tout confirmer</button>
     </div>
   </div>
 </div>
@@ -242,13 +242,13 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 <!-- NAV -->
 <div class="bottom-nav">
   <button class="nav-btn active" id="nav-mvt" onclick="switchPage('mvt')">
-    <span>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦</span>Mouvement
+    <span>📦</span>Mouvement
   </button>
   <button class="nav-btn" id="nav-cat" onclick="switchPage('cat')">
-    <span>ÃƒÂ°Ã…Â¸Ã¢â‚¬â€œÃ‚Â¼ÃƒÂ¯Ã‚Â¸Ã‚Â</span>Catalogue
+    <span>🖼️</span>Catalogue
   </button>
   <button class="nav-btn" id="nav-hist" onclick="switchPage('hist')">
-    <span>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¹</span>Historique
+    <span>📋</span>Historique
   </button>
 </div>
 
@@ -257,32 +257,32 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 <div class="container">
 
   <div class="card">
-    <div class="card-title">RÃƒÆ’Ã‚Â©glages de session</div>
+    <div class="card-title">Réglages de session</div>
     <div class="type-grid">
       <button class="type-btn active-sortie" onclick="setType('Sortie',this)">Sortie</button>
-      <button class="type-btn" onclick="setType('EntrÃƒÆ’Ã‚Â©e Magasin',this)">EntrÃƒÆ’Ã‚Â©e</button>
+      <button class="type-btn" onclick="setType('Entrée Magasin',this)">Entrée</button>
       <button class="type-btn" onclick="setType('Retour',this)">Retour</button>
       <button class="type-btn" onclick="setType('Ajustement',this)">Ajustement</button>
-      <button class="type-btn" onclick="setType('Transfert',this)" style="grid-column:span 2">Transfert projet ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ projet</button>
+      <button class="type-btn" onclick="setType('Transfert',this)" style="grid-column:span 2">Transfert projet → projet</button>
     </div>
     <div style="margin-top:12px" id="field-projet-normal">
       <div class="field" style="margin-bottom:8px">
         <label>Projet</label>
-        <select id="sel-projet"><option value="">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â SÃƒÆ’Ã‚Â©lectionner ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</option></select>
+        <select id="sel-projet"><option value="">— Sélectionner —</option></select>
       </div>
     </div>
     <div class="transfert-fields" id="transfert-fields">
       <div class="field" style="margin-bottom:4px">
         <label>Projet source</label>
-        <select id="sel-projet-source"><option value="">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Source ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</option></select>
+        <select id="sel-projet-source"><option value="">— Source —</option></select>
       </div>
-      <div class="transfert-arrow">ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Å“</div>
+      <div class="transfert-arrow">↓</div>
       <div class="field">
         <label>Projet destination</label>
-        <select id="sel-projet-dest"><option value="">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Destination ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</option></select>
+        <select id="sel-projet-dest"><option value="">— Destination —</option></select>
       </div>
     </div>
-    <select id="sel-operateur" style="display:none"><option value="">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â SÃƒÆ’Ã‚Â©lectionner ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</option></select>
+    <select id="sel-operateur" style="display:none"><option value="">— Sélectionner —</option></select>
   </div>
 
   <div class="card">
@@ -290,35 +290,35 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
     <div class="field">
       <div class="scan-zone">
         <input type="text" id="ref-input" placeholder="MAT-001 ou scanner" oninput="rechercherRef(this.value)">
-        <button class="btn-scan" onclick="startScanner()">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â·</button>
-        <button class="btn-liste" id="btn-liste" onclick="toggleListePicker()" title="Choisir dans la liste">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¹</button>
+        <button class="btn-scan" onclick="startScanner()">📷</button>
+        <button class="btn-liste" id="btn-liste" onclick="toggleListePicker()" title="Choisir dans la liste">📋</button>
       </div>
       <div id="ref-result"></div>
       <div class="liste-picker" id="liste-picker">
-        <label>CatÃƒÆ’Ã‚Â©gorie</label>
+        <label>Catégorie</label>
         <select id="liste-cat" onchange="listeChangeCat()">
-          <option value="">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Choisir une catÃƒÆ’Ã‚Â©gorie ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</option>
+          <option value="">— Choisir une catégorie —</option>
         </select>
         <label>Produit</label>
         <select id="liste-prod" onchange="listeChoixProduit()" disabled>
-          <option value="">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Choisir un produit ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</option>
+          <option value="">— Choisir un produit —</option>
         </select>
       </div>
     </div>
     <div class="qty-row" style="margin-bottom:0">
-      <button onclick="changeQty(-1)">ÃƒÂ¢Ã‹â€ Ã¢â‚¬â„¢</button>
+      <button onclick="changeQty(-1)">−</button>
       <input type="number" id="qty-input" value="1" min="0.1" step="0.5">
       <button onclick="changeQty(1)">+</button>
     </div>
-    <!-- SÃƒÆ’Ã¢â‚¬Â°LECTEUR D'UNITÃƒÆ’Ã¢â‚¬Â° ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â visible uniquement si 2 unitÃƒÆ’Ã‚Â©s disponibles -->
+    <!-- SÉLECTEUR D'UNITÉ — visible uniquement si 2 unités disponibles -->
     <div class="unite-toggle" id="unite-toggle">
-      <div class="unite-toggle-label">UnitÃƒÆ’Ã‚Â© de saisie</div>
+      <div class="unite-toggle-label">Unité de saisie</div>
       <div class="unite-btns">
         <button class="unite-btn active" id="btn-unite-stock" onclick="setUnite('stock')">
           <span id="lbl-unite-stock">Caisse</span>
         </button>
         <button class="unite-btn" id="btn-unite-util" onclick="setUnite('util')">
-          <span id="lbl-unite-util">UnitÃƒÆ’Ã‚Â©</span>
+          <span id="lbl-unite-util">Unité</span>
         </button>
       </div>
       <div class="unite-hint" id="unite-hint"></div>
@@ -335,7 +335,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
       <span class="panier-badge" id="panier-badge">0 article</span>
     </div>
     <div id="panier-liste">
-      <div class="panier-empty">Aucun article ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â scannez pour commencer</div>
+      <div class="panier-empty">Aucun article — scannez pour commencer</div>
     </div>
     <div id="panier-total-bar" style="display:none" class="panier-total">
       <span class="panier-total-label">Total articles</span>
@@ -344,7 +344,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
   </div>
 
   <button class="btn-preview" id="btn-preview" onclick="ouvrirApercu()" disabled>
-    Voir l'aperÃƒÆ’Ã‚Â§u et confirmer ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢
+    Voir l'aperçu et confirmer →
   </button>
   <div style="height:14px"></div>
   <div class="queue-bar">
@@ -368,9 +368,9 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
   <div class="hist-header">
     <div>
       <div class="hist-title">Mon historique</div>
-      <div class="hist-oper" id="hist-oper-label">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</div>
+      <div class="hist-oper" id="hist-oper-label">—</div>
     </div>
-    <button class="btn-email" onclick="envoyerEmail()">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â§ Email</button>
+    <button class="btn-email" onclick="envoyerEmail()">📧 Email</button>
   </div>
   <div class="hist-filter-bar">
     <button class="hist-filter-btn active" data-days="1" onclick="setHistFilter(1,this)">Aujourd'hui</button>
@@ -390,12 +390,18 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzpZd8GLuAmYmQQ3GQz_TcIlYDFEhbeSb_AuJEILMu0FC0rYw-TUEdj3ioOBasJtC0G/exec";
 const PHOTO_BASE = "photos/";
 
-const PRODUITS = [{"ref":"MAT-001","nom":"Portes d’accès ovale 8×5","cat":"Portes d'accès","unite":"Caisse","uniteUtil":"Unité","facteur":20},{"ref":"MAT-002","nom":"Portes d’accès ovale 12×6","cat":"Portes d'accès","unite":"Caisse","uniteUtil":"Unité","facteur":10},{"ref":"MAT-003","nom":"Portes d’accès ovale 18×10","cat":"Portes d'accès","unite":"Caisse","uniteUtil":"Unité","facteur":10},{"ref":"MAT-004","nom":"Portes d’accès ovale 21×14","cat":"Portes d'accès","unite":"Caisse","uniteUtil":"Unité","facteur":5},{"ref":"MAT-005","nom":"Portes d’accès ovale 25×17","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-006","nom":"Porte D'accès Ronde 8x4 (5-6)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-007","nom":"Porte D'accès Ronde 8x4 (7-9)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-008","nom":"Porte D'accès Ronde 8x4 (10-11)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-009","nom":"Porte D'accès Ronde 12x8 (10-11)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-010","nom":"Porte D'accès Ronde 12x8 (12-14)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-011","nom":"Porte D'accès Ronde 12x8 (15-16)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-012","nom":"Porte D'accès Ronde 12x8 (17-18)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-013","nom":"Porte d'acces ronde 16x12 (17-18)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-014","nom":"Porte d'acces ronde 16x12 (19-20)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-015","nom":"Porte d'acces ronde 16x12 (21-22)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-016","nom":"Porte d'acces ronde 16x12 (23-24)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-017","nom":"Porte d'acces ronde 16x12 (25-28)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-018","nom":"Porte d'acces ronde 16x12 (29-32)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-019","nom":"Porte d'acces ronde 16x12 (33-36)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-020","nom":"Porte d'acces ronde 21x22","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-021","nom":"Portes d’accès Carré  12 x 12 (architeturales)    CTR","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-022","nom":"Portes d’accès Carré  16 X 16 (architeturales)    CTR","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-023","nom":"Portes d’accès Carré  24 X 24 (architeturales)    CTR","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-024","nom":"Portes Architecturales coupe feu 16 X 16","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-025","nom":"Portes Architecturales coupe feu 24 X 24","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-026","nom":"Feuille de Tôle  Galv. 48X96 26G","cat":"Feuille de Tôle","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-027","nom":"Feuille de Tôle 48X96 28G","cat":"Feuille de Tôle","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-028","nom":"RLX Toile Orange 12'X100'","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-029","nom":"RLX Polyéthylène 240' x 2000pc      Léger","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-030","nom":"RLX Polyéthylène 120\" x 1500pc     Moyen","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-031","nom":"RLX Polyéthylène 120\" x 1500pc      Fort","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-032","nom":"RLX Polyéthylène 120\"x150'- 1500pc Léger","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-033","nom":"Film Protection Conduits Auto Collant 24 pouce ( Plastic bleu)","cat":"Plastique","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-034","nom":"Adhésif aérosol 357   482 g./14Oz","cat":"Plastique","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-035","nom":"Pellicule d'emballage XH32512 (1,5PIED)","cat":"Plastique","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-036","nom":"Fermeture à Glissière Collante + Couteau Zipper/Zip Wall HD Adhésive(12 unité)","cat":"Plastique","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-037","nom":"Tape vert  double face 2 Pouce (rouleau)","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-038","nom":"Tape bleu ou vert  (peintre) 2 Pouce (caisse de 24 rlx)","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-039","nom":"Tape Gris 2’’ Nashua (caisse de 24 rlx)","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":24},{"ref":"MAT-040","nom":"Tape  Rouge  (caisse de 20 rlx)","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":20},{"ref":"MAT-041","nom":"Tape Blanc/transparent double face","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-042","nom":"Protection Tapis/Plancher Un Coté Collant 24'' x 36'","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":50},{"ref":"MAT-043","nom":"Tape Aluminium 1.6 mil 72mmx55m (16/ca","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":16},{"ref":"MAT-044","nom":"Tape Aluminium 1.6 mil 48mmx45,72m (24rlx/caisse","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":24},{"ref":"MAT-045","nom":"Tape Aluminium 3M Filamenté pour scellent","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-046","nom":"Butyl/Rouleau 1/8x3/8x25","cat":"Tape","unite":"Caisse","uniteUtil":"Rlx","facteur":10},{"ref":"MAT-047","nom":"Butyl pour portes d'access en rouleau (20 RLX)","cat":"Tape","unite":"Rlx","uniteUtil":"","facteur":1},{"ref":"MAT-048","nom":"Tube Plastique 12'' Dia. (Rlx19'' Plat) x 500' x 6 Mil","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-049","nom":"Sac 42X48 Noir extra fort 100","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-050","nom":"Sac 35X50 Noir extra fort 100","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-051","nom":"Sac 26X36 Noir extra fort  200","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-052","nom":"Sac 22X24 Noir 500","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-053","nom":"Sac 42x48 transparent extra fort","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-054","nom":"Sac 35x50 transparent extra fort","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-055","nom":"Sac papier cire 500","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-056","nom":"Sac 33x48   Trasparent 3 MIL 100 SAC","cat":"Sac","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-057","nom":"Sac 33x50 en rouleau 3 mil (100 sacs) Jaune (Amiante)","cat":"Sac","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-058","nom":"Papier Toilette (jumbo) GO GREEN    G9942100","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-059","nom":"Papier Toilette  SCOTT   4804002  (petits rouleaux)","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-060","nom":"Papier toilette 2 épaisseurs 1000'  G9360004-12/CAISSE (Jumbo)","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-061","nom":"Papier à Main GO GREEN     G9942302","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-062","nom":"Papier à main 8\" X 8 ROULEAUX G9360015","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-063","nom":"Masque Papier 3M - N95 (20 unité par boite) (10 boite / caisse)","cat":"Masque","unite":"Caisse","uniteUtil":"Unité","facteur":20},{"ref":"MAT-064","nom":"Demi Masque Respiratoire Silicone Series 7700 Honywell","cat":"Masque","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-065","nom":"Cartouche Gaz organique et acide Filtre P100 (2 par paquet) Mageta/Jaune","cat":"Masque","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-066","nom":"Cartouche Vapeur/Organique Filtre P100 (2 par paquet) Mageta/Noir","cat":"Masque","unite":"Paquet","uniteUtil":"","facteur":1},{"ref":"MAT-067","nom":"Cartouche pour Demi Masque Hepa P100 (2 par paquet) Mageta","cat":"Masque","unite":"Paquet","uniteUtil":"","facteur":1},{"ref":"MAT-068","nom":"Serviettes rafraichissantes alcool pour masque (100 par boite)","cat":"Masque","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-069","nom":"Serviettes de chlorure de benzalkonium pour masque (100)","cat":"Masque","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-070","nom":"Masque full face avec aide respiratoire , batterie et chargeur","cat":"Masque","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-071","nom":"Gant Nitril disposable NOIR XL 8 mil (50 unite par boite) (10 boite / caisse) Jaune","cat":"Gants","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-072","nom":"Gant PRO XL  INDUSTRIELS EN CAOUTCHOUC 15 mil (Prot. produits corrosifs)","cat":"Gants","unite":"Paire","uniteUtil":"","facteur":1},{"ref":"MAT-073","nom":"Gant Nitrile Bleu 4 mil X 10 boites","cat":"Gants","unite":"caisse","uniteUtil":"boite","facteur":10},{"ref":"MAT-074","nom":"Gant coton polyester antidérapant","cat":"Gants","unite":"Paire","uniteUtil":"","facteur":1},{"ref":"MAT-075","nom":"Gant Nitril disposable NOIR XL 5 mil (100 unite par boite) (10 boite / caisse) Rouge","cat":"Gants","unite":"Boîte","uniteUtil":"","facteur":10},{"ref":"MAT-076","nom":"Bouchon d`oreille en mousse","cat":"EPI","unite":"Paquet","uniteUtil":"","facteur":1},{"ref":"MAT-077","nom":"Casque de protection auditive","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-078","nom":"Protecteur faciel (visiere claire)","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-079","nom":"Trousse de premiers soins","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-080","nom":"Rinçage oculaire","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-081","nom":"Support pour visière North","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-082","nom":"Solution Isotonique sterile 1L","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-083","nom":"Lunette sécuritaires claires Z-TECK","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-084","nom":"Tyvek/X-Guard Vêtement Polypro Bleu XL (20 unité)","cat":"Tyvec","unite":"Caisse","uniteUtil":"Unité","facteur":20},{"ref":"MAT-085","nom":"Tyvek/X-Guard Vêtement Polypro Blanc XL (25 unité)","cat":"Tyvec","unite":"Caisse","uniteUtil":"Unité","facteur":25},{"ref":"MAT-086","nom":"Tyvek/X-Guard Vêtement Polypro Blanc 2XL (25 unité)","cat":"Tyvec","unite":"Caisse","uniteUtil":"Unité","facteur":25},{"ref":"MAT-087","nom":"Tyvek/X-Guard Vêtement Polypro Blanc 3XL (25 unité)","cat":"Tyvec","unite":"Caisse","uniteUtil":"Unité","facteur":25},{"ref":"MAT-088","nom":"Couvre Chaussure Non Conducteur XL (200 par Boîte)","cat":"Tyvec","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-089","nom":"Confort 1","cat":"Maison","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-090","nom":"Confort 2","cat":"Maison","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-091","nom":"Confort 3","cat":"Maison","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-092","nom":"Confort 4","cat":"Maison","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-093","nom":"Confort 5","cat":"Maison","unite":"Caisse","uniteUtil":"","facteur":1}];
+const PRODUITS = [{"ref":"MAT-001","nom":"Portes d'accès ovale 8×5","cat":"Portes d'accès","unite":"Caisse","uniteUtil":"Unité","facteur":20},{"ref":"MAT-002","nom":"Portes d'accès ovale 12×6","cat":"Portes d'accès","unite":"Caisse","uniteUtil":"Unité","facteur":10},{"ref":"MAT-003","nom":"Portes d'accès ovale 18×10","cat":"Portes d'accès","unite":"Caisse","uniteUtil":"Unité","facteur":10},{"ref":"MAT-004","nom":"Portes d'accès ovale 21×14","cat":"Portes d'accès","unite":"Caisse","uniteUtil":"Unité","facteur":5},{"ref":"MAT-005","nom":"Portes d'accès ovale 25×17","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-006","nom":"Porte D'accès Ronde 8x4 (5-6)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-007","nom":"Porte D'accès Ronde 8x4 (7-9)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-008","nom":"Porte D'accès Ronde 8x4 (10-11)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-009","nom":"Porte D'accès Ronde 12x8 (10-11)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-010","nom":"Porte D'accès Ronde 12x8 (12-14)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-011","nom":"Porte D'accès Ronde 12x8 (15-16)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-012","nom":"Porte D'accès Ronde 12x8 (17-18)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-013","nom":"Porte d'acces ronde 16x12 (17-18)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-014","nom":"Porte d'acces ronde 16x12 (19-20)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-015","nom":"Porte d'acces ronde 16x12 (21-22)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-016","nom":"Porte d'acces ronde 16x12 (23-24)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-017","nom":"Porte d'acces ronde 16x12 (25-28)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-018","nom":"Porte d'acces ronde 16x12 (29-32)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-019","nom":"Porte d'acces ronde 16x12 (33-36)","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-020","nom":"Porte d'acces ronde 21x22","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-021","nom":"Portes d'accès Carré  12 x 12 (architeturales)    CTR","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-022","nom":"Portes d'accès Carré  16 X 16 (architeturales)    CTR","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-023","nom":"Portes d'accès Carré  24 X 24 (architeturales)    CTR","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-024","nom":"Portes Architecturales coupe feu 16 X 16","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-025","nom":"Portes Architecturales coupe feu 24 X 24","cat":"Portes d'accès","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-026","nom":"Feuille de Tôle  Galv. 48X96 26G","cat":"Feuille de Tôle","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-027","nom":"Feuille de Tôle 48X96 28G","cat":"Feuille de Tôle","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-028","nom":"RLX Toile Orange 12'X100'","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-029","nom":"RLX Polyéthylène 240' x 2000pc      Léger","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-030","nom":"RLX Polyéthylène 120\" x 1500pc     Moyen","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-031","nom":"RLX Polyéthylène 120\" x 1500pc      Fort","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-032","nom":"RLX Polyéthylène 120\"x150'- 1500pc Léger","cat":"Plastique","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-033","nom":"Film Protection Conduits Auto Collant 24 pouce ( Plastic bleu)","cat":"Plastique","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-034","nom":"Adhésif aérosol 357   482 g./14Oz","cat":"Plastique","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-035","nom":"Pellicule d'emballage XH32512 (1,5PIED)","cat":"Plastique","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-036","nom":"Fermeture à Glissière Collante + Couteau Zipper/Zip Wall HD Adhésive(12 unité)","cat":"Plastique","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-037","nom":"Tape vert  double face 2 Pouce (rouleau)","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-038","nom":"Tape bleu ou vert  (peintre) 2 Pouce (caisse de 24 rlx)","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-039","nom":"Tape Gris 2'' Nashua (caisse de 24 rlx)","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":24},{"ref":"MAT-040","nom":"Tape  Rouge  (caisse de 20 rlx)","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":20},{"ref":"MAT-041","nom":"Tape Blanc/transparent double face","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-042","nom":"Protection Tapis/Plancher Un Coté Collant 24'' x 36'","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":50},{"ref":"MAT-043","nom":"Tape Aluminium 1.6 mil 72mmx55m (16/ca","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":16},{"ref":"MAT-044","nom":"Tape Aluminium 1.6 mil 48mmx45,72m (24rlx/caisse","cat":"Tape","unite":"Caisse","uniteUtil":"Unité","facteur":24},{"ref":"MAT-045","nom":"Tape Aluminium 3M Filamenté pour scellent","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-046","nom":"Butyl/Rouleau 1/8x3/8x25","cat":"Tape","unite":"Caisse","uniteUtil":"Rlx","facteur":10},{"ref":"MAT-047","nom":"Butyl pour portes d'access en rouleau (20 RLX)","cat":"Tape","unite":"Rlx","uniteUtil":"","facteur":1},{"ref":"MAT-048","nom":"Tube Plastique 12'' Dia. (Rlx19'' Plat) x 500' x 6 Mil","cat":"Tape","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-049","nom":"Sac 42X48 Noir extra fort 100","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-050","nom":"Sac 35X50 Noir extra fort 100","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-051","nom":"Sac 26X36 Noir extra fort  200","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-052","nom":"Sac 22X24 Noir 500","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-053","nom":"Sac 42x48 transparent extra fort","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-054","nom":"Sac 35x50 transparent extra fort","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-055","nom":"Sac papier cire 500","cat":"Sac","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-056","nom":"Sac 33x48   Trasparent 3 MIL 100 SAC","cat":"Sac","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-057","nom":"Sac 33x50 en rouleau 3 mil (100 sacs) Jaune (Amiante)","cat":"Sac","unite":"Rouleau","uniteUtil":"","facteur":1},{"ref":"MAT-058","nom":"Papier Toilette (jumbo) GO GREEN    G9942100","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-059","nom":"Papier Toilette  SCOTT   4804002  (petits rouleaux)","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-060","nom":"Papier toilette 2 épaisseurs 1000'  G9360004-12/CAISSE (Jumbo)","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-061","nom":"Papier à Main GO GREEN     G9942302","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-062","nom":"Papier à main 8\" X 8 ROULEAUX G9360015","cat":"Papier","unite":"Caisse","uniteUtil":"","facteur":1},{"ref":"MAT-063","nom":"Masque Papier 3M - N95 (20 unité par boite) (10 boite / caisse)","cat":"Masque","unite":"Caisse","uniteUtil":"Unité","facteur":20},{"ref":"MAT-064","nom":"Demi Masque Respiratoire Silicone Series 7700 Honywell","cat":"Masque","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-065","nom":"Cartouche Gaz organique et acide Filtre P100 (2 par paquet) Mageta/Jaune","cat":"Masque","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-066","nom":"Cartouche Vapeur/Organique Filtre P100 (2 par paquet) Mageta/Noir","cat":"Masque","unite":"Paquet","uniteUtil":"","facteur":1},{"ref":"MAT-067","nom":"Cartouche pour Demi Masque Hepa P100 (2 par paquet) Mageta","cat":"Masque","unite":"Paquet","uniteUtil":"","facteur":1},{"ref":"MAT-068","nom":"Serviettes rafraichissantes alcool pour masque (100 par boite)","cat":"Masque","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-069","nom":"Serviettes de chlorure de benzalkonium pour masque (100)","cat":"Masque","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-070","nom":"Masque full face avec aide respiratoire , batterie et chargeur","cat":"Masque","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-071","nom":"Gant Nitril disposable NOIR XL 8 mil (50 unite par boite) (10 boite / caisse) Jaune","cat":"Gants","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-072","nom":"Gant PRO XL  INDUSTRIELS EN CAOUTCHOUC 15 mil (Prot. produits corrosifs)","cat":"Gants","unite":"Paire","uniteUtil":"","facteur":1},{"ref":"MAT-073","nom":"Gant Nitrile Bleu 4 mil X 10 boites","cat":"Gants","unite":"caisse","uniteUtil":"boite","facteur":10},{"ref":"MAT-074","nom":"Gant coton polyester antidérapant","cat":"Gants","unite":"Paire","uniteUtil":"","facteur":1},{"ref":"MAT-075","nom":"Gant Nitril disposable NOIR XL 5 mil (100 unite par boite) (10 boite / caisse) Rouge","cat":"Gants","unite":"Boîte","uniteUtil":"","facteur":1},{"ref":"MAT-076","nom":"Bouchon d`oreille en mousse","cat":"EPI","unite":"Paquet","uniteUtil":"","facteur":1},{"ref":"MAT-077","nom":"Casque de protection auditive","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-078","nom":"Protecteur faciel (visiere claire)","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-079","nom":"Trousse de premiers soins","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-080","nom":"Rinçage oculaire","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-081","nom":"Support pour visière North","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-082","nom":"Solution Isotonique sterile 1L","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-083","nom":"Lunette sécuritaires claires Z-TECK","cat":"EPI","unite":"Unité","uniteUtil":"","facteur":1},{"ref":"MAT-084","nom":"Tyvek/X-Guard Vêtement Polypro Bleu XL (20 unité)","cat":"Tyvec","unite":"Caisse","uniteUtil":"Unité","facteur":20},{"ref":"MAT-085","nom":"Tyvek/X-Guard Vêtement Polypro Blanc XL (25 unité)","cat":"Tyvec","unite":"Caisse","uniteUtil":"Unité","facteur":25},{"ref":"MAT-086","nom":"Tyvek/X-Guard Vêtement Polypro Blanc 2XL (25 unité)","cat":"Tyvec","unite":"Caisse","uniteUtil":"Unité","facteur":25},{"ref":"MAT-087","nom":"Tyvek/X-Guard Vêtement Polypro Blanc 3XL (25 unité)","cat":"Tyvec","unite":"Caisse","uniteUtil":"Unité","facteur":25},{"ref":"MAT-088","nom":"Couvre Chaussure Non Conducteur XL (200 par Boîte)","cat":"Tyvec","unite":"Caisse","uniteUtil":"","facteur":1}];
 
 const PROJETS = [{"code":"SDC-754","nom":"Nettoyage OMHM - Hab. Madelaine"},{"code":"SDC-740","nom":"Nettoyage OMHM - Hab. Beaubien"},{"code":"SDC-750","nom":"Nettoyage OMHM -Hab. Ste-Véronique"},{"code":"SDC-731","nom":"Nettoyage CC Laval M. Real"},{"code":"SDC-732","nom":"Immeuble Anfa"},{"code":"SDC-733","nom":"Nettoyage"},{"code":"SDC-734","nom":"netoya"},{"code":"SDC-502","nom":"CVCA 1"},{"code":"SDC-503","nom":"CVCA 2"},{"code":"SDC-504","nom":"CVCA 3"},{"code":"SDC-505","nom":"CVCA 4"},{"code":"SDC-506","nom":"CVCA 5"}];
-const OPERATEURS = [{"nom":"Gonzalo H.","pin":"6594"},{"nom":"José H.","pin":"5678"},{"nom":"Cézar T.","pin":"9012"},{"nom":"Alain B.","pin":"3456"},{"nom":"Mario","pin":"7890"},{"nom":"Walther C.","pin":"8610"},{"nom":"Sohail S.","pin":"1955"},{"nom":"Christian T.","pin":"2026"}];
-const CAT_COLORS = {"Portes d'accÃƒÆ’Ã‚Â¨s":"#1a5276","Feuille de TÃƒÆ’Ã‚Â´le":"#784212","Tape":"#1e8449","Plastique":"#6c3483","Sac":"#b7770d","Papier":"#117a65","Masque":"#922b21","Gants":"#154360","EPI":"#2e4057","Tyvec":"#0e6655"};
-const CAT_ICONS  = {"Portes d'accÃƒÆ’Ã‚Â¨s":"ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Âª","Feuille de TÃƒÆ’Ã‚Â´le":"ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â©","Tape":"ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦","Plastique":"ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚ÂÃƒÂ¯Ã‚Â¸Ã‚Â","Sac":"ÃƒÂ°Ã…Â¸Ã¢â‚¬â€Ã¢â‚¬ËœÃƒÂ¯Ã‚Â¸Ã‚Â","Papier":"ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â»","Masque":"ÃƒÂ°Ã…Â¸Ã‹Å“Ã‚Â·","Gants":"ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â¤","EPI":"ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬ËœÃƒÂ¯Ã‚Â¸Ã‚Â","Tyvec":"ÃƒÂ°Ã…Â¸Ã‚Â¥Ã‚Â¼"};
+const OPERATEURS = [
+  {"nom":"Gonzalo H.","pin":"1234"},
+  {"nom":"José H.","pin":"5678"},
+  {"nom":"Cézar T.","pin":"9012"},
+  {"nom":"Alain B.","pin":"3456"},
+  {"nom":"Mario","pin":"7890"}
+];
+const CAT_COLORS = {"Portes d'accès":"#1a5276","Feuille de Tôle":"#784212","Tape":"#1e8449","Plastique":"#6c3483","Sac":"#b7770d","Papier":"#117a65","Masque":"#922b21","Gants":"#154360","EPI":"#2e4057","Tyvec":"#0e6655"};
+const CAT_ICONS  = {"Portes d'accès":"🚪","Feuille de Tôle":"🔩","Tape":"📦","Plastique":"🛍️","Sac":"🗑️","Papier":"🧻","Masque":"😷","Gants":"🧤","EPI":"⛑️","Tyvec":"🥼"};
 
 let typeMouvement = "Sortie";
 let scanner = null;
@@ -409,7 +415,7 @@ function init() {
     const s = document.getElementById(id);
     PROJETS.forEach(p => {
       const o = document.createElement('option');
-      o.value = p.code; o.textContent = p.code + ' ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ' + p.nom; s.appendChild(o);
+      o.value = p.code; o.textContent = p.code + ' — ' + p.nom; s.appendChild(o);
     });
   });
   // PIN operateurs
@@ -422,10 +428,10 @@ function init() {
     btn.addEventListener('click', () => selectOperateur(op.nom));
     pinEl.appendChild(btn);
   });
-  // Peupler les catÃƒÆ’Ã‚Â©gories du picker liste
-  const CAT_ORDER = ["Portes d'accÃƒÆ’Ã‚Â¨s","Feuille de TÃƒÆ’Ã‚Â´le","Plastique","Tape","Sac","Papier","Masque","Gants","EPI","Tyvec"];
+  // Peupler les catégories du picker liste
+  const CAT_ORDER = ["Portes d'accès","Feuille de Tôle","Plastique","Tape","Sac","Papier","Masque","Gants","EPI","Tyvec"];
   const cats = CAT_ORDER.filter(c => PRODUITS.some(p=>p.cat===c));
-  const CAT_ORDER_L = ["Portes d'accÃƒÆ’Ã‚Â¨s","Feuille de TÃƒÆ’Ã‚Â´le","Plastique","Tape","Sac","Papier","Masque","Gants","EPI","Tyvec"];
+  const CAT_ORDER_L = ["Portes d'accès","Feuille de Tôle","Plastique","Tape","Sac","Papier","Masque","Gants","EPI","Tyvec"];
   const lc = document.getElementById('liste-cat');
   CAT_ORDER_L.filter(c=>PRODUITS.some(p=>p.cat===c)).forEach(c => {
     const o=document.createElement('option'); o.value=c; o.textContent=c; lc.appendChild(o);
@@ -444,9 +450,9 @@ function checkOnline() {
 function setType(t, el) {
   typeMouvement = t;
   document.querySelectorAll('.type-btn').forEach(b => b.className='type-btn');
-  const cls = {'Sortie':'active-sortie','EntrÃƒÆ’Ã‚Â©e Magasin':'active-entree','Retour':'active-retour','Ajustement':'active-ajust','Transfert':'active-transfert'};
+  const cls = {'Sortie':'active-sortie','Entrée Magasin':'active-entree','Retour':'active-retour','Ajustement':'active-ajust','Transfert':'active-transfert'};
   el.classList.add(cls[t]||'');
-  const isT = t==='Transfert', needP = t!=='EntrÃƒÆ’Ã‚Â©e Magasin' && t!=='Ajustement';
+  const isT = t==='Transfert', needP = t!=='Entrée Magasin' && t!=='Ajustement';
   document.getElementById('field-projet-normal').style.display = isT?'none':(needP?'block':'none');
   document.getElementById('transfert-fields').style.display = isT?'block':'none';
 }
@@ -466,13 +472,13 @@ function toggleListePicker() {
 function listeChangeCat() {
   const cat  = document.getElementById('liste-cat').value;
   const prod = document.getElementById('liste-prod');
-  prod.innerHTML = '<option value="">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Choisir un produit ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</option>';
+  prod.innerHTML = '<option value="">— Choisir un produit —</option>';
   prod.disabled = !cat;
   if (!cat) return;
   PRODUITS.filter(p=>p.cat===cat).forEach(p => {
     const o = document.createElement('option');
     o.value = p.ref;
-    o.textContent = p.nom.length>45 ? p.nom.substring(0,45)+'ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦' : p.nom;
+    o.textContent = p.nom.length>45 ? p.nom.substring(0,45)+'…' : p.nom;
     prod.appendChild(o);
   });
 }
@@ -486,7 +492,7 @@ function listeChoixProduit() {
   document.getElementById('liste-picker').classList.remove('open');
   document.getElementById('btn-liste').classList.remove('active');
   document.getElementById('liste-cat').value = '';
-  document.getElementById('liste-prod').innerHTML = '<option value="">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Choisir un produit ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</option>';
+  document.getElementById('liste-prod').innerHTML = '<option value="">— Choisir un produit —</option>';
   document.getElementById('liste-prod').disabled = true;
 }
 
@@ -496,10 +502,10 @@ function rechercherRef(val) {
   if (!val) { r.textContent=''; cacherUniteToggle(); currentProd=null; return; }
   const p = PRODUITS.find(x => x.ref.toUpperCase()===val);
   if (p) {
-    r.className=''; r.textContent='ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ ' + p.nom + ' Ãƒâ€šÃ‚Â· ' + p.cat;
+    r.className=''; r.textContent='✓ ' + p.nom + ' · ' + p.cat;
     currentProd = p;
     afficherUniteToggle(p);
-  } else { r.className='error'; r.textContent='RÃƒÆ’Ã‚Â©fÃƒÆ’Ã‚Â©rence introuvable'; cacherUniteToggle(); currentProd=null; }
+  } else { r.className='error'; r.textContent='Référence introuvable'; cacherUniteToggle(); currentProd=null; }
 }
 
 function afficherUniteToggle(p) {
@@ -509,7 +515,7 @@ function afficherUniteToggle(p) {
   document.getElementById('lbl-unite-util').textContent  = p.uniteUtil;
   document.getElementById('unite-hint').textContent = '1 ' + p.unite + ' = ' + p.facteur + ' ' + p.uniteUtil;
   toggle.style.display = 'block';
-  setUnite('stock'); // reset au stock par dÃƒÆ’Ã‚Â©faut
+  setUnite('stock'); // reset au stock par défaut
 }
 
 function cacherUniteToggle() {
@@ -524,7 +530,7 @@ function setUnite(mode) {
 }
 
 function getUniteSaisie() {
-  if (!currentProd) return 'UnitÃƒÆ’Ã‚Â© stock';
+  if (!currentProd) return 'Unité stock';
   if (!currentProd.uniteUtil) return currentProd.unite;
   return currentUniteMode === 'stock' ? currentProd.unite : currentProd.uniteUtil;
 }
@@ -542,7 +548,7 @@ function startScanner() {
     if (result) {
       const code = result.getText(); stopScanner();
       document.getElementById('ref-input').value = code;
-      rechercherRef(code); showToast('Code scannÃƒÆ’Ã‚Â© : ' + code);
+      rechercherRef(code); showToast('Code scanné : ' + code);
     }
   });
 }
@@ -562,14 +568,14 @@ function ajouterAuPanier() {
   const ref = document.getElementById('ref-input').value.trim();
   const qty = parseFloat(document.getElementById('qty-input').value);
   const obs = document.getElementById('obs-input').value;
-  if (!ref) { showToast('Scannez ou saisissez une rÃƒÆ’Ã‚Â©fÃƒÆ’Ã‚Â©rence'); return; }
-  if (!qty||qty<=0) { showToast('QuantitÃƒÆ’Ã‚Â© invalide'); return; }
+  if (!ref) { showToast('Scannez ou saisissez une référence'); return; }
+  if (!qty||qty<=0) { showToast('Quantité invalide'); return; }
   if ((typeMouvement==='Sortie'||typeMouvement==='Retour') && !document.getElementById('sel-projet').value) {
-    showToast("SÃƒÆ’Ã‚Â©lectionnez un projet avant d'ajouter"); return;
+    showToast("Sélectionnez un projet avant d'ajouter"); return;
   }
   if (typeMouvement==='Transfert') {
     if (!document.getElementById('sel-projet-source').value || !document.getElementById('sel-projet-dest').value) {
-      showToast("SÃƒÆ’Ã‚Â©lectionnez les deux projets avant d'ajouter"); return;
+      showToast("Sélectionnez les deux projets avant d'ajouter"); return;
     }
   }
   const prod = PRODUITS.find(x=>x.ref.toUpperCase()===ref.toUpperCase());
@@ -587,7 +593,7 @@ function ajouterAuPanier() {
   document.getElementById('qty-input').value = '1';
   document.getElementById('obs-input').value = '';
   cacherUniteToggle(); currentProd = null;
-  afficherPanier(); showToast('ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ AjoutÃƒÆ’Ã‚Â© au panier');
+  afficherPanier(); showToast('✓ Ajouté au panier');
 }
 
 function supprimerDuPanier(id) {
@@ -601,23 +607,23 @@ function afficherPanier() {
   const btn = document.getElementById('btn-preview');
   badge.textContent = panier.length + ' article' + (panier.length>1?'s':'');
   if (panier.length===0) {
-    liste.innerHTML='<div class="panier-empty">Aucun article ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â scannez pour commencer</div>';
+    liste.innerHTML='<div class="panier-empty">Aucun article — scannez pour commencer</div>';
     totalBar.style.display='none'; btn.disabled=true; return;
   }
   liste.innerHTML = panier.map(item => {
-    const color = CAT_COLORS[item.cat]||'#2c3e50', icon = CAT_ICONS[item.cat]||'ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦';
-    const nom = item.nom.length>38?item.nom.substring(0,38)+'ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦':item.nom;
-    const isUtil = item.uniteSaisie !== 'UnitÃƒÆ’Ã‚Â© stock';
+    const color = CAT_COLORS[item.cat]||'#2c3e50', icon = CAT_ICONS[item.cat]||'📦';
+    const nom = item.nom.length>38?item.nom.substring(0,38)+'…':item.nom;
+    const isUtil = item.uniteSaisie !== 'Unité stock';
     return `<div class="panier-item">
       <div class="panier-icon">${getPhotoHTML(item.ref,color,icon,38,'9px')}</div>
       <div class="panier-info">
         <div class="panier-nom">${nom}</div>
-        <div class="panier-meta">${item.ref}${item.obs?' Ãƒâ€šÃ‚Â· '+item.obs:''}${isUtil?' Ãƒâ€šÃ‚Â· <span style="color:#8e44ad">'+item.uniteSaisie+'</span>':''}</div>
+        <div class="panier-meta">${item.ref}${item.obs?' · '+item.obs:''}${isUtil?' · <span style="color:#8e44ad">'+item.uniteSaisie+'</span>':''}</div>
       </div>
       <div style="text-align:right">
         <div class="panier-qty">${item.qte} <span class="panier-qty-unite">${item.unite}</span></div>
       </div>
-      <button class="btn-del" onclick="supprimerDuPanier(${item.id})">ÃƒÆ’Ã¢â‚¬â€</button>
+      <button class="btn-del" onclick="supprimerDuPanier(${item.id})">×</button>
     </div>`;
   }).join('');
   document.getElementById('panier-total-val').textContent = panier.length + ' article(s)';
@@ -627,37 +633,37 @@ function afficherPanier() {
 function ouvrirApercu() {
   if (panier.length===0) return;
   const oper = document.getElementById('sel-operateur').value;
-  if (!oper) { showToast('SÃƒÆ’Ã‚Â©lectionnez un opÃƒÆ’Ã‚Â©rateur'); return; }
+  if (!oper) { showToast('Sélectionnez un opérateur'); return; }
   const isT = typeMouvement==='Transfert';
   if (isT) {
     const src=document.getElementById('sel-projet-source').value, dst=document.getElementById('sel-projet-dest').value;
-    if (!src||!dst){showToast('SÃƒÆ’Ã‚Â©lectionnez les deux projets');return;}
+    if (!src||!dst){showToast('Sélectionnez les deux projets');return;}
     if (src===dst){showToast('Projets identiques');return;}
     document.getElementById('modal-session').innerHTML=`
       <div class="modal-session-item"><span>Type</span><br><strong>Transfert</strong></div>
       <div class="modal-session-item"><span>De</span><br><strong>${src}</strong></div>
       <div class="modal-session-item"><span>Vers</span><br><strong>${dst}</strong></div>
-      <div class="modal-session-item"><span>OpÃƒÆ’Ã‚Â©rateur</span><br><strong>${oper}</strong></div>`;
+      <div class="modal-session-item"><span>Opérateur</span><br><strong>${oper}</strong></div>`;
     document.getElementById('modal-transfert-badge').style.display='block';
   } else {
     const codeP=document.getElementById('sel-projet').value;
     document.getElementById('modal-session').innerHTML=`
       <div class="modal-session-item"><span>Type</span><br><strong>${typeMouvement}</strong></div>
-      <div class="modal-session-item"><span>Projet</span><br><strong>${codeP||'ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â'}</strong></div>
-      <div class="modal-session-item"><span>OpÃƒÆ’Ã‚Â©rateur</span><br><strong>${oper}</strong></div>
+      <div class="modal-session-item"><span>Projet</span><br><strong>${codeP||'—'}</strong></div>
+      <div class="modal-session-item"><span>Opérateur</span><br><strong>${oper}</strong></div>
       <div class="modal-session-item"><span>Date</span><br><strong>${new Date().toLocaleDateString('fr-CA')}</strong></div>`;
     document.getElementById('modal-transfert-badge').style.display='none';
   }
-  document.getElementById('modal-subtitle').textContent = panier.length+' article(s) ÃƒÆ’Ã‚Â  enregistrer';
+  document.getElementById('modal-subtitle').textContent = panier.length+' article(s) à enregistrer';
   document.getElementById('modal-items').innerHTML = panier.map(item => {
-    const color=CAT_COLORS[item.cat]||'#2c3e50', icon=CAT_ICONS[item.cat]||'ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦';
-    const nom = item.nom.length>40?item.nom.substring(0,40)+'ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦':item.nom;
-    const isUtil = item.uniteSaisie !== 'UnitÃƒÆ’Ã‚Â© stock';
+    const color=CAT_COLORS[item.cat]||'#2c3e50', icon=CAT_ICONS[item.cat]||'📦';
+    const nom = item.nom.length>40?item.nom.substring(0,40)+'…':item.nom;
+    const isUtil = item.uniteSaisie !== 'Unité stock';
     return `<div class="modal-item">
       ${getPhotoHTML(item.ref,color,icon,52,'8px')}
       <div class="modal-item-info">
         <div class="modal-item-nom">${nom}</div>
-        <div class="modal-item-ref">${item.ref}${item.obs?' Ãƒâ€šÃ‚Â· '+item.obs:''}${isUtil?' Ãƒâ€šÃ‚Â· <span style="color:#8e44ad;font-size:11px">'+item.uniteSaisie+'</span>':''}</div>
+        <div class="modal-item-ref">${item.ref}${item.obs?' · '+item.obs:''}${isUtil?' · <span style="color:#8e44ad;font-size:11px">'+item.uniteSaisie+'</span>':''}</div>
       </div>
       <div style="text-align:right">
         <div class="modal-item-qty">${item.qte}</div>
@@ -682,7 +688,7 @@ function confirmerPanier() {
 
   panier.forEach(item => {
     if (isT) {
-      queue.push({id:Date.now(),   date:now, ref:item.ref, nom:item.nom, type:'Retour', projet:srcCode, qte:item.qte, uniteSaisie:item.uniteSaisie, operateur:oper, obs:'[TransfertÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢'+dstCode+'] '+(item.obs||''), synced:false});
+      queue.push({id:Date.now(),   date:now, ref:item.ref, nom:item.nom, type:'Retour', projet:srcCode, qte:item.qte, uniteSaisie:item.uniteSaisie, operateur:oper, obs:'[Transfert→'+dstCode+'] '+(item.obs||''), synced:false});
       queue.push({id:Date.now()+1, date:now, ref:item.ref, nom:item.nom, type:'Sortie', projet:dstCode, qte:item.qte, uniteSaisie:item.uniteSaisie, operateur:oper, obs:'[Transfert de '+srcCode+'] '+(item.obs||''), synced:false});
     } else {
       queue.push({id:Date.now(), date:now, ref:item.ref, nom:item.nom, type:typeMouvement, projet:codeP, qte:item.qte, uniteSaisie:item.uniteSaisie, operateur:oper, obs:item.obs||'', synced:false});
@@ -692,7 +698,7 @@ function confirmerPanier() {
   const nbMv = isT?panier.length*2:panier.length;
   localStorage.setItem('mvQueue', JSON.stringify(queue));
   panier=[]; afficherPanier(); updateQueueCount();
-  showToast('ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ '+nbMv+' mouvement(s) enregistrÃƒÆ’Ã‚Â©(s)');
+  showToast('✓ '+nbMv+' mouvement(s) enregistré(s)');
   if (navigator.onLine && SCRIPT_URL!=="") synchroniser();
 }
 
@@ -702,7 +708,7 @@ function updateQueueCount() {
 
 async function synchroniser() {
   const unsync = queue.filter(x=>!x.synced);
-  if (!unsync.length){showToast('Aucun mouvement ÃƒÆ’Ã‚Â  synchroniser');return;}
+  if (!unsync.length){showToast('Aucun mouvement à synchroniser');return;}
   const btn = document.getElementById('btn-sync');
   btn.textContent='...'; btn.disabled=true;
   try {
@@ -711,9 +717,9 @@ async function synchroniser() {
     if (data.status==='ok') {
       queue=queue.map(x=>({...x,synced:true}));
       localStorage.setItem('mvQueue',JSON.stringify(queue));
-      updateQueueCount(); showToast('ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ '+unsync.length+' mouvement(s) synchronisÃƒÆ’Ã‚Â©(s)');
+      updateQueueCount(); showToast('✓ '+unsync.length+' mouvement(s) synchronisé(s)');
     } else { showToast('Erreur : '+(data.message||'?')); }
-  } catch(e){ showToast('Hors ligne ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â donnÃƒÆ’Ã‚Â©es conservÃƒÆ’Ã‚Â©es'); }
+  } catch(e){ showToast('Hors ligne — données conservées'); }
   btn.textContent='Synchroniser'; btn.disabled=false;
 }
 
@@ -729,14 +735,14 @@ function switchPage(page) {
 let currentCatFilter = '';
 
 function renderCatalogue() {
-  const CAT_ORDER = ["Portes d'accÃƒÆ’Ã‚Â¨s","Feuille de TÃƒÆ’Ã‚Â´le","Plastique","Tape","Sac","Papier","Masque","Gants","EPI","Tyvec"];
+  const CAT_ORDER = ["Portes d'accès","Feuille de Tôle","Plastique","Tape","Sac","Papier","Masque","Gants","EPI","Tyvec"];
   const cats = CAT_ORDER.filter(c => PRODUITS.some(p=>p.cat===c));
   const tabsEl = document.getElementById('cat-tabs');
   const gridEl = document.getElementById('cat-grid');
 
   if (!currentCatFilter) currentCatFilter = cats[0] || '';
 
-  // Onglets ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â data-cat pour ÃƒÆ’Ã‚Â©viter le bug apostrophe
+  // Onglets — data-cat pour éviter le bug apostrophe
   tabsEl.innerHTML = cats.map(c =>
     `<button class="cat-tab${c===currentCatFilter?' active':''}" data-cat="${c}">${c}</button>`
   ).join('');
@@ -748,8 +754,8 @@ function renderCatalogue() {
   const filtered = PRODUITS.filter(p=>p.cat===currentCatFilter);
   gridEl.innerHTML = filtered.map(p => {
     const color = CAT_COLORS[p.cat]||'#2c3e50';
-    const icon  = CAT_ICONS[p.cat]||'ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦';
-    const nom   = p.nom.length>40 ? p.nom.substring(0,40)+'ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦' : p.nom;
+    const icon  = CAT_ICONS[p.cat]||'📦';
+    const nom   = p.nom.length>40 ? p.nom.substring(0,40)+'…' : p.nom;
     return `<div class="cat-card" data-ref="${p.ref}">
       <img src="photos/${p.ref}.jpg" class="cat-card-photo"
         onerror="this.outerHTML='<div class=cat-card-photo-placeholder style=background:${color}20>${icon}</div>'">
@@ -775,12 +781,12 @@ function choisirDepuisCatalogue(ref) {
   rechercherRef(ref);
   // Scroll vers le haut
   window.scrollTo({top:0, behavior:'smooth'});
-  showToast('ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ ' + ref + ' sÃƒÆ’Ã‚Â©lectionnÃƒÆ’Ã‚Â©');
+  showToast('✓ ' + ref + ' sélectionné');
 }
 
 const EMAIL_DEST = "souhail@sdconline.com";
 const TYPE_COLORS_HIST = {
-  'Sortie':'#e74c3c','EntrÃƒÆ’Ã‚Â©e Magasin':'#27ae60','Retour':'#2980b9',
+  'Sortie':'#e74c3c','Entrée Magasin':'#27ae60','Retour':'#2980b9',
   'Ajustement':'#f39c12','Transfert':'#8e44ad'
 };
 let histDaysFilter = 1;
@@ -798,13 +804,13 @@ async function chargerHistorique() {
   const label   = document.getElementById('hist-oper-label');
 
   if (!oper) {
-    label.textContent = 'ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â';
-    content.innerHTML = '<div class="hist-no-oper">SÃƒÆ’Ã‚Â©lectionnez un opÃƒÆ’Ã‚Â©rateur dans les rÃƒÆ’Ã‚Â©glages de session pour voir votre historique.</div>';
+    label.textContent = '—';
+    content.innerHTML = '<div class="hist-no-oper">Sélectionnez un opérateur dans les réglages de session pour voir votre historique.</div>';
     return;
   }
 
   label.textContent = oper;
-  content.innerHTML = '<div class="hist-loading">ÃƒÂ¢Ã‚ÂÃ‚Â³ Chargement depuis Google Sheets...</div>';
+  content.innerHTML = '<div class="hist-loading">⏳ Chargement depuis Google Sheets...</div>';
 
   try {
     const url = SCRIPT_URL + '?action=historique&operateur=' + encodeURIComponent(oper) + '&days=' + histDaysFilter;
@@ -812,7 +818,7 @@ async function chargerHistorique() {
     const data = await resp.json();
 
     if (data.status !== 'ok' || !data.mouvements || data.mouvements.length === 0) {
-      content.innerHTML = '<div class="hist-empty">Aucun mouvement trouvÃƒÆ’Ã‚Â© pour cette pÃƒÆ’Ã‚Â©riode.</div>';
+      content.innerHTML = '<div class="hist-empty">Aucun mouvement trouvé pour cette période.</div>';
       return;
     }
 
@@ -833,8 +839,8 @@ async function chargerHistorique() {
         return `<div class="hist-item">
           <span class="hist-type-badge" style="background:${bgColor};color:${color}">${m.type}</span>
           <div class="hist-info">
-            <div class="hist-ref">${m.ref} ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ${(m.nom||'').substring(0,28)}</div>
-            <div class="hist-meta">${m.projet||'ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â'} Ãƒâ€šÃ‚Â· ${m.heure||''}</div>
+            <div class="hist-ref">${m.ref} — ${(m.nom||'').substring(0,28)}</div>
+            <div class="hist-meta">${m.projet||'—'} · ${m.heure||''}</div>
           </div>
           <div class="hist-qty">${m.qte} ${m.unite||''}</div>
         </div>`;
@@ -843,7 +849,7 @@ async function chargerHistorique() {
       const today = new Date().toLocaleDateString('fr-CA');
       const dateLabel = date === today ? "Aujourd'hui" : date;
       return `<div class="hist-date-group">
-        <div class="hist-date-label">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¦ ${dateLabel} ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ${items.length} mouvement(s)</div>
+        <div class="hist-date-label">📅 ${dateLabel} — ${items.length} mouvement(s)</div>
         ${itemsHTML}
       </div>`;
     }).join('');
@@ -855,7 +861,7 @@ async function chargerHistorique() {
       .sort((a,b) => b.id - a.id);
 
     if (local.length === 0) {
-      content.innerHTML = '<div class="hist-empty">Hors ligne ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â aucun mouvement local trouvÃƒÆ’Ã‚Â©.</div>';
+      content.innerHTML = '<div class="hist-empty">Hors ligne — aucun mouvement local trouvé.</div>';
       return;
     }
 
@@ -867,7 +873,7 @@ async function chargerHistorique() {
     });
 
     const dates = Object.keys(groups).sort().reverse();
-    content.innerHTML = '<div style="font-size:11px;color:#e74c3c;margin-bottom:10px">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â Hors ligne ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â donnÃƒÆ’Ã‚Â©es locales uniquement</div>' +
+    content.innerHTML = '<div style="font-size:11px;color:#e74c3c;margin-bottom:10px">⚠️ Hors ligne — données locales uniquement</div>' +
       dates.map(date => {
         const items = groups[date];
         const itemsHTML = items.map(m => {
@@ -875,14 +881,14 @@ async function chargerHistorique() {
           return `<div class="hist-item">
             <span class="hist-type-badge" style="background:${color}20;color:${color}">${m.type}</span>
             <div class="hist-info">
-              <div class="hist-ref">${m.ref} ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ${(m.nom||'').substring(0,28)}</div>
-              <div class="hist-meta">${m.projet||'ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â'} ${m.synced?'ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦':'ÃƒÂ¢Ã‚ÂÃ‚Â³'}</div>
+              <div class="hist-ref">${m.ref} — ${(m.nom||'').substring(0,28)}</div>
+              <div class="hist-meta">${m.projet||'—'} ${m.synced?'✅':'⏳'}</div>
             </div>
             <div class="hist-qty">${m.qte} ${m.unite||''}</div>
           </div>`;
         }).join('');
         return `<div class="hist-date-group">
-          <div class="hist-date-label">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¦ ${date} ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ${items.length} mouvement(s)</div>
+          <div class="hist-date-label">📅 ${date} — ${items.length} mouvement(s)</div>
           ${itemsHTML}
         </div>`;
       }).join('');
@@ -890,19 +896,19 @@ async function chargerHistorique() {
 }
 
 function envoyerEmail() {
-  const oper = document.getElementById('sel-operateur').value || 'OpÃƒÆ’Ã‚Â©rateur inconnu';
+  const oper = document.getElementById('sel-operateur').value || 'Opérateur inconnu';
   const today = new Date().toLocaleDateString('fr-CA');
   const local = JSON.parse(localStorage.getItem('mvQueue')||'[]')
     .filter(m => m.operateur === oper && m.date && m.date.substring(0,10) === today)
     .sort((a,b) => a.id - b.id);
 
   if (local.length === 0) {
-    showToast('Aucun mouvement aujourd\'hui ÃƒÆ’Ã‚Â  envoyer');
+    showToast('Aucun mouvement aujourd\'hui à envoyer');
     return;
   }
 
-  const sujet = encodeURIComponent('Mouvements du ' + today + ' ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ' + oper);
-  let corps = 'Mouvements du ' + today + ' ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ' + oper + '\n';
+  const sujet = encodeURIComponent('Mouvements du ' + today + ' — ' + oper);
+  let corps = 'Mouvements du ' + today + ' — ' + oper + '\n';
   corps += '='.repeat(40) + '\n\n';
 
   const groups = {};
@@ -910,12 +916,12 @@ function envoyerEmail() {
     const h = m.date ? m.date.substring(11,16) : '';
     corps += m.type.padEnd(16) + ' | ' + m.ref.padEnd(8) + ' | ' +
              String(m.qte).padEnd(5) + ' ' + (m.uniteSaisie||'').padEnd(10) +
-             ' | ' + (m.projet||'ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â').padEnd(10) + ' | ' + h + '\n';
+             ' | ' + (m.projet||'—').padEnd(10) + ' | ' + h + '\n';
   });
 
   corps += '\n' + '='.repeat(40) + '\n';
   corps += 'Total : ' + local.length + ' mouvement(s)\n';
-  corps += '\nEnvoyÃƒÆ’Ã‚Â© depuis l\'app Scan EntrepÃƒÆ’Ã‚Â´t';
+  corps += '\nEnvoyé depuis l\'app Scan Entrepôt';
 
   const mailto = 'mailto:' + EMAIL_DEST +
     '?subject=' + sujet +
@@ -940,7 +946,7 @@ function selectOperateur(nom) {
 }
 
 function pinKey(k) {
-  if (!pinSelectedOper) { document.getElementById('pin-error').textContent = 'SÃƒÆ’Ã‚Â©lectionnez votre nom'; return; }
+  if (!pinSelectedOper) { document.getElementById('pin-error').textContent = 'Sélectionnez votre nom'; return; }
   if (pinBuffer.length >= 4) return;
   pinBuffer += k;
   updatePinDots();
@@ -969,11 +975,11 @@ function validerPin() {
   const op = OPERATEURS.find(o => o.nom === pinSelectedOper);
   if (!op) return;
   if (pinBuffer === op.pin) {
-    // Connexion rÃƒÆ’Ã‚Â©ussie
+    // Connexion réussie
     document.getElementById('pin-overlay').classList.remove('active');
     document.getElementById('session-bar').style.display = 'flex';
     document.getElementById('session-bar-name').textContent = pinSelectedOper;
-    // Mettre l'opÃƒÆ’Ã‚Â©rateur dans le select cachÃƒÆ’Ã‚Â©
+    // Mettre l'opérateur dans le select caché
     const sel = document.getElementById('sel-operateur');
     sel.innerHTML = '';
     const opt = document.createElement('option');
@@ -982,7 +988,7 @@ function validerPin() {
     pinBuffer = '';
     updatePinDots();
   } else {
-    document.getElementById('pin-error').textContent = 'PIN incorrect ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â rÃƒÆ’Ã‚Â©essayez';
+    document.getElementById('pin-error').textContent = 'PIN incorrect — réessayez';
     pinBuffer = '';
     updatePinDots();
     // Vibration si disponible
@@ -1000,8 +1006,8 @@ function deconnexion() {
   document.querySelectorAll('.pin-oper-btn').forEach(b => b.classList.remove('selected'));
   updatePinDots();
   // Vider le select
-  document.getElementById('sel-operateur').innerHTML = '<option value="">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â SÃƒÆ’Ã‚Â©lectionner ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</option>';
-  // Revenir ÃƒÆ’Ã‚Â  la page mouvement
+  document.getElementById('sel-operateur').innerHTML = '<option value="">— Sélectionner —</option>';
+  // Revenir à la page mouvement
   switchPage('mvt');
 }
 
